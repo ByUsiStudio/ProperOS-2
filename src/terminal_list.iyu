@@ -8,7 +8,7 @@ height=-2</ppt>
 height=-2
 orientation=horizontal</ppt>
 <event><eventItme type="clicki">ulag(st_vW,4,text)
-utw(null,"是否复制一下内容？",text,"复制","取消",false,v)
+utw(null,"是否复制以下内容？",text,"复制","取消",false,v)
 {
 	sxb(text)
 }

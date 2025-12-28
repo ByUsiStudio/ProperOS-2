@@ -6,23 +6,23 @@ strim(code_text,code2_text)
 sss code_text2 =code_text2
 f(code_txt != null && code_txt != "")
 {
-	fe("$System/bin/"+code_text+".cuk",bin)
-	s bin_dir ="$System/bin/"+code_text+".cuk"
-	fe("$System/bin/"+code_text+".tps",bin2)
-	s bin2_dir ="$System/bin/"+code_text+".tps"
-	fe("$System/bin/"+code_text,bin3)
-	s bin3_dir ="$System/bin/"+code_text
-	f(bin == true)
+	fe("$System/bin/"+trt+".cuk",bin)
+	s bin_dir ="$System/bin/"+trt+".cuk"
+	fe("$System/bin/"+trt+".tps",bin2)
+	s bin2_dir ="$System/bin/"+trt+".tps"
+	fe("$System/bin/"+trt,bin3)
+	s bin3_dir ="$System/bin/"+trt
+	f(bin3 == true)
 	{
-		fn terminalLib.bin(bin_dir,code_text2)
+		fn terminalLib.bin(bin3_dir,code_text2)
 	}
 	else f(bin2 == true)
 	{
 		fn terminalLib.bin(bin2_dir,code_text2)
 	}
-	else f(bin3 == true)
+	else f(bin == true)
 	{
-		fn terminalLib.bin(bin3_dir,code_text2)
+		fn terminalLib.bin(bin_dir,code_text2)
 	}
 	else
 	{

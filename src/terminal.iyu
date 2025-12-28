@@ -11,12 +11,7 @@ scaleType=centercrop
 visibility=gone</ppt>
 <event></event>
 </View>
-<View id="12" did="1" type="RelativeLayout">
-<ppt>width=-1
-height=-1</ppt>
-<event></event>
-</View>
-<View id="3" did="12" type="LinearLayout">
+<View id="3" did="1" type="LinearLayout">
 <ppt>width=-1
 height=-1
 orientation=vertical
@@ -107,7 +102,7 @@ orientation=vertical</ppt>
 </View>
 <View id="6" did="5" type="RecyclerView">
 <ppt>width=-1
-height=-2
+height=-1
 ps=终端列表</ppt>
 <event></event>
 </View>

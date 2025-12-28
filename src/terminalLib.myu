@@ -1,7 +1,8 @@
 fn echo(text)
 
-time(0,time)
-ss("ProperOS_Two@CodeML:\n["+time+"]$ ~/",head)
+//time(0,time)
+//ss("ProperOS_Two@CodeML:\n["+time+"]$ ~/",head)
+ss("ProperOS_Two@CodeML:$ ~/",head)
 ula(sss.terminal,3=head,4=text)
 uls(6,sss.terminal,"terminal_list.iyu",-1-2)
 gvs(6,list)
@@ -12,8 +13,9 @@ end fn
 fn echo(text,clear)
 
 ula(sss.terminal,null)
-time(0,time)
-ss("ProperOS_Two@CodeML:\n["+time+"]$ ~/",head)
+//time(0,time)
+//ss("ProperOS_Two@CodeML:\n["+time+"]$ ~/",head)
+ss("ProperOS_Two@CodeML:$ ~/",head)
 ula(sss.terminal,3=head,4=text)
 uls(6,sss.terminal,"terminal_list.iyu",-1-2)
 gvs(6,list)
