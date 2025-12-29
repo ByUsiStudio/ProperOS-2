@@ -27,7 +27,9 @@ android.permission.FLASHLIGHT
 android.permission.INTERNET
 android.permission.WRITE_EXTERNAL_STORAGE
 android.permission.READ_EXTERNAL_STORAGE
-android.permission.WRITE_EXTERNAL_STORAGE</Permissions>
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.INTERNET</Permissions>
 <createTime>2025-11-16 20:48:02</createTime>
 <upTime>2025-11-16 20:48:02</upTime><manifest>&lt;uses-sdk android:minSdkVersion="15" android:targetSdkVersion="26"/&gt;
 

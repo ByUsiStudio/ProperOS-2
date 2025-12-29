@@ -33,31 +33,11 @@ else
 	us(4,"visibility","gone")
 }</eventItme><eventItme type="onpagefinished">//us(8,"visibility","gone")
 syso("被加载的URL："+st_url)
-t()
-{
-	f(st_url ?* "file://")
-	{
-		sj(st_url,"file://",null,dir)
-		sutf8to(dir,dir)
-		fr(dir,html)
-		sj(html,"&lt;title&gt;","&lt;/title&gt;",title)
-		ufnsui()
-		{
-			us(28,"app_title","ProperOS_Two:AppTitle ➤ "+title)
-            sss AppTitle =title
-		}
-	}
-	else
-	{
-		hs(st_url,url)
-		sj(url,"&lt;title&gt;","&lt;/title",title)
-		ufnsui()
-		{
-			us(28,"app_title","ProperOS_Two:AppTitle ➤ "+title)
-            sss AppTitle =title
-		}
-	}
-}</eventItme><eventItme type="shouldoverrideurlloading">f(st_url ?* "http")
+ug(st_vId,"title",title)
+us(28,"app_title",title)
+sss AppTitle =title
+syso("获取到Title："+title)</eventItme><eventItme type="shouldoverrideurlloading">us(8,"visibility","gone")
+f(st_url ?* "http")
 {
 	us(st_vId,"url",st_url)
 }
@@ -137,7 +117,7 @@ utw(null,"发现文件下载事件",tsc,"下载","取消",false,v)
 else
 {
 	endutw()
-}</eventItme><eventItme type="onpagestarted">us(8,"visibility","gone")</eventItme></event>
+}</eventItme></event>
 </View>
 <View id="4" did="1" type="LinearLayout">
 <ppt>width=-1
@@ -180,7 +160,8 @@ visibility=gone</ppt>
 <View id="28" did="18" type="Toolbar">
 <ppt>width=-1
 height=55dp
-app_title=ProperOS Two</ppt>
+app_title=ProperOS Two
+background=#580077ff</ppt>
 <event></event>
 </View>
 <View id="27" did="18" type="LinearLayout">
@@ -192,7 +173,7 @@ gravity=top|center</ppt>
 </View>
 <View id="19" did="27" type="CardView">
 <ppt>width=65dp
-height=65dp
+height=45dp
 app_CardcornerRadius=15dp</ppt>
 <event></event>
 </View>
@@ -205,7 +186,7 @@ background=through</ppt>
 </View>
 <View id="21" did="27" type="CardView">
 <ppt>width=65dp
-height=65dp
+height=45dp
 app_CardcornerRadius=15dp
 layout_marginLeft=10dp</ppt>
 <event></event>
@@ -350,7 +331,11 @@ else
 f(sss.type == "properos.app.store")
 {
 	
-}</eventItme><eventItme type="downkey">f(st_kC == 4)
+}
+gvs(28,toolbar)
+java(titleView,toolbar,"android.view.ViewGroup.getChildAt","int",0)
+us(titleView,"typeface","@fontFile/acbt80.ttf")
+us(titleView,"app_TitleColor","#ffffffff")</eventItme><eventItme type="downkey">f(st_kC == 4)
 {
 	ug(3,"cangoback",cangoback)
 	f(cangoback == true)
@@ -373,5 +358,17 @@ else
 {
 	fn tw.tw2("请先开启开发者模式",1)
 }
+
+break
+
+case JavaScript执行器:
+
+fn tw.tw2("暂不开放",1)
+
+break
+
+case 强制关闭该软件:
+
+end()
 
 break</eventItme></UIEventset>
