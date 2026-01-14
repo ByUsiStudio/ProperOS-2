@@ -1,0 +1,71 @@
+fn install(name,path,type)
+
+json(type,type)
+json(type,"get","benevolence",benevolence)
+f(benevolence == 1)
+{
+	json(type,"get","importName",im)
+	json(type,"get","importPackage",ip)
+	fc(path,"$user/data/cli/"+ip+"/"+im,yanz)
+	f(yanz == true)
+	{
+		s jx =true
+	}
+	else
+	{
+		fn tw.tw2("导入失败",1)
+		s jx =false
+	}
+	f(jx == true)
+	{
+		fr("$System/Config/cli/cli_config.json",cli_config)
+		json(cli_config,cli_config)
+		f(cli_config != null)
+		{
+			json(cli_config,"get","data",data)
+			time(0,time)
+			ss(data+",\""+name+"\":{\"path\":\"$user\/data\/cli\/"+ip+"\/"+im+"\",\"time\":\""+time+"\"}",data2)
+			json(cli_config,"set","data",data2)
+			fw("$System/Config/cli/cli_config.json",cli_config)
+			fn tw.tw("导入完成")
+		}
+		else
+		{
+			fr("@resources/config/cli_config.json",cli_config)
+			json(cli_config,cli_config)
+			json(cli_config,"get","data",data)
+			json(data,"get","{name}",def)
+			json(def,"set","path","$user/data/cli/"+ip+"/"+im)
+			time(0,time)
+			json(def,"set","time",time)
+			json(data,"set","{name}",def)
+			sr(data,"{name}",name,data)
+			fw("$System/Config/cli/cli_config.json",data)
+		}
+	}
+}
+
+end fn
+
+fn uninstall(name)
+
+fn tw.tw2("抱歉还没有实现删除逻辑",1)
+
+end fn
+
+fn register(name,path,type)
+
+fn cli.install(name,path,type)
+
+end fn
+
+fn install(name)
+
+t()
+{
+	ss("https://package.properos.cn/search?q="+name,url)
+	hs(url,data)
+	json(data,data)
+}
+
+end fn

@@ -23,7 +23,7 @@ call(null,"mjava","output.awayroll",list)
 
 end fn
 
-fn bin(bin,list)
+fn variable(bin,list)
 
 ss list_code =null
 sl(bin," ",lx)
@@ -47,11 +47,6 @@ end fn
 
 fn bin(bin,after)
 
-fdir("$",properos_root)
-fdir(bin,bin_dir)
-ss(bin_dir+" "+after,yy)
-sr(yy,properos_root,"ProperOS_Two:File_Root:/",yy)
-fn terminalLib.echo(yy)
 f(bin != null && bin != "")
 {
 	sss term =after
@@ -61,5 +56,27 @@ f(bin != null && bin != "")
 		fn system.code(code,10)
 	}
 }
+
+end fn
+
+fn bin(bin)
+
+f(bin != null || bin != "")
+{
+	fr(bin,code)
+	ufnsui()
+	{
+		fn system.code(code,10)
+	}
+}
+
+end fn
+
+fn clear()
+
+ula(sss.terminal,null)
+ss("ProperOS_Two@CodeML:$ ~/",head)
+ula(sss.terminal,3=head,4="")
+uls(6,sss.terminal,"terminal_list.iyu",-1-2)
 
 end fn

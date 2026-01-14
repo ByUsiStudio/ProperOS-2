@@ -40,6 +40,8 @@ ulag(st_vW,11,plink)
 ulag(st_vW,12,file)
 ulag(st_vW,13,package)
 //核心代码
+fdir(file,file)
+//
 t()
 {
 	f(plink == true)
@@ -73,7 +75,7 @@ t()
 	{
 		ufnsui()
 		{
-			utw(null,"","确定删除文件 \""+file+"\" 成功","确定","取消",true,v)
+			utw(null,"","确定删除文件 \""+file+"\" 吗？","确定","取消",true,v)
 			{
 				fd(file,del)
 				f(del == true)

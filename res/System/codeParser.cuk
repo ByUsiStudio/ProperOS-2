@@ -1,37 +1,48 @@
 ug(8,"text",code_txt)
-sj(code_txt," ",null,code_text2)
-ss(" "+code_text2,tail)
-sj(code_txt,null,tail,code_text)
-strim(code_text,code2_text)
-sss code_text2 =code_text2
 f(code_txt != null && code_txt != "")
 {
-	fe("$System/bin/"+trt+".cuk",bin)
-	s bin_dir ="$System/bin/"+trt+".cuk"
-	fe("$System/bin/"+trt+".tps",bin2)
-	s bin2_dir ="$System/bin/"+trt+".tps"
-	fe("$System/bin/"+trt,bin3)
-	s bin3_dir ="$System/bin/"+trt
-	f(bin3 == true)
+	fe("$System/bin/"+code_txt+".cuk",bin)
+	s bin_dir ="$System/bin/"+code_txt+".cuk"
+	fe("$System/bin/"+code_txt,bin3)
+	s bin3_dir ="$System/bin/"+code_txt
+	f(bin == true)
 	{
-		fn terminalLib.bin(bin3_dir,code_text2)
+		fn terminalLib.bin(bin_dir)
 	}
-	else f(bin2 == true)
+	else f(bin3 == true)
 	{
-		fn terminalLib.bin(bin2_dir,code_text2)
+		fn terminalLib.bin(bin3_dir)
 	}
-	else f(bin == true)
+	else f(bin3 == false && bin == false)
 	{
-		fn terminalLib.bin(bin_dir,code_text2)
-	}
-	else
-	{
-		fn terminalLib.echo("请检查 \""+code_txt+"\" 是否正常.")
-		fn terminalLib.echo("正在尝试已执行 iApp v3 代码执行")
-		fn system.code(code_txt,10)
+		sj(code_txt," ",null,code_text2)
+		ss(" "+code_text2,tail)
+		sj(code_txt,null,tail,code_text)
+		strim(code_text,code2_text)
+		sss code_text2 =code_text2
+		f(code_text != null || code_text != "")
+		{
+			s trt =code_text
+		}
+		fe("$System/bin/"+trt+".cuk",bin)
+		s bin_dir ="$System/bin/"+trt+".cuk"
+		fe("$System/bin/"+trt,bin3)
+		s bin3_dir ="$System/bin/"+trt
+		f(bin == true)
+		{
+			fn terminalLib.bin(bin_dir,code_text2)
+		}
+		else f(bin3 == true)
+		{
+			fn terminalLib.bin(bin3_dir,code_text2)
+		}
+		else
+		{
+			fn system.code(code_txt,10)
+		}
 	}
 }
 else
 {
-	fn terminalLib.echo("错误哦~ \n执行错误！")
+	fn terminalLib.echo("执行错误！")
 }

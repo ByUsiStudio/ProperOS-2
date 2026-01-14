@@ -15,7 +15,7 @@ t()
 		us(9,"dh",dh2)
 		us(9,"visibility","visible")
 	}
-	stop(3500)
+	stop(1500)
 	ufnsui()
 	{
 		fe("$System/guide.cuk",dmzt)

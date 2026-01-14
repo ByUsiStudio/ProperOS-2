@@ -72,8 +72,7 @@ visibility=gone
 ps=引导代码执行区</ppt>
 <event></event>
 </View>
-<UIEventset><eventItme type="loading">fn byusi.ztl()
-hd</eventItme><eventItme type="loadingComplete">fw("$System/Config/DaemonServiceOn.sett","true")
+<UIEventset><eventItme type="loading">fn byusi.ztl()</eventItme><eventItme type="loadingComplete">fw("$System/Config/DaemonServiceOn.sett","true")
 fe("$System/boot/boot.sboot",exist)
 f(exist == false)
 {
