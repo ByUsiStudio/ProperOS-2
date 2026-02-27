@@ -1,0 +1,64 @@
+fn login(user,password,online)
+
+t()
+{
+	f(online == true)
+	{
+		
+	}
+	else f(online == false)
+	{
+		
+	}
+	else
+	{
+		ufnsui()
+		{
+			syso("传入参数有误",1)
+		}
+	}
+}
+
+end fn
+
+fn register(user,password,online)
+
+t()
+{
+	f(online == true)
+	{
+		
+	}
+	else f(online == false)
+	{
+		
+	}
+	else
+	{
+		ufnsui
+		{
+			syso("传入参数有误",1)
+		}
+	}
+}
+
+end fn
+
+fn query()
+
+f(sss.query != null)
+{
+	
+}
+else
+{
+	syso("请先初始化 sss.query 变量，否则无法获得返回参数")
+}
+
+end fn
+
+fn transfer()
+
+//数据转移函数
+
+end fn

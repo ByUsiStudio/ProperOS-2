@@ -819,4 +819,95 @@ t()
 	}
 }</eventItme></event>
 </View>
+<View id="85" did="3" type="CardView">
+<ppt>width=-1
+height=55dp
+layout_marginTop=6dp
+layout_marginLeft=16dp
+layout_marginRight=16dp
+layout_marginBottom=8dp
+app_CardcornerRadius=15dp
+ps=一设置列表项基本布局</ppt>
+<event></event>
+</View>
+<View id="86" did="85" type="RelativeLayout">
+<ppt>width=-1
+height=-1</ppt>
+<event></event>
+</View>
+<View id="87" did="86" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=horizontal
+gravity=left|center</ppt>
+<event></event>
+</View>
+<View id="88" did="87" type="ImageView">
+<ppt>width=45dp
+height=45dp
+src=@tip.png
+layout_marginLeft=10dp</ppt>
+<event></event>
+</View>
+<View id="89" did="87" type="LinearLayout">
+<ppt>width=-2
+height=-1
+orientation=vertical
+gravity=left|center
+layout_marginLeft=6dp</ppt>
+<event></event>
+</View>
+<View id="90" did="89" type="TextView">
+<ppt>width=-2
+height=-2
+text=检查 OS 更新
+typeface=@fontFile/acbt80.ttf
+textColor=#ff000000
+textSize=12sp</ppt>
+<event></event>
+</View>
+<View id="91" did="89" type="TextView">
+<ppt>width=-2
+height=-2
+text=检查 ProperOS 的版本更新，获取新版本
+typeface=@fontFile/acbt80.ttf
+textSize=8sp</ppt>
+<event></event>
+</View>
+<View id="92" did="87" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=horizontal
+ps=选项用
+gravity=right|center
+visibility=gone</ppt>
+<event></event>
+</View>
+<View id="93" did="92" type="SwitchCompat">
+<ppt>width=-2
+height=-2
+layout_marginRight=16dp
+thumbTint=#ff00aaff
+checked=false</ppt>
+<event><eventItme type="oncheckedchanged">f(st_iC == true)
+{
+	utw("@tip.png","警告","该功能不建议开启，请问确定开启吗？","确定","取消",true,v)
+	{
+		endutw()
+	}
+	else
+	{
+		us(st_vId,"checked","false")
+		endutw()
+	}
+}</eventItme></event>
+</View>
+<View id="94" did="86" type="Button">
+<ppt>width=-1
+height=-1
+text=
+background=through</ppt>
+<event><eventItme type="clicki">fr("$System/bin/update.system.cuk",us_code)
+fn system.code(us_code,17)</eventItme></event>
+</View>
 <UIEventset></UIEventset>

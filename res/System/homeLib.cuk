@@ -79,6 +79,17 @@ t()
 			sbp("$System/icon/ic_settings_voice_assistant.png",icon)
 			s appName =content
 		}
+		else f(houyi *? ".html")
+		{
+			s plink =false
+			sbp("@resources/icon/m4399_png_setting_permissions_fast.png",icon)
+			fr("$ProperOS/home/Desktop/"+content,html_nr)
+			sj(html_nr,"<title>","</title>",appName)
+			f(appName = "" || appName == null)
+			{
+				s appName ="无应用名"
+			}
+		}
 		/. //正在开发中...
 		else f(houyi *? ".doc" || houyi *? ".docx")
 		{

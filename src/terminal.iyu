@@ -43,22 +43,7 @@ textColor=#ff000000
 typeface=@fontFile/acbt80.ttf
 ps=发送命令区域
 background=through</ppt>
-<event><eventItme type="clicki">/.
-fe("$System/code/terminal.cuk",ter)
-f(ter == true)
-{
-	fr("$System/code/terminal.cuk",code)
-	fn system.code(code,11)
-}
-else
-{
-	fr("@System/terminalParser.cuk",code)
-	fw("$System/code/terminal.cuk",code)
-	fn system.code(code,11)
-}
-./
-//us(8,"text","")
-fe("$System/bin/bash",bash)
+<event><eventItme type="clicki">fe("$System/bin/bash",bash)
 f(bash == true)
 {
 	fr("$System/bin/bash",code)
@@ -124,7 +109,7 @@ visibility=gone</ppt>
 </View>
 <UIEventset><eventItme type="loading">fn byusi.ztl()
 fn byusi.uycl()
-fn lib.wp(2)</eventItme><eventItme type="loadingComplete">fn terminalLib.echo("欢迎使用 ProperOS 2 Terminal",clear)
+fn lib.wp(2)</eventItme><eventItme type="loadingComplete">fn terminalLib.echo2("欢迎使用 ProperOS 2 Terminal")
 f(sss.script != null)
 {
 	us(4,"visibility","gone")

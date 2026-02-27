@@ -191,3 +191,23 @@ else
 }
 
 end fn
+
+fn get_the_boot_key(key)
+
+fr("$System/Config/ActivationKey.sett",key)
+t()
+{
+	fr("$System/Config/ActivationKey.sett",nr)
+    f(key == nr)
+    {
+    	fr("$System/boot/boot.sboot",sboot)
+        sj(sboot,"/.key\n","\nkey./",ke)
+        sss url =ke
+    }
+    else
+    {
+    	sss url ="[ERROR] 无法完成请求，开发密钥错误"
+    }
+}
+
+end fn

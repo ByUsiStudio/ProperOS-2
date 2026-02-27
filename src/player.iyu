@@ -28,23 +28,6 @@ textSize=16sp
 typeface=@fontFile/acbt80.ttf</ppt>
 <event></event>
 </View>
-<View id="41" did="16" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=right|center</ppt>
-<event></event>
-</View>
-<View id="42" did="41" type="TextView">
-<ppt>width=-2
-height=-2
-text=投屏
-typeface=@fontFile/acbt80.ttf</ppt>
-<event><eventItme type="clicki">javanew(初始化,"miao.byusi.properos.two.screen")
-javax(null,初始化,"miao.byusi.properos.two.screen","初始化","android.app.Activity",activity)
-javax(null,初始化,"miao.byusi.properos.two.screen","搜索设备","android.content.Context",activity)
-javax(null,初始化,"miao.byusi.properos.two.screen","置投屏幕内容","String",sss.url)</eventItme></event>
-</View>
 <View id="15" did="25" type="ScrollView">
 <ppt>width=-1
 height=-1
@@ -86,8 +69,7 @@ orientation=vertical
 layout_marginLeft=5dp
 layout_marginRight=5dp
 layout_marginTop=5dp
-ps=视频地址输入区
-visibility=gone</ppt>
+ps=视频地址输入区</ppt>
 <event></event>
 </View>
 <View id="6" did="8" type="CardView">
@@ -134,7 +116,6 @@ orientation=vertical
 layout_marginTop=20dp
 layout_marginLeft=20dp
 layout_marginRight=20dp
-visibility=gone
 ps=视频地址传入播放器按钮区</ppt>
 <event></event>
 </View>

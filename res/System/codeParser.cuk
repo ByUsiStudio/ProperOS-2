@@ -44,5 +44,5 @@ f(code_txt != null && code_txt != "")
 }
 else
 {
-	fn terminalLib.echo("执行错误！")
+	fn terminalLib.echo2("执行错误！")
 }

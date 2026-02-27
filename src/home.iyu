@@ -136,7 +136,6 @@ visibility=gone</ppt>
 <UIEventset><eventItme type="loading">fn byusi.ztl()
 fn byusi.uycl()
 fn lib.wp(2)
-//fn guardianService.run(12)
 call(fh,"mjava","Permission.pd",activity)
 f(fh == true || fh == "true")
 {
@@ -226,10 +225,7 @@ t()
 }
 //</eventItme><eventItme type="menu">case 守护进程启动:
 
-utw(null,"","暂时被禁止使用了",false,v)
-{
-	fn guardianService.start(12)
-}
+fn guardianService.run(500)
 
 break
 

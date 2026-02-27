@@ -1,58 +1,37 @@
-fn add(type,content,package)
+fn initialize()
 
-f(type == "package")
-{
-	ss("$user/data/software/"+package+"/Service/"+content,path)
-	fc(path,"$System/DaemonService/"+package+".service",c)
-	f(c == false)
-	{
-		fn tw.tw2("软件 \""+package+"\" 的守护服务创建失败了")
-	}
-}
-else f(type == "file")
-{
-	fc(content,"$System/DaemonService/"+package+".service",c)
-	f(c == false)
-	{
-		fn tw.tw2("创建守护服务失败了，请检查文件 \""+content+"\" 是否存在")
-	}
-}
-else
-{
-	syso("[ERROR] 未知类型")
-	fn tw.tw2("[ERROR] 未知类型",1)
-}
+nvw(177828525,1,"按钮","width=-2\nheight=-2\ntext=123",b)
+fn system.code("ss guardianService =true",177828525)
 
 end fn
 
-fn start(id)
-
-fn guardianService.run(id)
-
-end fn
-
-
-fn run(id)
+fn run(stop)
 
 t()
 {
-	fr("$System/Config/DaemonServiceOn.sett",dso)
-	w(dso == "true")
+	f(ss.guardianService != true)
 	{
-		fl("$System/DaemonService",false,output)
-		for(value;output)
-		{
-			ss("$System/DaemonService/"+value,data)
-			syso("搜索到可执行守护进程脚本文件 ➤ "+data)
-			fr(data,data)
-			ufnsui()
-			{
-				fn system.code(data,id)
-			}
-		}
-		fr("$System/Config/DaemonServiceOn.sett",dso)
-		stop(1000)
+		fn guardianService.initialize()
 	}
+	else f(ss.guardianService == true)
+	{
+		fn guardianService.bash()
+		stop(stop)
+		fn guardianService.run(stop)
+	}
+}
+
+end fn
+
+fn bash()
+
+s dir ="$System/guardianService/"
+fl(dir,false,initial)
+for(output;initial)
+{
+	fr(dir+output,path_data)
+	syso("搜索到可执行守护脚本 → "+path)
+	fn system.code(path_data,177828525)
 }
 
 end fn

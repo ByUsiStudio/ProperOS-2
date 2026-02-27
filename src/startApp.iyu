@@ -36,7 +36,8 @@ syso("被加载的URL："+st_url)
 ug(st_vId,"title",title)
 us(28,"app_title",title)
 sss AppTitle =title
-syso("获取到Title："+title)</eventItme><eventItme type="shouldoverrideurlloading">us(8,"visibility","gone")
+syso("获取到Title："+title)
+us(8,"visibility","gone")</eventItme><eventItme type="shouldoverrideurlloading">us(8,"visibility","gone")
 f(st_url ?* "http")
 {
 	us(st_vId,"url",st_url)
@@ -117,7 +118,7 @@ utw(null,"发现文件下载事件",tsc,"下载","取消",false,v)
 else
 {
 	endutw()
-}</eventItme></event>
+}</eventItme><eventItme type="onpagestarted">us(8,"visibility","gone")</eventItme></event>
 </View>
 <View id="4" did="1" type="LinearLayout">
 <ppt>width=-1
@@ -259,7 +260,7 @@ gravity=left|top</ppt>
 <View id="12" did="11" type="TextView">
 <ppt>width=-2
 height=-2
-text=错误信息代码（ID：12）
+text=由于某些原因请手动点击刷新按钮\n错误信息代码（ID：12）
 layout_marginLeft=10dp
 textColor=#ff000000
 typeface=@fontFile/acbt80.ttf

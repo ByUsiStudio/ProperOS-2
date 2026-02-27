@@ -72,18 +72,54 @@ visibility=gone
 ps=引导代码执行区</ppt>
 <event></event>
 </View>
-<UIEventset><eventItme type="loading">fn byusi.ztl()</eventItme><eventItme type="loadingComplete">fw("$System/Config/DaemonServiceOn.sett","true")
+<View id="10" did="1" type="Button">
+<ppt>width=-2
+height=-2
+text=按钮10
+visibility=gone
+ps=代码执行区</ppt>
+<event></event>
+</View>
+<UIEventset><eventItme type="loading">fn byusi.ztl()</eventItme><eventItme type="loadingComplete">//先前逻辑
+fe("$System/Config/ActivationKey.sett",ak)
+f(ak == false)
+{
+	time(4,time)
+	fw("$System/Config/ActivationKey.sett",time)
+}
+//先后逻辑
+fw("$System/Config/DaemonServiceOn.sett","true")
 fe("$System/boot/boot.sboot",exist)
 f(exist == false)
 {
 	fr("@System/boot.sboot",sboot)
-	fw("$System/boot/boot.sboot",sboot)
+	//加密
+    time(4,key)
+	call(nr,"mjava","aes.encryptString",sboot,key)
+	ss("/.key\n"+key+"\nkey./\n/.encryption\n"+nr+"\nencryption./",nrr)
+	fw("$System/boot/boot.sboot",nrr)
 	fn system.code(sboot,8)
 }
-else
+else f(exist == true)
 {
-	fr("$System/boot/boot.sboot",boot)
-	fn system.code(boot,8)
+	fr("$System/boot/boot.sboot",sboot)
+	sj(sboot,"/.encryption\n","\nencryption./",code)
+    sj(sboot,"/.key\n","\nkey./",key)
+	f(code != null)
+	{
+		//解密
+		call(nr,"mjava","aes.decryptString",code,key)
+		fn system.code(nr,8)
+	}
+	else f(code == null)
+	{
+		//加密
+        time(4,key)
+		call(nr,"mjava","aes.encryptString",sboot,"18IQy8di0trjIZhmY_7d2hoAVGqUMlKyCgfMedru")
+		ss("/.key\n"+key+"\nkey./\n/.encryption\n"+nr+"\nencryption./",nrr)
+		fw("$System/boot/boot.sboot",nrr)
+		fn system.code(sboot,8)
+	}
 }</eventItme><eventItme type="downkey">f(st_kC == 4)
 {
 	

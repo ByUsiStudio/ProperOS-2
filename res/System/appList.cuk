@@ -1,10 +1,13 @@
 slower(sss.fileDir,houyi)
+syso("检测到请求打开文件："+sss.fileDir)
 f(sss.fileDir *? ".plink")
 {
+	syso("类型为 PeoperOS 软件")
 	fr(sss.fileDir,plinkData)
 	json(plinkData,data)
 	json(data,"get","sign",sign)
 	json(sign,"get","uuid",uuid)
+	syso("被启动应用UUID："+uuid)
 	f(uuid == "properos.app.store")
 	{
 		sss type ="properos.app.store"
@@ -28,6 +31,7 @@ f(sss.fileDir *? ".plink")
 	else f(systemUi_qiyue == true)
 	{
 		json(systemUi,"get","ui",ui)
+		syso("应用设置默认打开系统界面："+ui)
 		json(systemUi,"get","variable",variable)
 		fn core.uigo(ui)
 		sss url =variable
@@ -35,6 +39,7 @@ f(sss.fileDir *? ".plink")
 	else
 	{
 		json(data,"get","package",package)
+		syso("被启动应用包名："+package)
 		json(data,"get","guide",guide)
 		ss("$user/data/software/"+package+"/src/",catalogue)
 		ss("$user/data/software/"+package+"/src/"+guide,url)
@@ -46,6 +51,7 @@ f(sss.fileDir *? ".plink")
 else f(houyi *? ".mp3" || houyi *? ".flac" || houyi *? ".ogg" || houyi *? ".m4a")
 {
 	ulag(st_vW,14,name)
+	syso("类型为音频文件")
 	s dir ="$System/MusicPlayer/index.html"
 	fdir(sss.fileDir,sss.fileDir)
 	fuz("@resources/sdk/MusicPlayer.zip","MusicPlayer/index.html","$System",true,b)
@@ -58,17 +64,32 @@ else f(houyi *? ".mp3" || houyi *? ".flac" || houyi *? ".ogg" || houyi *? ".m4a"
 }
 else f(houyi *? ".mp4")
 {
+	syso("类型为视频文件")
 	sss url =sss.fileDir
 	fn core.uigo("player.iyu")
 }
 else f(houyi *? ".tps" || houyi *? ".cuk" || houyi *? ".jush")
 {
+	syso("类型为 ProperOS 脚本文件")
 	sss script =sss.fileDir
 	fn core.uigo("terminal.iyu")
 }
 else f(houyi *? ".pdf" || houyi *? ".ppt" || houyi *? ".doc" || houyi *? ".docx" || houyi *? ".pptx" || houyi *? ".apk")
 {
 	fo(sss.fileDir,o)
+}
+else f(houyi *? ".html")
+{
+	syso("类型为 HTML 文件")
+	utw(null,"","确定打开该软件吗？","确定","取消",false,v)
+	{
+		sss url =sss.fileDir
+		fn core.uigo("startApp.iyu")
+	}
+	else
+	{
+		endutw()
+	}
 }
 else
 {
