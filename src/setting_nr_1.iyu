@@ -542,7 +542,8 @@ layout_marginLeft=16dp
 layout_marginRight=16dp
 layout_marginBottom=8dp
 app_CardcornerRadius=15dp
-ps=一设置列表项基本布局</ppt>
+ps=一设置列表项基本布局
+visibility=gone</ppt>
 <event></event>
 </View>
 <View id="46" did="45" type="RelativeLayout">

@@ -198,16 +198,130 @@ fr("$System/Config/ActivationKey.sett",key)
 t()
 {
 	fr("$System/Config/ActivationKey.sett",nr)
-    f(key == nr)
-    {
-    	fr("$System/boot/boot.sboot",sboot)
-        sj(sboot,"/.key\n","\nkey./",ke)
-        sss url =ke
-    }
-    else
-    {
-    	sss url ="[ERROR] 无法完成请求，开发密钥错误"
-    }
+	f(key == nr)
+	{
+		fr("$System/boot/boot.sboot",sboot)
+		sj(sboot,"/.key\n","\nkey./",ke)
+		sss url =ke
+	}
+	else
+	{
+		sss url ="[ERROR] 无法完成请求，开发密钥错误"
+	}
+}
+
+end fn
+
+fn loading(text)
+
+fn lib.loading(text)
+
+end fn
+
+fn account(type,identifier,password)
+
+fn system.loading("正在发起请求并等待回应中...")
+s base_api_url ="https://api.www.cdifit.cn/user/api.php"
+f(type == "login")
+{
+	t()
+	{
+		ss("&identifier="+identifier+"&password="+password+"&action=login",number)
+		hs(base_api_url,number,"utf-8",return)
+		syso(return)
+		ufnsui()
+		{
+			endutw()
+		}
+		f(return != null)
+		{
+			json(return,data)
+			json(data,"get","status",status)
+			f(status == "success")
+			{
+				json(data,"get","data",data2)
+				json(data2,"get","username",username)
+				fr("@about.json",about)
+				json(about,about)
+				json(about,"get","osName",osName)
+				json(data2,"get","uuid",uuid)
+				ufnsui()
+				{
+					sss account_return ="true"
+					utw(null,"","欢迎 "+username+" 用户使用 "+osName+" 啊",false,v)
+					{
+					}
+				}
+				//加密
+				call(nr,"mjava","aes.encryptString",return,uuid)
+				fw("$user/"+uuid,nr)
+				fw("$user/index",uuid)
+				sss account_return =return
+			}
+			else
+			{
+				json(data,"get","message",msg)
+				ufnsui()
+				{
+					sss account_return ="false"
+					fn tw.tw2(msg,1)
+				}
+			}
+		}
+		else
+		{
+			ufnsui()
+			{
+				sss account_return ="false"
+				fn tw.tw2("请检查网络连接",1)
+			}
+		}
+	}
+}
+else f(type == "register")
+{
+	json(identifier,data)
+	json(data,"username",username)
+	json(data,"email",email)
+	ss("&username="+username+"&email="+email+"&password="+password+"&action=register",number)
+	hs(base_api_url,number,"utf-8",return)
+	syso(return)
+	ufnsui()
+	{
+		endutw()
+	}
+	f(return != null)
+	{
+		json(return,data)
+		json(data,"get","status",status)
+		f(status == "success")
+		{
+			ufnsui()
+			{
+				sss account_return ="true"
+				fn tw.tw("注册已完成，请进行登录")
+			}
+		}
+		else
+		{
+			json(data,"get","message",msg)
+			ufnsui()
+			{
+				sss account_return =msg
+				fn tw.tw2(msg,1)
+			}
+		}
+	}
+	else
+	{
+		sss account_return ="false"
+		fn tw.tw2("请检查网络连接",1)
+	}
+}
+else
+{
+	sss account_return ="false"
+	fn tw.tw2("传入参数错误",1)
 }
 
 end fn

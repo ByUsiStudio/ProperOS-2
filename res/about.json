@@ -1,7 +1,7 @@
 {
   "osName": "ProperOS 2",
   "developer": "北",
-  "version": "beta2.2.8",
+  "version": "beta2.2.9",
   "defaultColor": "#ff399cff",
   "packageName": "miao.byusi.properos.two",
   "updateConfig": "https://api.properos.cn",

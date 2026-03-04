@@ -94,7 +94,7 @@ f(exist == false)
 {
 	fr("@System/boot.sboot",sboot)
 	//加密
-    time(4,key)
+	time(4,key)
 	call(nr,"mjava","aes.encryptString",sboot,key)
 	ss("/.key\n"+key+"\nkey./\n/.encryption\n"+nr+"\nencryption./",nrr)
 	fw("$System/boot/boot.sboot",nrr)
@@ -104,7 +104,7 @@ else f(exist == true)
 {
 	fr("$System/boot/boot.sboot",sboot)
 	sj(sboot,"/.encryption\n","\nencryption./",code)
-    sj(sboot,"/.key\n","\nkey./",key)
+	sj(sboot,"/.key\n","\nkey./",key)
 	f(code != null)
 	{
 		//解密
@@ -114,7 +114,7 @@ else f(exist == true)
 	else f(code == null)
 	{
 		//加密
-        time(4,key)
+		time(4,key)
 		call(nr,"mjava","aes.encryptString",sboot,"18IQy8di0trjIZhmY_7d2hoAVGqUMlKyCgfMedru")
 		ss("/.key\n"+key+"\nkey./\n/.encryption\n"+nr+"\nencryption./",nrr)
 		fw("$System/boot/boot.sboot",nrr)

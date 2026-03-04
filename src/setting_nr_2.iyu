@@ -294,7 +294,10 @@ text=登录
 textColor=#ffffffff
 typeface=@fontFile/acbt80.ttf
 background=#ff4678ff</ppt>
-<event></event>
+<event><eventItme type="clicki">ug(setting_nr_2.37,"text",name)
+ug(setting_nr_2.41,"text",password)
+//
+fn system.account("login",name,password)</eventItme></event>
 </View>
 <View id="45" did="33" type="LinearLayout">
 <ppt>width=-1
@@ -317,8 +320,8 @@ text=还没有账号，前往 注册
 textColor=#ffffffff
 typeface=@fontFile/acbt80.ttf
 background=#ff4678ff</ppt>
-<event><eventItme type="clicki">us(setting_nr_2.28,"visibility","visible")
-us(setting_nr_2.48,"visibility","gone")</eventItme></event>
+<event><eventItme type="clicki">us(setting_nr_2.28,"visibility","gone")
+us(setting_nr_2.48,"visibility","visible")</eventItme></event>
 </View>
 <View id="48" did="27" type="LinearLayout">
 <ppt>width=-1
@@ -505,8 +508,8 @@ text=已有账号，前往 登录
 textColor=#ffffffff
 typeface=@fontFile/acbt80.ttf
 background=#ff4678ff</ppt>
-<event><eventItme type="clicki">us(setting_nr_2.28,"visibility","gone")
-us(setting_nr_2.48,"visibility","visible")</eventItme></event>
+<event><eventItme type="clicki">us(setting_nr_2.28,"visibility","visible")
+us(setting_nr_2.48,"visibility","gone")</eventItme></event>
 </View>
 <View id="2" did="1" type="LinearLayout">
 <ppt>width=-1
@@ -514,8 +517,13 @@ height=-1
 orientation=vertical
 background=white
 ps=测试用
-gravity=center</ppt>
-<event></event>
+gravity=center
+visibility=gone</ppt>
+<event><eventItme type="clicki">f(sss.account_return == true)
+{
+	sss url ="https://api.www.cdifit.cn/user/login.html"
+	fn core.uigo("startApp.iyu")
+}</eventItme></event>
 </View>
 <View id="3" did="2" type="ImageView">
 <ppt>width=-2
@@ -532,5 +540,38 @@ typeface=@fontFile/acbt80.ttf
 textSize=15sp
 gravity=center</ppt>
 <event></event>
+</View>
+<View id="71" did="1" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=vertical
+gravity=center
+visibility=gone</ppt>
+<event></event>
+</View>
+<View id="72" did="71" type="Button">
+<ppt>width=-2
+height=-2
+text=签到（长按退出登录）
+typeface=@fontFile/acbt80.ttf
+textColor=#ff000000
+</ppt>
+<event><eventItme type="clicki">fr("$user/index",uuid)
+fr("$user/"+uuid,data)
+//解密
+call(nr,"mjava","aes.decryptString",data,uuid)
+json(nr,data)
+json(data,"get","data",bata)
+json(bata,"get","uid",uid)
+ss("https://api.www.cdifit.cn/user/qd.php?uid="+uid+"&uuid="+uuid,url)
+sss url =url
+fn core.uigo("startApp.iyu")</eventItme><eventItme type="press">fr("$user/index",uuid)
+fd("$user/"+uuid,yz)
+fd("$user/index",yz2)
+f(yz == yz2 && yz == true)
+{
+	fn tw.tw("退出登陆成功")
+	end()
+}</eventItme></event>
 </View>
 <UIEventset></UIEventset>

@@ -135,35 +135,7 @@ us(12,"dh",dhlist)
 gvs(9,toolbar)
 java(titleView,toolbar,"android.view.ViewGroup.getChildAt","int",0)
 us(titleView,"typeface","@fontFile/acbt80.ttf")
-us(titleView,"app_TitleColor","#ffffffff")
-//美化
-/. //注销对部分影响性能的内容
-loadjar("lansy-1.0.0", sss.LansyLibrary)
-loadjar("pulsus", sss.PulsusLibrary)
-cls(sss.LansyLibrary, "io.lansy.widget.RealtimeBlurView", sss.RealtimeBlurView)
-cls(sss.LansyLibrary, "io.lansy.widget.Toggle", sss.Toggle)
-cls(sss.LansyLibrary, "io.lansy.widget.Toggle$OnCheckedChangeListener", sss.ToggleOnCheckedChangeListener)
-cls(sss.LansyLibrary, "io.lansy.widget.Slider", sss.Slider)
-cls(sss.LansyLibrary, "io.lansy.widget.Slider$OnProgressChangeListener", sss.SliderOnProgressChangeListener)
-cls(sss.LansyLibrary, "io.lansy.widget.ProgressBar", sss.ProgressBar)
-cls(sss.PulsusLibrary, "pulsus.realtimeblurview.drawable.RealtimeBlurDrawable", sss.RealtimeBlurDrawable)
-
-cls(sss.PulsusLibrary, "pulsus.graphics.drawable.RealtimeBlurDrawable", sss.RealtimeBlurDrawable)
-javanew(drawable, sss.RealtimeBlurDrawable)
-//设置模糊半径
-javax(null, drawable, sss.RealtimeBlurDrawable, "setBlurRadius", "float", 300)
-//设置设置下采样因子
-javax(null, drawable, sss.RealtimeBlurDrawable, "setDownsampleFactor", "float", 4)
-//设置覆盖层颜色
-java(color, null, "android.graphics.Color.parseColor", "String", "#9FFFFFFF")
-javax(null, drawable, sss.RealtimeBlurDrawable, "setOverlayColor", "int", color)
-//设置圆角
-javax(null, drawable, sss.RealtimeBlurDrawable, "setCornerRadius", "float", 25)
-gvs(12, v)
-java(null, v, "android.view.View.setBackgroundDrawable", "android.graphics.drawable.Drawable", drawable)
-
-fn system.bottomColumn(13,16)
- ./</eventItme><eventItme type="loadingComplete">fe("$ProperOS/home/Desktop/appInstall.plink",appinstall)
+us(titleView,"app_TitleColor","#ffffffff")</eventItme><eventItme type="loadingComplete">fe("$ProperOS/home/Desktop/appInstall.plink",appinstall)
 us(setting_nr_1.14,"checked",appinstall)
 fe("$ProperOS/home/Desktop/wallpaperImport.plink",wallpaperImport)
 us(setting_nr_1.32,"checked",wallpaperImport)
@@ -177,4 +149,13 @@ else
 	us(setting_nr_1.55,"visibility","gone")
 }
 fe("$System/Config/app_code.cuk",acuk)
-us(setting_nr_1.84,"checked",acuk)</eventItme></UIEventset>
+us(setting_nr_1.84,"checked",acuk)
+//检查用户是否登录
+fr("$user/index",uuid)
+fe("$user/"+uuid,yanz)
+f(yanz == true)
+{
+	sss account_return =true
+	us(setting_nr_2.25,"visibility","gone")
+	us(setting_nr_2.71,"visibility","visible")
+}</eventItme></UIEventset>

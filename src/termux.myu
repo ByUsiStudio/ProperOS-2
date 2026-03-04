@@ -1,0 +1,101 @@
+fn runScriptDirect(script_path, params)
+t()  // 在新线程中执行，避免阻塞界面
+{
+	// 清空上次的结果
+	sss ter_return = ""
+
+	t()
+	{
+		// 构建命令
+		s cmd = "/data/data/com.termux/files/usr/bin/bash " + script_path
+		f(params != null && params != "")
+		{
+			s cmd = cmd + " " + params
+		}
+
+		// 获取 Runtime
+		cls("java.lang.Runtime", runtime_class)
+		java(runtime, null, "java.lang.Runtime.getRuntime", runtime_class)
+
+		// 设置环境变量
+		cls("java.lang.ProcessBuilder", pb_class)
+		javanew(pb, pb_class, "[Ljava.lang.String;", new java("String[]", "/data/data/com.termux/files/usr/bin/bash", script_path))
+
+		// 获取环境变量并设置
+		cls("java.util.Map", map_class)
+		java(env, pb, "java.lang.ProcessBuilder.environment", map_class)
+		java(env, env, "java.util.Map.put", "java.lang.Object", "PATH", "/data/data/com.termux/files/usr/bin:/data/data/com.termux/files/usr/bin/applets:$PATH")
+		java(env, env, "java.util.Map.put", "java.lang.Object", "HOME", "/data/data/com.termux/files/home")
+		java(env, env, "java.util.Map.put", "java.lang.Object", "PREFIX", "/data/data/com.termux/files/usr")
+
+		// 启动进程
+		cls("java.lang.Process", process_class)
+		java(process, pb, "java.lang.ProcessBuilder.start", process_class)
+
+		// 读取标准输出
+		cls("java.io.BufferedReader", reader_class)
+		cls("java.io.InputStreamReader", isr_class)
+		java(inputStream, process, "java.lang.Process.getInputStream", "java.io.InputStream")
+		javanew(isr, isr_class, "java.io.InputStream", inputStream)
+		javanew(stdout_reader, reader_class, "java.io.Reader", isr)
+
+		// 读取错误输出
+		java(errorStream, process, "java.lang.Process.getErrorStream", "java.io.InputStream")
+		javanew(isr2, isr_class, "java.io.InputStream", errorStream)
+		javanew(stderr_reader, reader_class, "java.io.Reader", isr2)
+
+		// 收集输出
+		s line = ""
+		s output = ""
+		s error_output = ""
+
+		// 读取标准输出
+		w(true)
+		{
+			java(line, stdout_reader, "java.io.BufferedReader.readLine", "java.lang.String")
+			f(line == null)
+			{
+				break
+			}
+			s output = output + line + "\n"
+		}
+
+		// 读取错误输出
+		w(true)
+		{
+			java(line, stderr_reader, "java.io.BufferedReader.readLine", "java.lang.String")
+			f(line == null)
+			{
+				break
+			}
+			s error_output = error_output + line + "\n"
+		}
+
+		// 等待进程结束
+		java(exitCode, process, "java.lang.Process.waitFor", "int")
+
+		// 合并输出
+		f(error_output != "")
+		{
+			sss ter_return = "退出码: " + exitCode + "\n输出:\n" + output + "\n错误:\n" + error_output
+		}
+		else
+		{
+			sss ter_return = "退出码: " + exitCode + "\n输出:\n" + output
+		}
+
+		// 关闭资源
+		java(stdout_reader, stdout_reader, "java.io.BufferedReader.close")
+		java(stderr_reader, stderr_reader, "java.io.BufferedReader.close")
+	}
+	syso(e)
+	sss ter_return = "执行异常: " + e
+
+	// 更新界面（如果需要）
+	ufnsui()
+	{
+		sss ter_return =sss.ter_return
+	}
+}
+
+end fn
