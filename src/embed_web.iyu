@@ -1,0 +1,142 @@
+<View id="1" did="0" type="RelativeLayout">
+<ppt>width=-1
+height=-1
+background=#be7d7d7d</ppt>
+<event></event>
+</View>
+<View id="3" did="1" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=vertical
+gravity=center</ppt>
+<event></event>
+</View>
+<View id="4" did="3" type="CardView">
+<ppt>width=-1
+height=-1
+layout_marginLeft=25dp
+layout_marginTop=28dp
+layout_marginRight=25dp
+layout_marginBottom=28dp
+app_CardcornerRadius=35dp</ppt>
+<event></event>
+</View>
+<View id="5" did="4" type="RelativeLayout">
+<ppt>width=-1
+height=-1</ppt>
+<event></event>
+</View>
+<View id="6" did="5" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=vertical
+gravity=center</ppt>
+<event></event>
+</View>
+<View id="7" did="6" type="LinearLayout">
+<ppt>width=-1
+height=-2
+orientation=horizontal
+gravity=center</ppt>
+<event></event>
+</View>
+<View id="8" did="7" type="Button">
+<ppt>width=-2
+height=-2
+text=完成登录</ppt>
+<event><eventItme type="clicki">fn lib.loading("验证登录中...")
+t()
+{
+	hs("https://account.properos.cn/check.php?token="+sss.token,url)
+	ufnsui()
+	{
+		endutw()
+	}
+	json(url,data)
+	f(data != null)
+	{
+		json(data,"get","code",code)
+		f(code == "200")
+		{
+			json(data,"get","data",ddata)
+			json(ddata,"get","code",cx_code)
+			ufnsui()
+			{
+				fn lib.loading("请求 Cdifit 返回数据中...")
+			}
+			hs("https://www.cdifit.cn/api/v4/session/oauth/token","grant_type=authorization_code&client_id=54e87e02-4dfb-4b84-bb36-d33c9247598d&client_secret=cdvy8SY2A9zAB3vhDfnqkM9wJIzTCSCS&code="+cx_code,"utf-8",return)
+			ufnsui()
+			{
+				endutw()
+			}
+			json(return,return_data)
+			f(return_data != null)
+			{
+				ufnsui()
+				{
+					fn lib.loading("查询用户数据中...")
+				}
+				json(return_data,"get","token_type",token_type)
+				json(return_data,"get","access_token",access_token)
+				hs("https://www.cdifit.cn/api/v4/session/oauth/userinfo",null,"utf-8",null,true,"Authorization="+token_type+" "+access_token,dara_data)
+				ufnsui()
+				{
+					endutw()
+				}
+				json(dara_data,dara_data)
+				f(dara_data != null)
+				{
+					ufnsui()
+					{
+						fn tw.tw("登录成功~")
+						fw("$user/token.json",return_data)
+						fw("$user/userinfo.json",dara_data)
+						end()
+					}
+				}
+				else
+				{
+					ufnsui()
+					{
+						endutw()
+					}
+				}
+			}
+			else
+			{
+				ufnsui()
+				{
+					fn tw.tw2("数据验证失败，无法登录",1)
+					end()
+				}
+			}
+		}
+		else
+		{
+			ufnsui()
+			{
+				fn tw.tw2("返回数据代码错误，错误代码："+code,1)
+			}
+		}
+	}
+	else
+	{
+		ufnsui()
+		{
+			fn tw.tw2("请检查网络连接",1)
+		}
+	}
+}</eventItme></event>
+</View>
+<View id="9" did="7" type="Button">
+<ppt>width=-2
+height=-2
+text=取消登录</ppt>
+<event><eventItme type="clicki">us(embed_web.1,"visibility","gone")</eventItme></event>
+</View>
+<View id="11" did="6" type="WebView">
+<ppt>width=-1
+height=-1</ppt>
+<event></event>
+</View>
+<UIEventset></UIEventset>

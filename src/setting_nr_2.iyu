@@ -3,575 +3,74 @@
 height=-1</ppt>
 <event></event>
 </View>
-<View id="5" did="1" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center
-ps=登录后显示的布局
-visibility=gone</ppt>
-<event></event>
-</View>
-<View id="8" did="5" type="CardView">
-<ppt>width=75dp
-height=75dp
-app_CardcornerRadius=25dp
-layout_marginTop=10dp
-ps=头像布局</ppt>
-<event></event>
-</View>
-<View id="9" did="8" type="RelativeLayout">
-<ppt>width=-1
-height=-1</ppt>
-<event></event>
-</View>
-<View id="10" did="9" type="WebView">
-<ppt>width=-1
-height=-1</ppt>
-<event></event>
-</View>
-<View id="11" did="9" type="Button">
-<ppt>width=-1
-height=-1
-text=
-background=through</ppt>
-<event></event>
-</View>
-<View id="6" did="5" type="ScrollView">
-<ppt>width=-1
-height=-1</ppt>
-<event></event>
-</View>
-<View id="7" did="6" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center</ppt>
-<event></event>
-</View>
-<View id="13" did="7" type="CardView">
-<ppt>width=-1
-height=55dp
-layout_marginLeft=10dp
-layout_marginRight=10dp
-layout_marginTop=5dp
-app_CardcornerRadius=25dp
-ps=列表项</ppt>
-<event></event>
-</View>
-<View id="14" did="13" type="RelativeLayout">
-<ppt>width=-1
-height=-1</ppt>
-<event></event>
-</View>
-<View id="15" did="14" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=horizontal
-gravity=left|center</ppt>
-<event></event>
-</View>
-<View id="16" did="15" type="TextView">
-<ppt>width=-2
-height=-2
-text=UID：
-typeface=@fontFile/acbt80.ttf
-textSize=15sp
-layout_marginLeft=10dp</ppt>
-<event></event>
-</View>
-<View id="17" did="15" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center</ppt>
-<event></event>
-</View>
-<View id="18" did="17" type="TextView">
-<ppt>width=-2
-height=-2
-text=UID内容布局（ID：18）
-typeface=@fontFile/acbt80.ttf
-singleLine=true
-ellipsize=end</ppt>
-<event></event>
-</View>
-<View id="19" did="7" type="CardView">
-<ppt>width=-1
-height=55dp
-layout_marginLeft=10dp
-layout_marginRight=10dp
-layout_marginTop=5dp
-app_CardcornerRadius=25dp
-ps=列表项</ppt>
-<event></event>
-</View>
-<View id="20" did="19" type="RelativeLayout">
-<ppt>width=-1
-height=-1</ppt>
-<event></event>
-</View>
-<View id="21" did="20" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=horizontal
-gravity=left|center</ppt>
-<event></event>
-</View>
-<View id="22" did="21" type="TextView">
-<ppt>width=-2
-height=-2
-text=UUID：
-typeface=@fontFile/acbt80.ttf
-textSize=15sp
-layout_marginLeft=10dp</ppt>
-<event></event>
-</View>
-<View id="23" did="21" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center</ppt>
-<event></event>
-</View>
-<View id="24" did="23" type="TextView">
-<ppt>width=-2
-height=-2
-text=UUID内容布局（ID：24）
-typeface=@fontFile/acbt80.ttf
-singleLine=true
-ellipsize=end</ppt>
-<event></event>
-</View>
-<View id="25" did="1" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center
-ps=登录注册布局</ppt>
-<event></event>
-</View>
-<View id="26" did="25" type="CardView">
-<ppt>width=-1
-height=-1
-layout_marginLeft=25dp
-layout_marginRight=25dp
-layout_marginTop=35dp
-layout_marginBottom=55dp
-app_CardcornerRadius=35dp
-app_CardElevation=25dp</ppt>
-<event></event>
-</View>
-<View id="27" did="26" type="RelativeLayout">
-<ppt>width=-1
-height=-1</ppt>
-<event></event>
-</View>
-<View id="28" did="27" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center
-ps=登录布局</ppt>
-<event></event>
-</View>
-<View id="29" did="28" type="LinearLayout">
-<ppt>width=-1
-height=100dp
-orientation=horizontal
-gravity=center</ppt>
-<event></event>
-</View>
-<View id="30" did="29" type="RoundImageView">
-<ppt>width=85dp
-height=85dp
-src=@logo/byusi.png</ppt>
-<event></event>
-</View>
-<View id="32" did="29" type="TextView">
-<ppt>width=-2
-height=-2
-text= 登录 ByUsi 账户
-typeface=@fontFile/acbt80.ttf
-singleLine=true
-ellipsize=end
-textSize=25sp</ppt>
-<event></event>
-</View>
-<View id="33" did="28" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center</ppt>
-<event></event>
-</View>
-<View id="34" did="33" type="CardView">
-<ppt>width=-1
-height=65dp
-layout_marginLeft=10dp
-layout_marginRight=10dp
-app_CardcornerRadius=25dp
-ps=账户输入布局</ppt>
-<event></event>
-</View>
-<View id="36" did="34" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center
-padding=5dp</ppt>
-<event></event>
-</View>
-<View id="35" did="36" type="TextInputLayout">
-<ppt>width=-1
-height=-1</ppt>
-<event></event>
-</View>
-<View id="37" did="35" type="EditText">
-<ppt>width=-1
-height=-1
-text=
-typeface=@fontFile/acbt80.ttf
-hint=ByUsi账户
-background=
-singleLine=true
-gravity=center</ppt>
-<event></event>
-</View>
-<View id="38" did="33" type="CardView">
-<ppt>width=-1
-height=65dp
-layout_marginLeft=10dp
-layout_marginRight=10dp
-layout_marginTop=10dp
-app_CardcornerRadius=25dp
-ps=密码输入布局</ppt>
-<event></event>
-</View>
-<View id="39" did="38" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center
-padding=5dp</ppt>
-<event></event>
-</View>
-<View id="40" did="39" type="TextInputLayout">
-<ppt>width=-1
-height=-1</ppt>
-<event></event>
-</View>
-<View id="41" did="40" type="EditText">
-<ppt>width=-1
-height=-1
-text=
-typeface=@fontFile/acbt80.ttf
-hint=ByUsi账户密码
-background=
-singleLine=true
-gravity=center
-inputType=textpassword</ppt>
-<event></event>
-</View>
-<View id="42" did="33" type="LinearLayout">
-<ppt>width=-1
-height=95dp
-orientation=vertical
-gravity=center
-layout_marginTop=10dp</ppt>
-<event></event>
-</View>
-<View id="43" did="42" type="CardView">
-<ppt>width=90dp
-height=55dp
-app_CardcornerRadius=25dp</ppt>
-<event></event>
-</View>
-<View id="44" did="43" type="Button">
-<ppt>width=-1
-height=-1
-text=登录
-textColor=#ffffffff
-typeface=@fontFile/acbt80.ttf
-background=#ff4678ff</ppt>
-<event><eventItme type="clicki">ug(setting_nr_2.37,"text",name)
-ug(setting_nr_2.41,"text",password)
-//
-fn system.account("login",name,password)</eventItme></event>
-</View>
-<View id="45" did="33" type="LinearLayout">
-<ppt>width=-1
-height=70dp
-orientation=vertical
-gravity=center
-layout_marginTop=10dp</ppt>
-<event></event>
-</View>
-<View id="46" did="45" type="CardView">
-<ppt>width=164dp
-height=44dp
-app_CardcornerRadius=25dp</ppt>
-<event></event>
-</View>
-<View id="47" did="46" type="Button">
-<ppt>width=-1
-height=-1
-text=还没有账号，前往 注册
-textColor=#ffffffff
-typeface=@fontFile/acbt80.ttf
-background=#ff4678ff</ppt>
-<event><eventItme type="clicki">us(setting_nr_2.28,"visibility","gone")
-us(setting_nr_2.48,"visibility","visible")</eventItme></event>
-</View>
-<View id="48" did="27" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center
-ps=注册布局
-visibility=gone</ppt>
-<event></event>
-</View>
-<View id="49" did="48" type="LinearLayout">
-<ppt>width=-1
-height=100dp
-orientation=horizontal
-gravity=center</ppt>
-<event></event>
-</View>
-<View id="50" did="49" type="RoundImageView">
-<ppt>width=85dp
-height=85dp
-src=@logo/byusi.png</ppt>
-<event></event>
-</View>
-<View id="51" did="49" type="TextView">
-<ppt>width=-2
-height=-2
-text= 注册 ByUsi 账户
-typeface=@fontFile/acbt80.ttf
-singleLine=true
-ellipsize=end
-textSize=25sp</ppt>
-<event></event>
-</View>
-<View id="52" did="48" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center</ppt>
-<event></event>
-</View>
-<View id="53" did="52" type="CardView">
-<ppt>width=-1
-height=65dp
-layout_marginLeft=10dp
-layout_marginRight=10dp
-app_CardcornerRadius=25dp
-ps=账户输入布局</ppt>
-<event></event>
-</View>
-<View id="54" did="53" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center
-padding=5dp</ppt>
-<event></event>
-</View>
-<View id="55" did="54" type="TextInputLayout">
-<ppt>width=-1
-height=-1</ppt>
-<event></event>
-</View>
-<View id="56" did="55" type="EditText">
-<ppt>width=-1
-height=-1
-text=
-typeface=@fontFile/acbt80.ttf
-hint=ByUsi账户
-background=
-singleLine=true
-gravity=center</ppt>
-<event></event>
-</View>
-<View id="67" did="52" type="CardView">
-<ppt>width=-1
-height=65dp
-layout_marginLeft=10dp
-layout_marginRight=10dp
-layout_marginTop=10dp
-app_CardcornerRadius=25dp
-ps=邮箱地址输入布局</ppt>
-<event></event>
-</View>
-<View id="68" did="67" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center
-padding=5dp</ppt>
-<event></event>
-</View>
-<View id="69" did="68" type="TextInputLayout">
-<ppt>width=-1
-height=-1</ppt>
-<event></event>
-</View>
-<View id="70" did="69" type="EditText">
-<ppt>width=-1
-height=-1
-text=
-typeface=@fontFile/acbt80.ttf
-hint=请输入邮箱地址
-background=
-singleLine=true
-gravity=center</ppt>
-<event></event>
-</View>
-<View id="57" did="52" type="CardView">
-<ppt>width=-1
-height=65dp
-layout_marginLeft=10dp
-layout_marginRight=10dp
-layout_marginTop=10dp
-app_CardcornerRadius=25dp
-ps=密码输入布局</ppt>
-<event></event>
-</View>
-<View id="58" did="57" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center
-padding=5dp</ppt>
-<event></event>
-</View>
-<View id="59" did="58" type="TextInputLayout">
-<ppt>width=-1
-height=-1</ppt>
-<event></event>
-</View>
-<View id="60" did="59" type="EditText">
-<ppt>width=-1
-height=-1
-text=
-typeface=@fontFile/acbt80.ttf
-hint=ByUsi账户密码
-background=
-singleLine=true
-gravity=center
-inputType=textpassword</ppt>
-<event></event>
-</View>
-<View id="61" did="52" type="LinearLayout">
-<ppt>width=-1
-height=95dp
-orientation=vertical
-gravity=center
-layout_marginTop=10dp</ppt>
-<event></event>
-</View>
-<View id="62" did="61" type="CardView">
-<ppt>width=90dp
-height=55dp
-app_CardcornerRadius=25dp</ppt>
-<event></event>
-</View>
-<View id="63" did="62" type="Button">
-<ppt>width=-1
-height=-1
-text=注册
-textColor=#ffffffff
-typeface=@fontFile/acbt80.ttf
-background=#ff4678ff</ppt>
-<event></event>
-</View>
-<View id="64" did="52" type="LinearLayout">
-<ppt>width=-1
-height=70dp
-orientation=vertical
-gravity=center
-layout_marginTop=10dp</ppt>
-<event></event>
-</View>
-<View id="65" did="64" type="CardView">
-<ppt>width=164dp
-height=44dp
-app_CardcornerRadius=25dp</ppt>
-<event></event>
-</View>
-<View id="66" did="65" type="Button">
-<ppt>width=-1
-height=-1
-text=已有账号，前往 登录
-textColor=#ffffffff
-typeface=@fontFile/acbt80.ttf
-background=#ff4678ff</ppt>
-<event><eventItme type="clicki">us(setting_nr_2.28,"visibility","visible")
-us(setting_nr_2.48,"visibility","gone")</eventItme></event>
-</View>
 <View id="2" did="1" type="LinearLayout">
 <ppt>width=-1
 height=-1
 orientation=vertical
-background=white
-ps=测试用
-gravity=center
-visibility=gone</ppt>
-<event><eventItme type="clicki">f(sss.account_return == true)
-{
-	sss url ="https://api.www.cdifit.cn/user/login.html"
-	fn core.uigo("startApp.iyu")
-}</eventItme></event>
-</View>
-<View id="3" did="2" type="ImageView">
-<ppt>width=-2
-height=-2
-src=@fail.png</ppt>
-<event></event>
-</View>
-<View id="4" did="2" type="TextView">
-<ppt>width=-2
-height=-2
-text=抱歉该功能还在开发中
-textColor=#ffff0000
-typeface=@fontFile/acbt80.ttf
-textSize=15sp
 gravity=center</ppt>
 <event></event>
 </View>
-<View id="71" did="1" type="LinearLayout">
+<View id="3" did="2" type="CardView">
+<ppt>width=-1
+height=-1
+layout_marginLeft=25dp
+layout_marginTop=18dp
+layout_marginRight=25dp
+layout_marginBottom=18dp
+app_CardcornerRadius=35dp</ppt>
+<event></event>
+</View>
+<View id="4" did="3" type="LinearLayout">
 <ppt>width=-1
 height=-1
 orientation=vertical
-gravity=center
-visibility=gone</ppt>
+gravity=center</ppt>
 <event></event>
 </View>
-<View id="72" did="71" type="Button">
+<View id="5" did="4" type="Button">
 <ppt>width=-2
 height=-2
-text=签到（长按退出登录）
-typeface=@fontFile/acbt80.ttf
-textColor=#ff000000
-</ppt>
-<event><eventItme type="clicki">fr("$user/index",uuid)
-fr("$user/"+uuid,data)
-//解密
-call(nr,"mjava","aes.decryptString",data,uuid)
-json(nr,data)
-json(data,"get","data",bata)
-json(bata,"get","uid",uid)
-ss("https://api.www.cdifit.cn/user/qd.php?uid="+uid+"&uuid="+uuid,url)
-sss url =url
-fn core.uigo("startApp.iyu")</eventItme><eventItme type="press">fr("$user/index",uuid)
-fd("$user/"+uuid,yz)
-fd("$user/index",yz2)
-f(yz == yz2 && yz == true)
+text=请求使用 Cdifit 登录
+typeface=@fontFile/acbt80.ttf</ppt>
+<event><eventItme type="clicki">fn lib.loading("请求验证 Token 中...")
+t()
 {
-	fn tw.tw("退出登陆成功")
-	end()
+	hs("https://account.properos.cn/token.php",data)
+	ufnsui()
+	{
+		endutw()
+	}
+	json(data,data)
+	f(data != null)
+	{
+		json(data,"get","code",code)
+		f(code == "200")
+		{
+			json(data,"get","data",ddata)
+			json(ddata,"get","token",token)
+			json(ddata,"get","oauth_url",oauth_url)
+			sss token =token
+			ufnsui()
+			{
+				us(embed_web.1,"visibility","visible")
+				us(embed_web.11,"url",oauth_url)
+			}
+		}
+		else
+		{
+			ufnsui()
+			{
+				fn tw.tw2("返回代码错误，无法完成登录，错误代码："+code,1)
+			}
+		}
+	}
+	else
+	{
+		ufnsui()
+		{
+			fn tw.tw2("无法解析服务器返回数据，请检查网络",1)
+		}
+	}
 }</eventItme></event>
 </View>
 <UIEventset></UIEventset>

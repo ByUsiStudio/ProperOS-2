@@ -51,7 +51,7 @@
         <activity android:name="cn.hugo.android.scanner.CaptureActivity" android:configChanges="orientation|keyboardHidden" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
-        <activity android:name="com.tencent.tauth.AuthActivity" android:noHistory="true" android:launchMode="singleTask">
+        <activity android:name="com.tencent.tauth.AuthActivity" android:noHistory="true" android:launchMode="singleTask" android:exported="true">
     <intent-filter>
            <action android:name="android.intent.action.VIEW"/>
            <category android:name="android.intent.category.DEFAULT"/>
