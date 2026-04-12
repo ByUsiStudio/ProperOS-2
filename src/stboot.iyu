@@ -1,1 +1,43 @@
-<UIEventset></UIEventset>
+<View id="1" did="0" type="RelativeLayout">
+<ppt>width=-1
+height=-1
+background=black</ppt>
+<event></event>
+</View>
+<View id="2" did="1" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=vertical
+gravity=center
+background=black
+ps=可修改界面</ppt>
+<event></event>
+</View>
+<View id="3" did="1" type="LinearLayout">
+<ppt>width=-0
+height=-0
+orientation=vertical
+ps=代码运行区</ppt>
+<event></event>
+</View>
+<View id="4" did="3" type="Button">
+<ppt>width=-2
+height=-2
+text=按钮4</ppt>
+<event></event>
+</View>
+<UIEventset><eventItme type="loading">fn byusi.ztl()</eventItme><eventItme type="loadingComplete">s path ="$dev/sboot/stboot.sboot"
+fe(path,yz_stboot)
+f(yz_stboot == true)
+{
+	fr(path,code)
+	fn system.code(code,4)
+}
+else
+{
+	us(2,"background","#ffff0000")
+	utw(null,"","失败了，无法获取 StBoot 加载配置","退出",true,v)
+	{
+		end()
+	}
+}</eventItme></UIEventset>

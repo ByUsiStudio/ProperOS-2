@@ -1,13 +1,26 @@
 s path ="$dev/sboot/boot.sboot"
 fe(path,yz_file)
-f(yz_file == true)
+s sleep =3000
+s icon ="@logo/properos2.png"
+nvw(512,2,"卡片","width=-2\nheight=-2")
+us(512,"app_CardcornerRadius","35dp")
+nvw(1024,512,"图像","width=-1\nheight=-1")
+us(1024,"src",icon)
+t()
 {
-	fr(path,code)
-	fn system.code(code,)
-}
-else
-{
-	fr("@System/BootUp/boot.sboot",code)
-	fw(path,code)
-	fn system.code(code,)
+	stop(sleep)
+	ufnsui()
+	{
+		f(yz_file == true)
+		{
+			fr(path,code)
+			fn system.code(code,4)
+		}
+		else
+		{
+			fr("@System/BootUp/boot.sboot",code)
+			fw(path,code)
+			fn system.code(code,4)
+		}
+	}
 }

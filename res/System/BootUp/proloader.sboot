@@ -52,14 +52,15 @@ f(abp == null || abp == "")
 	{
 		ufnsui()
 		{
-			sr(ui,"%[ICON]%",icon,ui)
+			sr(ui,"&[ICON]",icon,ui)
 			fn system.code(ui,7)
 			us(2,"background",background)
 		}
 		stop(sleep)
-		ufnsui
+		ufnsui()
 		{
 			fn core.uigo(stboot)
+			end()
 		}
 	}
 }

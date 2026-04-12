@@ -58,4 +58,6 @@ else
 	fr("@System/BootUp/proloader.sboot",proloader_code)
     fw(proloader_path,proloader_code)
     fn system.code(proloader_code,5)
+}</eventItme><eventItme type="downkey">f(st_kC == 4)
+{
 }</eventItme></UIEventset>
