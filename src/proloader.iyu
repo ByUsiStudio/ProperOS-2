@@ -1,0 +1,61 @@
+<View id="1" did="0" type="RelativeLayout">
+<ppt>width=-1
+height=-1
+background=black</ppt>
+<event></event>
+</View>
+<View id="2" did="1" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=vertical
+gravity=center
+ps=ProLoader模式</ppt>
+<event></event>
+</View>
+<View id="3" did="1" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=vertical
+gravity=center
+ps=引导启动模式
+visibility=gone</ppt>
+<event></event>
+</View>
+<View id="4" did="1" type="LinearLayout">
+<ppt>width=-0
+height=-0
+orientation=vertical
+ps=代码执行区</ppt>
+<event></event>
+</View>
+<View id="5" did="4" type="Button">
+<ppt>width=-2
+height=-2
+text=按钮5</ppt>
+<event></event>
+</View>
+<View id="6" did="4" type="Button">
+<ppt>width=-2
+height=-2
+text=按钮6</ppt>
+<event></event>
+</View>
+<View id="7" did="4" type="Button">
+<ppt>width=-2
+height=-2
+text=按钮7</ppt>
+<event></event>
+</View>
+<UIEventset><eventItme type="loading">fn byusi.ztl()</eventItme><eventItme type="loadingComplete">s proloader_path ="$dev/sboot/proloader.sboot"
+fe(proloader_path,proloader)
+f(proloader == true)
+{
+	fr(proloader_path,proloader_code)
+    fn system.code(proloader_code,5)
+}
+else
+{
+	fr("@System/BootUp/proloader.sboot",proloader_code)
+    fw(proloader_path,proloader_code)
+    fn system.code(proloader_code,5)
+}</eventItme></UIEventset>

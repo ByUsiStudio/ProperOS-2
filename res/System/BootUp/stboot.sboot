@@ -1,0 +1,13 @@
+s path ="$dev/sboot/boot.sboot"
+fe(path,yz_file)
+f(yz_file == true)
+{
+	fr(path,code)
+	fn system.code(code,)
+}
+else
+{
+	fr("@System/BootUp/boot.sboot",code)
+	fw(path,code)
+	fn system.code(code,)
+}

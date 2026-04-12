@@ -7,7 +7,8 @@ height=-1</ppt>
 <ppt>width=-1
 height=-1
 orientation=vertical
-gravity=center</ppt>
+gravity=center
+ps=用户登录界面</ppt>
 <event></event>
 </View>
 <View id="3" did="2" type="CardView">
@@ -17,7 +18,8 @@ layout_marginLeft=25dp
 layout_marginTop=18dp
 layout_marginRight=25dp
 layout_marginBottom=18dp
-app_CardcornerRadius=35dp</ppt>
+app_CardcornerRadius=35dp
+app_CardBackgroundColor=#ffffffff</ppt>
 <event></event>
 </View>
 <View id="4" did="3" type="LinearLayout">
@@ -71,6 +73,139 @@ t()
 			fn tw.tw2("无法解析服务器返回数据，请检查网络",1)
 		}
 	}
+}</eventItme></event>
+</View>
+<View id="7" did="1" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=vertical
+gravity=center
+ps=用户信息界面
+visibility=gone</ppt>
+<event></event>
+</View>
+<View id="9" did="7" type="CardView">
+<ppt>width=-1
+height=-1
+layout_marginLeft=25dp
+layout_marginTop=18dp
+layout_marginRight=25dp
+layout_marginBottom=18dp
+app_CardcornerRadius=35dp</ppt>
+<event></event>
+</View>
+<View id="11" did="9" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=vertical
+gravity=center</ppt>
+<event></event>
+</View>
+<View id="21" did="11" type="CardView">
+<ppt>width=85dp
+height=85dp
+app_CardcornerRadius=25dp</ppt>
+<event></event>
+</View>
+<View id="22" did="21" type="WebView">
+<ppt>width=-1
+height=-1</ppt>
+<event></event>
+</View>
+<View id="13" did="11" type="LinearLayout">
+<ppt>width=-1
+height=45dp
+orientation=horizontal
+gravity=left|center</ppt>
+<event></event>
+</View>
+<View id="14" did="13" type="TextView">
+<ppt>width=-2
+height=-2
+text=用户名：
+layout_marginLeft=5dp
+typeface=@fontFile/acbt80.ttf
+textColor=#ff000000</ppt>
+<event></event>
+</View>
+<View id="15" did="13" type="TextView">
+<ppt>width=-2
+height=-2
+text=user
+typeface=@fontFile/acbt80.ttf
+textColor=#ff000000</ppt>
+<event></event>
+</View>
+<View id="16" did="11" type="LinearLayout">
+<ppt>width=-1
+height=45dp
+orientation=horizontal
+gravity=left|center</ppt>
+<event></event>
+</View>
+<View id="17" did="16" type="TextView">
+<ppt>width=-2
+height=-2
+text=邮箱：
+layout_marginLeft=5dp
+typeface=@fontFile/acbt80.ttf
+textColor=#ff000000</ppt>
+<event></event>
+</View>
+<View id="18" did="16" type="TextView">
+<ppt>width=-2
+height=-2
+text=Email
+typeface=@fontFile/acbt80.ttf
+textColor=#ff000000</ppt>
+<event></event>
+</View>
+<View id="23" did="11" type="LinearLayout">
+<ppt>width=-1
+height=45dp
+orientation=horizontal
+gravity=left|center</ppt>
+<event></event>
+</View>
+<View id="24" did="23" type="TextView">
+<ppt>width=-2
+height=-2
+text=用户空间：
+layout_marginLeft=5dp
+typeface=@fontFile/acbt80.ttf
+textColor=#ff000000</ppt>
+<event></event>
+</View>
+<View id="25" did="23" type="TextView">
+<ppt>width=-2
+height=-2
+text=Total size/Current size
+typeface=@fontFile/acbt80.ttf
+textColor=#ff000000</ppt>
+<event></event>
+</View>
+<View id="19" did="11" type="LinearLayout">
+<ppt>width=-1
+height=65dp
+orientation=vertical
+gravity=center
+layout_marginTop=95dp</ppt>
+<event></event>
+</View>
+<View id="20" did="19" type="Button">
+<ppt>width=-2
+height=-2
+text=退出登录</ppt>
+<event><eventItme type="clicki">fd("$user/token.json",fd_token)
+fd("$user/userinfo.json",fd_userinfo)
+f(fd_token == true && fd_userinfo == true)
+{
+	fn tw.tw("退出登录成功")
+    end()
+}
+else
+{
+	fn tw.tw2("退出登录失败",1)
 }</eventItme></event>
 </View>
 <UIEventset></UIEventset>

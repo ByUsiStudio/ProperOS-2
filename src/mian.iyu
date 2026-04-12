@@ -1,67 +1,7 @@
 <View id="1" did="0" type="RelativeLayout">
 <ppt>width=-1
 height=-1
-background=white</ppt>
-<event></event>
-</View>
-<View id="2" did="1" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center
-ps=ByUsi logo展示</ppt>
-<event></event>
-</View>
-<View id="3" did="2" type="RoundImageView">
-<ppt>width=-2
-height=-2
-src=@logo/byusi.png</ppt>
-<event></event>
-</View>
-<View id="4" did="2" type="TextView">
-<ppt>width=-2
-height=-2
-text=ByUsi
-textColor=#ff000000
-textSize=20sp
-typeface=@fontFile/acbt80.ttf
-layout_marginTop=10dp
-visibility=gone</ppt>
-<event></event>
-</View>
-<View id="5" did="1" type="LinearLayout">
-<ppt>width=-1
-height=-1
-orientation=vertical
-gravity=center
-visibility=gone
-ps=ProperOS Logo 展示
-background=#1F6BFF
-//background=#81D0C9</ppt>
-<event></event>
-</View>
-<View id="6" did="5" type="RoundImageView">
-<ppt>width=-2
-height=-2
-src=@logo/properos.png</ppt>
-<event></event>
-</View>
-<View id="9" did="5" type="RoundImageView">
-<ppt>width=-2
-height=-2
-src=@logo/properos2.png
-visibility=gone</ppt>
-<event></event>
-</View>
-<View id="7" did="5" type="TextView">
-<ppt>width=-2
-height=-2
-text=ProperOS 2
-textColor=#ffffffff
-textSize=20sp
-typeface=@fontFile/acbt80.ttf
-layout_marginTop=10dp
-visibility=gone</ppt>
+background=black</ppt>
 <event></event>
 </View>
 <View id="8" did="1" type="Button">
@@ -80,47 +20,8 @@ visibility=gone
 ps=代码执行区</ppt>
 <event></event>
 </View>
-<UIEventset><eventItme type="loading">fn byusi.ztl()</eventItme><eventItme type="loadingComplete">//先前逻辑
-fe("$System/Config/ActivationKey.sett",ak)
-f(ak == false)
-{
-	time(4,time)
-	fw("$System/Config/ActivationKey.sett",time)
-}
-//先后逻辑
-fw("$System/Config/DaemonServiceOn.sett","true")
-fe("$System/boot/boot.sboot",exist)
-f(exist == false)
-{
-	fr("@System/boot.sboot",sboot)
-	//加密
-	time(4,key)
-	call(nr,"mjava","aes.encryptString",sboot,key)
-	ss("/.key\n"+key+"\nkey./\n/.encryption\n"+nr+"\nencryption./",nrr)
-	fw("$System/boot/boot.sboot",nrr)
-	fn system.code(sboot,8)
-}
-else f(exist == true)
-{
-	fr("$System/boot/boot.sboot",sboot)
-	sj(sboot,"/.encryption\n","\nencryption./",code)
-	sj(sboot,"/.key\n","\nkey./",key)
-	f(code != null)
-	{
-		//解密
-		call(nr,"mjava","aes.decryptString",code,key)
-		fn system.code(nr,8)
-	}
-	else f(code == null)
-	{
-		//加密
-		time(4,key)
-		call(nr,"mjava","aes.encryptString",sboot,"18IQy8di0trjIZhmY_7d2hoAVGqUMlKyCgfMedru")
-		ss("/.key\n"+key+"\nkey./\n/.encryption\n"+nr+"\nencryption./",nrr)
-		fw("$System/boot/boot.sboot",nrr)
-		fn system.code(sboot,8)
-	}
-}</eventItme><eventItme type="downkey">f(st_kC == 4)
+<UIEventset><eventItme type="loading">fn byusi.ztl()</eventItme><eventItme type="downkey">f(st_kC == 4)
 {
 	
-}</eventItme><eventItme type="menu">shb()</eventItme></UIEventset>
+}</eventItme><eventItme type="menu">shb()</eventItme><eventItme type="loadingComplete">fn core.uigo("proloader.iyu")
+end()</eventItme></UIEventset>

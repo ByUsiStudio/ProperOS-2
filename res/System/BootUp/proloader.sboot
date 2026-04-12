@@ -1,0 +1,71 @@
+s path ="$dev/sboot/stboot.sboot"
+s also_boot_path ="$temp/module"
+s proloader_config_data_path ="$System/Config/ProLoader/config.json"
+
+
+s config_data ="{\"enable_supan\":false,\"enable_strict_perm\":true,\"enable_install_dev\":true,\"enable_unlock_proldr\":false,\"enable_console\":false,\"enable_mod_stboot\":true,\"boot\":{\"sleep\": 3000,\"icon\":\"@logo\/byusi.png\",\"background\":\"#ffffffff\",\"stboot\":\"stboot.iyu\",\"ui\":\"nvw(512,2,\'图像\',\'width=-2\\\\nheight=-2\')\\nus(512,\'src\',\'&[ICON]\')\"}}"
+fe(proloader_config_data_path,yz_plcdp)
+fr(proloader_config_data_path,plcdp_str)
+json(plcdp_str,plcdp_obj)
+f(yz_plcdp == true && plcdp_obj != null)
+{
+	json(plcdp_obj,"get","enable_supan",enable_supan)
+	sss enable_supan =enable_supan
+	json(plcdp_obj,"get","enable_strict_perm", enable_strict_perm)
+	sss enable_strict_perm =enable_strict_perm
+	json(plcdp_obj,"get","enable_install_dev", enable_install_dev)
+	sss enable_install_dev =enable_install_dev
+	json(plcdp_obj,"get","enable_unlock_proldr", enable_unlock_proldr)
+	sss enable_unlock_proldr =enable_unlock_proldr
+	json(plcdp_obj,"get","enable_console",enable_console)
+	sss enable_console =enable_console
+	json(plcdp_obj,"get","enable_mod_stboot", enable_mod_stboot)
+	sss enable_mod_stboot =enable_mod_stboot
+	json(plcdp_obj,"get","boot",boot)
+	json(boot,"get","stboot",stboot)
+	sss stboot =stboot
+}
+else
+{
+	fw(proloader_config_data_path,config_data)
+	syso("[INFO] 基本配置初始化成功")
+	call(null,"mjava","restart.st",activity)
+}
+syso(plcdp_obj)
+
+
+fe(path,verification_required)
+fr(also_boot_path,abp)
+f(abp == null || abp == "")
+{
+	fw(also_boot_path,"")
+	f(verification_required == false)
+	{
+		fr("@System/BootUp/stboot.sboot",stboot_code)
+		fw(path,stboot_code)
+	}
+	json(boot,"get","icon",icon)
+	json(boot,"get","sleep",sleep)
+	json(boot,"get","background",background)
+	json(boot,"get","ui",ui)
+	t()
+	{
+		ufnsui()
+		{
+			sr(ui,"%[ICON]%",icon,ui)
+			fn system.code(ui,7)
+			us(2,"background",background)
+		}
+		stop(sleep)
+		ufnsui
+		{
+			fn core.uigo(stboot)
+		}
+	}
+}
+else
+{
+	fn core.uigo(abp,6)
+	fw(also_boot_path,"")
+	end()
+}

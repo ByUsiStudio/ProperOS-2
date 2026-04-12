@@ -18,7 +18,8 @@ layout_marginLeft=25dp
 layout_marginTop=28dp
 layout_marginRight=25dp
 layout_marginBottom=28dp
-app_CardcornerRadius=35dp</ppt>
+app_CardcornerRadius=35dp
+app_CardBackgroundColor=#ffffffff</ppt>
 <event></event>
 </View>
 <View id="5" did="4" type="RelativeLayout">

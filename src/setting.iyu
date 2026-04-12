@@ -153,12 +153,5 @@ else
 }
 fe("$System/Config/app_code.cuk",acuk)
 us(setting_nr_1.84,"checked",acuk)
-//检查用户是否登录
-fr("$user/index",uuid)
-fe("$user/"+uuid,yanz)
-f(yanz == true)
-{
-	sss account_return =true
-	us(setting_nr_2.25,"visibility","gone")
-	us(setting_nr_2.71,"visibility","visible")
-}</eventItme></UIEventset>
+fr("@System/User.cuk",u_code)
+fn system.code(u_code,17)</eventItme></UIEventset>

@@ -36,9 +36,7 @@ syso("被加载的URL："+st_url)
 ug(st_vId,"title",title)
 us(28,"app_title",title)
 sss AppTitle =title
-syso("获取到Title："+title)
-us(8,"visibility","gone")</eventItme><eventItme type="shouldoverrideurlloading">us(8,"visibility","gone")
-f(st_url ?* "http")
+syso("获取到Title："+title)</eventItme><eventItme type="shouldoverrideurlloading">f(st_url ?* "http")
 {
 	us(st_vId,"url",st_url)
 }
@@ -49,61 +47,71 @@ else f(st_url ?* "file://")
 else
 {
 	hws(st_url)
-}</eventItme><eventItme type="onreceivederror">f(st_url ?* "http")
+}</eventItme><eventItme type="onreceivederror">us(8,"visibility","visible")
+f(st_url ?* "http")
 {
-	us(8,"visibility","visible")
 	sss Root_Interlinkage =st_url
 	syso(sss.Root_Interlinkage)
 	ss("(html)&lt;p&gt;在加载该链接时发生了错误&lt;br&gt;错误代码：&lt;a href=\"https://cn.bing.com/search?q="+st_dN+"\"&gt;"+st_dN+"&lt;/a&gt;\n报错的加载链接：ProperOS_Two:Root_Interlinkage&lt;/p&gt;",ii)
-    sss Root_Interlinkage =st_url
+	sss Root_Interlinkage =st_url
 	us(12,"text",ii)
 }
 else
 {
-	us(8,"visibility","visible")
 	fdir("$",root_file)
 	ss("file://"+root_file,root_file)
 	stobm(root_file,"utf-8",root_file)
 	sr(st_url,root_file,"ProperOS_Two:Root_Files/",root)
 	ss("(html)&lt;p&gt;错误代码：&lt;a href=\"https://cn.bing.com/search?q="+st_dN+"\"&gt;"+st_dN+"&lt;/a&gt;&lt;br&gt;在加载该链接时发生了错误："+root+"&lt;/p&gt;",ii)
 	us(12,"text",ii)
-}</eventItme><eventItme type="ondownloadstart">sj(st_cN,';filename="','"',name_impurity)
-
-f(st_cH &gt; "1024")
+}</eventItme><eventItme type="ondownloadstart">f(sss.type == "properos.app.store")
 {
-	sn(st_cH / "1024",cdu)
-	f(cdu &gt; "1024")
+	utw(null,"功能测试","检测到软件下载行为，下载链接为："+st_url,"确定",false,v)
 	{
-		sn(cdu / "1024",cdu)
+		endutw()
+	}
+}
+else
+{
+	sj(st_cN,';filename="','"',name_impurity)
+
+	f(st_cH &gt; "1024")
+	{
+		sn(st_cH / "1024",cdu)
 		f(cdu &gt; "1024")
 		{
 			sn(cdu / "1024",cdu)
-			ss(cdu+"TB",cddw)
+			f(cdu &gt; "1024")
+			{
+				sn(cdu / "1024",cdu)
+				ss(cdu+"TB",cddw)
+			}
+			else
+			{
+				ss(cdu+"MB",cddw)
+			}
 		}
 		else
 		{
-			ss(cdu+"MB",cddw)
+			ss(cdu+"KB",cddw)
 		}
 	}
 	else
 	{
-		ss(cdu+"KB",cddw)
+		ss(st_cH+"K",cddw)
+	}
+	ss("被下载文件大小："+cddw+"\n文件名："+name_impurity+"\n被下载文件下载链接："+st_url,tsc)
+	utw(null,"发现文件下载事件",tsc,"下载","取消",false,v)
+	{
+		endutw()
+		hws(st_url)
+	}
+	else
+	{
+		endutw()
 	}
 }
-else
-{
-	ss(st_cH+"K",cddw)
-}
-ss("被下载文件大小："+cddw+"\n文件名："+name_impurity+"\n被下载文件下载链接："+st_url,tsc)
-utw(null,"发现文件下载事件",tsc,"下载","取消",false,v)
-{
-	endutw()
-	hws(st_url)
-}
-else
-{
-	endutw()
-}</eventItme></event>
+us(4,"visibility","gone")</eventItme><eventItme type="onpagestarted">us(8,"visibility","gone")</eventItme></event>
 </View>
 <View id="4" did="1" type="LinearLayout">
 <ppt>width=-1
@@ -316,7 +324,7 @@ else
 
 f(sss.type == "properos.app.store")
 {
-	
+	fn tw.tw("欢迎使用 ProperOS_Two App Store，下载软件请长按进行下载")
 }
 gvs(28,toolbar)
 java(titleView,toolbar,"android.view.ViewGroup.getChildAt","int",0)

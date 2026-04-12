@@ -104,7 +104,14 @@ ps=刷新界面
 visibility=gone</ppt>
 <event><eventItme type="clicki">syso(" ")</eventItme></event>
 </View>
-<View id="17" did="13" type="RoundImageView">
+<View id="19" did="13" type="CardView">
+<ppt>width=-2
+height=-2
+app_CardcornerRadius=45dp
+app_CardElevation=35dp</ppt>
+<event></event>
+</View>
+<View id="17" did="19" type="ImageView">
 <ppt>width=-2
 height=-2
 src=@logo/properos2.png</ppt>
@@ -276,5 +283,12 @@ else
 
 break</eventItme><eventItme type="downkey">f(st_kC == 4)
 {
-	
+	utw(null,"","请选择操作类型","关闭ProperOS Two","误触",true,v)
+	{
+		end()
+	}
+    else
+    {
+    	endutw()
+    }
 }</eventItme></UIEventset>
