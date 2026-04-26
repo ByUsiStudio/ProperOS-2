@@ -1,0 +1,259 @@
+<View id="1" did="0" type="RelativeLayout">
+<ppt>width=-1
+height=-1</ppt>
+<event></event>
+</View>
+<View id="3" did="1" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=vertical
+gravity=center</ppt>
+<event></event>
+</View>
+<View id="2" did="3" type="ScrollView">
+<ppt>width=-1
+height=-1</ppt>
+<event></event>
+</View>
+<View id="4" did="2" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=vertical
+gravity=left|center</ppt>
+<event></event>
+</View>
+<View id="5" did="4" type="CardView">
+<ppt>width=-1
+height=440dp
+app_CardcornerRadius=25dp
+layout_marginLeft=10dp
+layout_marginRight=10dp
+app_CardBackgroundColor=#ffffffff
+layout_marginTop=10dp</ppt>
+<event></event>
+</View>
+<View id="6" did="5" type="RelativeLayout">
+<ppt>width=-1
+height=-1</ppt>
+<event></event>
+</View>
+<View id="7" did="6" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=vertical
+gravity=left|center</ppt>
+<event></event>
+</View>
+<View id="16" did="7" type="TextView">
+<ppt>width=-1
+height=-2
+text=ProperOS Two
+typeface=@fontFile/acbt80.ttf
+textColor=#ff000000
+gravity=center
+textSize=25sp
+layout_marginTop=10dp</ppt>
+<event></event>
+</View>
+<View id="15" did="7" type="CardView">
+<ppt>width=-1
+height=-1
+layout_marginLeft=10dp
+layout_marginTop=10dp
+layout_marginRight=10dp
+layout_marginBottom=10dp
+app_CardcornerRadius=25dp
+app_CardBackgroundColor=#ffffffff</ppt>
+<event></event>
+</View>
+<View id="17" did="15" type="ImageView">
+<ppt>width=-1
+height=-1
+src=@logo/properos2.png
+scaleType=centercrop</ppt>
+<event></event>
+</View>
+<View id="10" did="4" type="CardView">
+<ppt>width=-1
+height=55dp
+app_CardcornerRadius=25dp
+layout_marginLeft=10dp
+layout_marginRight=10dp
+app_CardBackgroundColor=#ffffffff
+layout_marginTop=10dp</ppt>
+<event></event>
+</View>
+<View id="11" did="10" type="RelativeLayout">
+<ppt>width=-1
+height=-1</ppt>
+<event></event>
+</View>
+<View id="12" did="11" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=horizontal
+gravity=left|center</ppt>
+<event></event>
+</View>
+<View id="13" did="12" type="RoundImageView">
+<ppt>width=45dp
+height=45dp
+src=@logo/socializing/unheadimage1761330709699.png
+scaleType=center
+layout_marginLeft=10dp</ppt>
+<event></event>
+</View>
+<View id="14" did="12" type="TextView">
+<ppt>width=-2
+height=-2
+text=本模拟操作系统由 北（QQ：177828525）开发
+textColor=#ff000000
+typeface=@fontFile/acbt80.ttf
+textSize=15sp
+layout_marginLeft=5dp
+gravity=left</ppt>
+<event></event>
+</View>
+<View id="18" did="4" type="CardView">
+<ppt>width=-1
+height=55dp
+app_CardcornerRadius=25dp
+layout_marginLeft=10dp
+layout_marginRight=10dp
+app_CardBackgroundColor=#ffffffff
+layout_marginTop=10dp</ppt>
+<event></event>
+</View>
+<View id="19" did="18" type="RelativeLayout">
+<ppt>width=-1
+height=-1</ppt>
+<event></event>
+</View>
+<View id="20" did="19" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=horizontal
+gravity=left|center</ppt>
+<event></event>
+</View>
+<View id="21" did="20" type="RoundImageView">
+<ppt>width=45dp
+height=45dp
+src=@resources/icon/success.png
+scaleType=center
+layout_marginLeft=10dp</ppt>
+<event></event>
+</View>
+<View id="24" did="20" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=vertical
+gravity=left|center
+layout_marginLeft=5dp</ppt>
+<event></event>
+</View>
+<View id="22" did="24" type="TextView">
+<ppt>width=-2
+height=-2
+text=ProperOS Two 官网：
+textColor=#ff000000
+typeface=@fontFile/acbt80.ttf
+textSize=15sp
+gravity=left</ppt>
+<event></event>
+</View>
+<View id="25" did="24" type="TextView">
+<ppt>width=-2
+height=-2
+text=https://www.properos.cn
+typeface=@fontFile/acbt80.ttf
+textColor=#ff000000
+inputType=texturi
+autoLink=web
+linksClickable=true
+textSize=10sp</ppt>
+<event></event>
+</View>
+<View id="26" did="19" type="Button">
+<ppt>width=-1
+height=-1
+text=
+background=through</ppt>
+<event><eventItme type="clicki">hws("https://www.properos.cn")</eventItme></event>
+</View>
+<View id="27" did="4" type="CardView">
+<ppt>width=-1
+height=55dp
+app_CardcornerRadius=25dp
+layout_marginLeft=10dp
+layout_marginRight=10dp
+app_CardBackgroundColor=#ffffffff
+layout_marginTop=10dp</ppt>
+<event></event>
+</View>
+<View id="28" did="27" type="RelativeLayout">
+<ppt>width=-1
+height=-1</ppt>
+<event></event>
+</View>
+<View id="29" did="28" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=horizontal
+gravity=left|center</ppt>
+<event></event>
+</View>
+<View id="30" did="29" type="RoundImageView">
+<ppt>width=45dp
+height=45dp
+src=@logo/properos2.png
+scaleType=center
+layout_marginLeft=10dp</ppt>
+<event></event>
+</View>
+<View id="31" did="29" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=vertical
+gravity=left|center
+layout_marginLeft=5dp</ppt>
+<event></event>
+</View>
+<View id="32" did="31" type="TextView">
+<ppt>width=-2
+height=-2
+text=Open ProperOS Two
+textColor=#ff000000
+typeface=@fontFile/acbt80.ttf
+textSize=15sp
+gravity=left</ppt>
+<event></event>
+</View>
+<View id="33" did="31" type="TextView">
+<ppt>width=-2
+height=-2
+text=https://www.properos.cn
+typeface=@fontFile/acbt80.ttf
+textColor=#ff000000
+inputType=texturi
+autoLink=web
+linksClickable=true
+textSize=10sp
+visibility=gone</ppt>
+<event></event>
+</View>
+<View id="34" did="28" type="Button">
+<ppt>width=-1
+height=-1
+text=
+background=through</ppt>
+<event><eventItme type="clicki">utw("@logo/properos2.png","提示","ProperOS Two 分别在 Gitee 与 GitHub 存有厂库，你可以选在前往 Gitee 或 GitHub 的厂库","Gitee","GitHub",false,v)
+{
+	hws("https://gitee.com/properos/properos2")
+}
+else
+{
+	hws("https://github.com/byusistudio/properos-2")
+}</eventItme></event>
+</View>
+<UIEventset></UIEventset>

@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<iapp>
-<classExtends></classExtends>
-<pathRemarks></pathRemarks>
-<importClass></importClass>
-<newControl></newControl>
-<codeEvent></codeEvent>
-<dexClass></dexClass>
-<codeComment></codeComment>
+<?xml version="1.0" encoding="UTF-8"?><iapp>
+<classExtends/>
+<pathRemarks/>
+<importClass/>
+<newControl><itme title="Material开关" info="" class="com.google.android.material.materialswitch.MaterialSwitch"/><itme title="Material加载动画" info="" class="com.google.android.material.loadingindicator.LoadingIndicator"/><itme title="Material拖动条" info="" class="com.google.android.material.slider.Slider"/></newControl>
+<codeEvent/>
+<dexClass/>
+<codeComment/>
 </iapp>

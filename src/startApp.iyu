@@ -321,6 +321,71 @@ else
 		endutw()
 	}
 }
+// 修复后的启动代码
+/.
+s url = sss.url
+s port = sss.port
+
+f(url ?* "http")
+{
+	us(3,"url",url)
+}
+else f(url != null && url != "")
+{
+	fdir(url, url)
+	
+	// 修复：确保端口是整数
+	s portNum = 8050
+	f(port != null && port != "")
+	{
+		s portNum = port
+	}
+	
+	java {
+		try {
+			String urlStr = (String) s.get("url");
+			// 修复：正确获取端口整数
+			Object portObj = s.get("portNum");
+			int portInt = 8050;
+			if (portObj instanceof Integer) {
+				portInt = (Integer) portObj;
+			} else if (portObj instanceof String) {
+				portInt = Integer.parseInt((String) portObj);
+			} else if (portObj instanceof Long) {
+				portInt = ((Long) portObj).intValue();
+			}
+			
+			android.util.Log.i("startAppUI", "url: " + urlStr + ", port: " + portInt);
+			boolean result = miao.byusi.properos.two.app.startAppUI.startServer(urlStr, portInt);
+			s.put("start_result", result);
+		} catch (Exception e) {
+			android.util.Log.e("startAppUI", "error: " + e.getMessage());
+			e.printStackTrace();
+			s.put("start_result", false);
+		}
+	}
+	
+	f(start_result == true)
+	{
+		us(3,"url","http://127.0.0.1:" + portNum)
+		syso("服务启动成功")
+	}
+	else
+	{
+		syso("服务启动失败")
+		utw(null,"","服务启动失败",false,v)
+		{
+		}
+	}
+}
+else
+{
+	utw("@fail.png","错误","并没有传入参数","确定",true,v)
+	{
+		endutw()
+	}
+}
+./
 
 f(sss.type == "properos.app.store")
 {
@@ -339,6 +404,18 @@ us(titleView,"app_TitleColor","#ffffffff")</eventItme><eventItme type="downkey">
 	else
 	{
 		end()
+		java {
+			boolean result = miao.byusi.properos.two.app.startAppUI.stopServer();
+			s.put("stop_result", result);
+		}
+		f(stop_result == true)
+		{
+			syso("服务已关闭")
+		}
+		else
+		{
+			syso("服务未运行")
+		}
 	}
 }</eventItme><eventItme type="menu">case 查看源代码:
 
@@ -361,8 +438,19 @@ fn tw.tw2("暂不开放",1)
 
 break
 
+// 修复停止代码
 case 强制关闭该软件:
 
 end()
+java {
+	try {
+		boolean result = miao.byusi.properos.two.app.startAppUI.stopServer();
+		s.put("stop_result", result);
+		android.util.Log.i("startAppUI", "stop result: " + result);
+	} catch (Exception e) {
+		android.util.Log.e("startAppUI", "stop error: " + e.getMessage());
+		s.put("stop_result", false);
+	}
+}
 
 break</eventItme></UIEventset>

@@ -17,8 +17,7 @@ ps=ProLoader模式</ppt>
 height=-1
 orientation=vertical
 gravity=center
-ps=引导启动模式
-visibility=gone</ppt>
+ps=引导启动模式</ppt>
 <event></event>
 </View>
 <View id="4" did="1" type="LinearLayout">
@@ -46,18 +45,28 @@ height=-2
 text=按钮7</ppt>
 <event></event>
 </View>
-<UIEventset><eventItme type="loading">fn byusi.ztl()</eventItme><eventItme type="loadingComplete">s proloader_path ="$dev/sboot/proloader.sboot"
-fe(proloader_path,proloader)
-f(proloader == true)
+<UIEventset><eventItme type="loading">fn byusi.ztl()</eventItme><eventItme type="loadingComplete">f(sss.proloader == null)
 {
-	fr(proloader_path,proloader_code)
-    fn system.code(proloader_code,5)
+	s proloader_path ="$dev/sboot/proloader.sboot"
+	fe(proloader_path,proloader)
+	f(proloader == true)
+	{
+		fr(proloader_path,proloader_code)
+		fn system.code(proloader_code,5)
+	}
+	else
+	{
+		fr("@System/BootUp/proloader.sboot",proloader_code)
+		fw(proloader_path,proloader_code)
+		fn system.code(proloader_code,5)
+	}
 }
-else
+else f(sss.proloader == "edit")
 {
-	fr("@System/BootUp/proloader.sboot",proloader_code)
-    fw(proloader_path,proloader_code)
-    fn system.code(proloader_code,5)
+	us(3,"visibility","visible")
+	tws(v,"已启动 ProLoader 模式",0)
+	{
+	}
 }</eventItme><eventItme type="downkey">f(st_kC == 4)
 {
 }</eventItme></UIEventset>

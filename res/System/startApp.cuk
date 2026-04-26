@@ -1,0 +1,71 @@
+//启动服务
+// 启动服务器
+s url = "/data/data/miao.byusi.properos.two/files/user/data/software/包名/src/"
+s port = sss.port
+
+f(port == null || port == 0)
+{
+	s port = 8080
+}
+
+java{
+	String url = (String) s.get("url");
+	int port = (int) s.get("port");
+	
+	// 注意：方法名改为 startServer
+	boolean result = miao.byusi.properos.two.app.startAppUI.startServer(url, port);
+	s.put("start_result", result);
+}
+
+f(start_result == true)
+{
+	tw("服务器启动成功\n端口：" + port)
+}
+else
+{
+	tw("服务器启动失败")
+}
+
+
+
+//停止服务
+// 停止服务器 - 可在另一个界面独立调用
+java{
+	// 注意：方法名改为 stopServer
+	boolean result = miao.byusi.properos.two.app.startAppUI.stopServer();
+	s.put("stop_result", result);
+}
+
+f(stop_result == true)
+{
+	tw("服务器已停止")
+}
+else
+{
+	tw("服务器未运行")
+}
+
+
+
+//查看状态
+// 查看服务器状态
+java{
+	boolean running = miao.byusi.properos.two.app.startAppUI.isServerRunning();
+	s.put("is_running", running);
+	
+	if (running) {
+		int port = miao.byusi.properos.two.app.startAppUI.getServerPort();
+		String rootPath = miao.byusi.properos.two.app.startAppUI.getServerRootPath();
+		s.put("server_port", port);
+		s.put("server_root", rootPath);
+	}
+}
+
+f(is_running == true)
+{
+	tw("✅ 服务器运行中\n端口：" + server_port)
+}
+else
+{
+	tw("⭕ 服务器未运行")
+}

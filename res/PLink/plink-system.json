@@ -13,6 +13,12 @@
     "ui": "",
     "variable": ""
   },
+  "permissions": [
+    {
+      "name": "",
+      "reason": ""
+    }
+  ],
   "sign": {
     "uuid": "54947157-c12f-4d23-b682-722e7f5377e2",
     "byusi": {
@@ -21,5 +27,5 @@
     }
   },
   "guide": "index.html",
-  "port": 34560
+  "port": 6050
 }

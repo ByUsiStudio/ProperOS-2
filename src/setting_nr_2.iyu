@@ -91,7 +91,8 @@ layout_marginLeft=25dp
 layout_marginTop=18dp
 layout_marginRight=25dp
 layout_marginBottom=18dp
-app_CardcornerRadius=35dp</ppt>
+app_CardcornerRadius=35dp
+app_CardBackgroundColor=#ffffffff</ppt>
 <event></event>
 </View>
 <View id="11" did="9" type="LinearLayout">
@@ -104,7 +105,8 @@ gravity=center</ppt>
 <View id="21" did="11" type="CardView">
 <ppt>width=85dp
 height=85dp
-app_CardcornerRadius=25dp</ppt>
+app_CardcornerRadius=25dp
+app_CardBackgroundColor=#ffffffff</ppt>
 <event></event>
 </View>
 <View id="22" did="21" type="WebView">

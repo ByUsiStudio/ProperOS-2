@@ -23,5 +23,9 @@ ps=代码执行区</ppt>
 <UIEventset><eventItme type="loading">fn byusi.ztl()</eventItme><eventItme type="downkey">f(st_kC == 4)
 {
 	
-}</eventItme><eventItme type="menu">shb()</eventItme><eventItme type="loadingComplete">fn core.uigo("proloader.iyu")
+}</eventItme><eventItme type="menu">shb()</eventItme><eventItme type="loadingComplete">java {
+	miao.byusi.properos.two.tools.getTheHash.init(activity);
+}
+
+fn core.uigo("proloader.iyu")
 end()</eventItme></UIEventset>

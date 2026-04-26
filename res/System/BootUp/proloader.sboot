@@ -1,9 +1,16 @@
 s path ="$dev/sboot/stboot.sboot"
 s also_boot_path ="$temp/module"
 s proloader_config_data_path ="$System/Config/ProLoader/config.json"
+s PermissionSettings_path ="$System/PermissionSettings/config.json"
 
 
 s config_data ="{\"enable_supan\":false,\"enable_strict_perm\":true,\"enable_install_dev\":true,\"enable_unlock_proldr\":false,\"enable_console\":false,\"enable_mod_stboot\":true,\"boot\":{\"sleep\": 3000,\"icon\":\"@logo\/byusi.png\",\"background\":\"#ffffffff\",\"stboot\":\"stboot.iyu\",\"ui\":\"nvw(512,2,\'图像\',\'width=-2\\\\nheight=-2\')\\nus(512,\'src\',\'&[ICON]\')\"}}"
+s config_permissions = "{\"list\":[{\"name\":\"INTERNET\",\"description\":\"互联网权限\"},{\"name\":\"ACCESS_THE_FILE\",\"description\":\"访问文件\"},{\"name\":\"CONTROL_SYSTEM\",\"description\":\"执行系统命令\"},{\"name\":\"CAMERA\",\"description\":\"相机权限\"},{\"name\":\"RECORD_AUDIO\",\"description\":\"录音权限\"},{\"name\":\"READ_STORAGE\",\"description\":\"读取存储\"},{\"name\":\"WRITE_STORAGE\",\"description\":\"写入存储\"},{\"name\":\"ACCESS_LOCATION\",\"description\":\"定位权限\"},{\"name\":\"READ_CONTACTS\",\"description\":\"读取联系人\"},{\"name\":\"NOTIFICATION\",\"description\":\"发送通知\"},{\"name\":\"VIBRATE\",\"description\":\"振动权限\"},{\"name\":\"ACCESS_WIFI_STATE\",\"description\":\"获取WiFi状态\"},{\"name\":\"CHANGE_WIFI_STATE\",\"description\":\"修改WiFi状态\"},{\"name\":\"ACCESS_NETWORK_STATE\",\"description\":\"获取网络状态\"},{\"name\":\"CHANGE_NETWORK_STATE\",\"description\":\"修改网络状态\"},{\"name\":\"BLUETOOTH\",\"description\":\"蓝牙权限\"},{\"name\":\"BLUETOOTH_ADMIN\",\"description\":\"蓝牙管理权限\"},{\"name\":\"BLUETOOTH_CONNECT\",\"description\":\"蓝牙连接权限\"},{\"name\":\"BLUETOOTH_SCAN\",\"description\":\"蓝牙扫描权限\"},{\"name\":\"READ_PHONE_STATE\",\"description\":\"读取手机状态\"},{\"name\":\"READ_CALENDAR\",\"description\":\"读取日历\"},{\"name\":\"WRITE_CALENDAR\",\"description\":\"写入日历\"},{\"name\":\"USE_BIOMETRIC\",\"description\":\"生物识别权限\"},{\"name\":\"USE_FINGERPRINT\",\"description\":\"指纹识别权限\"},{\"name\":\"BODY_SENSORS\",\"description\":\"传感器权限\"},{\"name\":\"ACTIVITY_RECOGNITION\",\"description\":\"活动识别权限\"},{\"name\":\"ACCESS_BACKGROUND_LOCATION\",\"description\":\"后台定位权限\"},{\"name\":\"ACCESS_MEDIA_LOCATION\",\"description\":\"读取媒体位置信息\"},{\"name\":\"MANAGE_EXTERNAL_STORAGE\",\"description\":\"管理外部存储\"},{\"name\":\"REQUEST_INSTALL_PACKAGES\",\"description\":\"安装应用权限\"},{\"name\":\"DELETE_PACKAGES\",\"description\":\"删除应用权限\"},{\"name\":\"RESTART_PACKAGES\",\"description\":\"重启应用权限\"},{\"name\":\"QUERY_ALL_PACKAGES\",\"description\":\"查询所有应用\"},{\"name\":\"GET_PACKAGE_SIZE\",\"description\":\"获取应用大小\"},{\"name\":\"CLEAR_APP_CACHE\",\"description\":\"清理应用缓存\"},{\"name\":\"FORCE_STOP_PACKAGES\",\"description\":\"强制停止应用\"}]}"
+fe(PermissionSettings_path,yz_psp)
+f(yz_psp == false)
+{
+	fw(PermissionSettings_path,config_permissions)
+}
 fe(proloader_config_data_path,yz_plcdp)
 fr(proloader_config_data_path,plcdp_str)
 json(plcdp_str,plcdp_obj)
