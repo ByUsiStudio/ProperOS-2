@@ -33,7 +33,8 @@ layout_marginRight=16dp
 layout_marginBottom=8dp
 app_CardcornerRadius=15dp
 ps=一设置列表项基本布局
-visibility=gone</ppt>
+visibility=gone
+app_CardBackgroundColor=#ffffffff</ppt>
 <event></event>
 </View>
 <View id="34" did="33" type="RelativeLayout">
@@ -88,7 +89,7 @@ ps=选项用
 gravity=right|center</ppt>
 <event></event>
 </View>
-<View id="41" did="40" type="SwitchCompat">
+<View id="41" did="40" type="com.google.android.material.materialswitch.MaterialSwitch">
 <ppt>width=-2
 height=-2
 layout_marginRight=16dp
@@ -103,7 +104,8 @@ layout_marginLeft=16dp
 layout_marginRight=16dp
 layout_marginBottom=8dp
 app_CardcornerRadius=15dp
-ps=一设置列表项基本布局</ppt>
+ps=一设置列表项基本布局
+app_CardBackgroundColor=#ffffffff</ppt>
 <event></event>
 </View>
 <View id="6" did="5" type="RelativeLayout">
@@ -158,7 +160,7 @@ ps=选项用
 gravity=right|center</ppt>
 <event></event>
 </View>
-<View id="14" did="13" type="SwitchCompat">
+<View id="14" did="13" type="com.google.android.material.materialswitch.MaterialSwitch">
 <ppt>width=-2
 height=-2
 layout_marginRight=16dp
@@ -187,7 +189,8 @@ layout_marginLeft=16dp
 layout_marginRight=16dp
 layout_marginBottom=8dp
 app_CardcornerRadius=15dp
-ps=一设置列表项基本布局</ppt>
+ps=一设置列表项基本布局
+app_CardBackgroundColor=#ffffffff</ppt>
 <event></event>
 </View>
 <View id="56" did="55" type="RelativeLayout">
@@ -244,7 +247,7 @@ gravity=right|center
 visibility=gone</ppt>
 <event></event>
 </View>
-<View id="63" did="62" type="SwitchCompat">
+<View id="63" did="62" type="com.google.android.material.materialswitch.MaterialSwitch">
 <ppt>width=-2
 height=-2
 layout_marginRight=16dp
@@ -292,7 +295,8 @@ layout_marginLeft=16dp
 layout_marginRight=16dp
 layout_marginBottom=8dp
 app_CardcornerRadius=15dp
-ps=一设置列表项基本布局</ppt>
+ps=一设置列表项基本布局
+app_CardBackgroundColor=#ffffffff</ppt>
 <event></event>
 </View>
 <View id="16" did="15" type="RelativeLayout">
@@ -347,7 +351,7 @@ ps=选项用
 gravity=right|center</ppt>
 <event></event>
 </View>
-<View id="23" did="22" type="SwitchCompat">
+<View id="23" did="22" type="com.google.android.material.materialswitch.MaterialSwitch">
 <ppt>width=-2
 height=-2
 layout_marginRight=16dp
@@ -384,7 +388,8 @@ layout_marginLeft=16dp
 layout_marginRight=16dp
 layout_marginBottom=8dp
 app_CardcornerRadius=15dp
-ps=一设置列表项基本布局</ppt>
+ps=一设置列表项基本布局
+app_CardBackgroundColor=#ffffffff</ppt>
 <event></event>
 </View>
 <View id="25" did="24" type="RelativeLayout">
@@ -440,7 +445,7 @@ ps=选项用
 gravity=right|center</ppt>
 <event></event>
 </View>
-<View id="32" did="31" type="SwitchCompat">
+<View id="32" did="31" type="com.google.android.material.materialswitch.MaterialSwitch">
 <ppt>width=-2
 height=-2
 layout_marginRight=16dp
@@ -463,7 +468,8 @@ layout_marginLeft=16dp
 layout_marginRight=16dp
 layout_marginBottom=8dp
 app_CardcornerRadius=15dp
-ps=一设置列表项基本布局</ppt>
+ps=一设置列表项基本布局
+app_CardBackgroundColor=#ffffffff</ppt>
 <event></event>
 </View>
 <View id="77" did="76" type="RelativeLayout">
@@ -519,7 +525,7 @@ ps=选项用
 gravity=right|center</ppt>
 <event></event>
 </View>
-<View id="84" did="83" type="SwitchCompat">
+<View id="84" did="83" type="com.google.android.material.materialswitch.MaterialSwitch">
 <ppt>width=-2
 height=-2
 layout_marginRight=16dp
@@ -543,7 +549,8 @@ layout_marginRight=16dp
 layout_marginBottom=8dp
 app_CardcornerRadius=15dp
 ps=一设置列表项基本布局
-visibility=gone</ppt>
+visibility=gone
+app_CardBackgroundColor=#ffffffff</ppt>
 <event></event>
 </View>
 <View id="46" did="45" type="RelativeLayout">
@@ -600,7 +607,7 @@ gravity=right|center
 visibility=gone</ppt>
 <event></event>
 </View>
-<View id="53" did="52" type="SwitchCompat">
+<View id="53" did="52" type="com.google.android.material.materialswitch.MaterialSwitch">
 <ppt>width=-2
 height=-2
 layout_marginRight=16dp
@@ -694,7 +701,8 @@ layout_marginLeft=16dp
 layout_marginRight=16dp
 layout_marginBottom=8dp
 app_CardcornerRadius=15dp
-ps=一设置列表项基本布局</ppt>
+ps=一设置列表项基本布局
+app_CardBackgroundColor=#ffffffff</ppt>
 <event></event>
 </View>
 <View id="67" did="66" type="RelativeLayout">
@@ -751,7 +759,7 @@ gravity=right|center
 visibility=gone</ppt>
 <event></event>
 </View>
-<View id="74" did="73" type="SwitchCompat">
+<View id="74" did="73" type="com.google.android.material.materialswitch.MaterialSwitch">
 <ppt>width=-2
 height=-2
 layout_marginRight=16dp
@@ -828,7 +836,8 @@ layout_marginLeft=16dp
 layout_marginRight=16dp
 layout_marginBottom=8dp
 app_CardcornerRadius=15dp
-ps=一设置列表项基本布局</ppt>
+ps=一设置列表项基本布局
+app_CardBackgroundColor=#ffffffff</ppt>
 <event></event>
 </View>
 <View id="86" did="85" type="RelativeLayout">
@@ -884,7 +893,7 @@ gravity=right|center
 visibility=gone</ppt>
 <event></event>
 </View>
-<View id="93" did="92" type="SwitchCompat">
+<View id="93" did="92" type="com.google.android.material.materialswitch.MaterialSwitch">
 <ppt>width=-2
 height=-2
 layout_marginRight=16dp
@@ -910,5 +919,98 @@ text=
 background=through</ppt>
 <event><eventItme type="clicki">fr("$System/bin/update.system.cuk",us_code)
 fn system.code(us_code,17)</eventItme></event>
+</View>
+<View id="95" did="3" type="CardView">
+<ppt>width=-1
+height=55dp
+layout_marginTop=6dp
+layout_marginLeft=16dp
+layout_marginRight=16dp
+layout_marginBottom=8dp
+app_CardcornerRadius=15dp
+ps=ProLoader设置按钮
+app_CardBackgroundColor=#ffffffff</ppt>
+<event></event>
+</View>
+<View id="96" did="95" type="RelativeLayout">
+<ppt>width=-1
+height=-1</ppt>
+<event></event>
+</View>
+<View id="97" did="96" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=horizontal
+gravity=left|center</ppt>
+<event></event>
+</View>
+<View id="98" did="97" type="ImageView">
+<ppt>width=45dp
+height=45dp
+src=@resources/icon/tool.png
+layout_marginLeft=10dp</ppt>
+<event></event>
+</View>
+<View id="99" did="97" type="LinearLayout">
+<ppt>width=-2
+height=-1
+orientation=vertical
+gravity=left|center
+layout_marginLeft=6dp</ppt>
+<event></event>
+</View>
+<View id="100" did="99" type="TextView">
+<ppt>width=-2
+height=-2
+text=编辑 ProLoader
+typeface=@fontFile/acbt80.ttf
+textColor=#ff000000
+textSize=12sp</ppt>
+<event></event>
+</View>
+<View id="101" did="99" type="TextView">
+<ppt>width=-2
+height=-2
+text=ProperOS 2 的主要引导 ProLoader 的配置编辑
+typeface=@fontFile/acbt80.ttf
+textSize=8sp</ppt>
+<event></event>
+</View>
+<View id="102" did="97" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=horizontal
+ps=选项用
+gravity=right|center
+visibility=gone</ppt>
+<event></event>
+</View>
+<View id="103" did="102" type="com.google.android.material.materialswitch.MaterialSwitch">
+<ppt>width=-2
+height=-2
+layout_marginRight=16dp
+thumbTint=#ff00aaff
+checked=false</ppt>
+<event><eventItme type="oncheckedchanged">f(st_iC == true)
+{
+	utw("@tip.png","警告","该功能不建议开启，请问确定开启吗？","确定","取消",true,v)
+	{
+		endutw()
+	}
+	else
+	{
+		us(st_vId,"checked","false")
+		endutw()
+	}
+}</eventItme></event>
+</View>
+<View id="104" did="96" type="Button">
+<ppt>width=-1
+height=-1
+text=
+background=through</ppt>
+<event><eventItme type="clicki">sss proloader ="edit"
+fn core.uigo("mian.iyu")
+end()</eventItme></event>
 </View>
 <UIEventset></UIEventset>

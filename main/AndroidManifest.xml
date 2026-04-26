@@ -1,26 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="miao.byusi.properos.two" android:versionCode="100229" android:versionName="beta2.2.9">
-    <uses-sdk android:minSdkVersion="17" android:targetSdkVersion="31"/>
-<uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-<uses-permission android:name="android.permission.INTERNET"/>
-<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-<uses-permission android:name="android.permission.CAMERA"/>
-<uses-permission android:name="android.permission.VIBRATE"/>
-<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-<uses-permission android:name="android.permission.RECORD_AUDIO"/>
-<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-<uses-feature android:name="android.hardware.camera"/>
-<uses-feature android:name="android.hardware.camera2"/>
-<uses-feature android:name="android.hardware.camera.front"/>
-<uses-feature android:name="android.hardware.camera.autofocus"/>
-<uses-permission android:name="android.permission.FLASHLIGHT"/>
-<uses-permission android:name="${applicationId}.manual.dump"/>
+<?xml version="1.0" encoding="UTF-8"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="miao.byusi.properos.two" android:versionCode="100253" android:versionName="beta2.2.10">
 
-    <application android:allowBackup="false" android:icon="@mipmap/i" android:label="@string/app_name" android:supportsRtl="true" android:largeHeap="true" android:resizeableActivity="true" android:hardwareAccelerated="true" android:requestLegacyExternalStorage="true" android:networkSecurityConfig="@xml/network_config" android:usesCleartextTraffic="true" android:name="com.iapp.app.x5.APPAplication" android:theme="@style/AppBaseTheme">
-    
-    <!-- MT管理器文件提供器 -->
+    <uses-sdk android:minSdkVersion="17" android:targetSdkVersion="31"/>
+
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-permission android:name="${applicationId}.manual.dump"/>
+
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera2"/>
+    <uses-feature android:name="android.hardware.camera.front"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-feature android:name="android.hardware.nfc" android:required="false"/>
+
+    <application android:name="com.iapp.app.x5.APPAplication" android:allowBackup="false" android:hardwareAccelerated="true" android:icon="@mipmap/i" android:label="@string/app_name" android:largeHeap="true" android:networkSecurityConfig="@xml/network_config" android:requestLegacyExternalStorage="true" android:resizeableActivity="true" android:supportsRtl="true" android:theme="@style/AppBaseTheme" android:usesCleartextTraffic="true">
+
+        <!-- MT管理器文件提供器 -->
         <provider android:name="bin.mt.file.content.MTDataFilesProvider" android:authorities="${applicationId}.MTDataFilesProvider" android:exported="true" android:grantUriPermissions="true" android:permission="android.permission.MANAGE_DOCUMENTS">
             <intent-filter>
                 <action android:name="android.content.action.DOCUMENTS_PROVIDER"/>
@@ -28,114 +32,107 @@
         </provider>
 
         <activity android:name="bin.mt.file.content.MTDataFilesWakeUpActivity" android:excludeFromRecents="true" android:exported="true" android:noHistory="true" android:taskAffinity="${applicationId}.MTDataFilesWakeUp"/>
-    <!-- MT管理器文件提供器 -->
-    
-        <activity android:name="com.iapp.app.logoActivity" android:theme="@style/logoAppTheme">
-        </activity>
-        <activity android:name="com.iapp.app.run.load" android:theme="@style/logoAppTheme">
-        </activity>
+        <!-- MT管理器文件提供器结束 -->
 
-        <activity android:name="com.iapp.app.run.mian" android:exported="true" android:configChanges="keyboardHidden|orientation|screenSize">
+        <activity android:name=".MainActivity" android:exported="true" android:theme="@style/logoAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity android:name="com.iapp.app.run.mian" android:exported="true" android:configChanges="keyboardHidden|orientation|screenSize"/>
+
+        <activity android:name=".ScanActivity" android:configChanges="orientation|screenSize" android:screenOrientation="portrait" android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+        <activity android:name="com.iapp.app.logoActivity" android:theme="@style/logoAppTheme"/>
+        <activity android:name="com.iapp.app.run.load" android:theme="@style/logoAppTheme"/>
         <activity android:name="com.iapp.app.run.main" android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name="com.iapp.app.run.main2" android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name="com.iapp.app.run.main3" android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name="com.iapp.app.Webview" android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name="com.iapp.app.Videoview" android:configChanges="keyboardHidden|orientation|screenSize"/>
-        
         <activity android:name="com.iapp.app.DownList"/>
-        <activity android:name="cn.hugo.android.scanner.CaptureActivity" android:configChanges="orientation|keyboardHidden" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
 
-        <activity android:name="com.tencent.tauth.AuthActivity" android:noHistory="true" android:launchMode="singleTask">
-    <intent-filter>
-           <action android:name="android.intent.action.VIEW"/>
-           <category android:name="android.intent.category.DEFAULT"/>
-           <category android:name="android.intent.category.BROWSABLE"/>
-           <data android:scheme="tencent你的AppId"/>
-    </intent-filter>
- </activity>
-<activity android:name="com.tencent.connect.common.AssistActivity" android:configChanges="orientation|keyboardHidden|screenSize" android:screenOrientation="behind" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity android:name="cn.hugo.android.scanner.CaptureActivity" android:configChanges="orientation|keyboardHidden" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:windowSoftInputMode="stateAlwaysHidden"/>
+
+        <activity android:name="com.tencent.tauth.AuthActivity" android:exported="true" android:launchMode="singleTask" android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="tencent你的AppId"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.tencent.connect.common.AssistActivity" android:configChanges="orientation|keyboardHidden|screenSize" android:screenOrientation="behind" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
         <provider android:name="androidx.core.content.FileProvider" android:authorities="miao.byusi.properos.two.myFileProvider" android:exported="false" android:grantUriPermissions="true">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_provider"/>
         </provider>
+
         <meta-data android:name="i_app_multiDex" android:value="shi"/>
         <meta-data android:name="i_app_autoPermission" android:value="shi"/>
         <meta-data android:name="i_app_logOutput" android:value="shi"/>
         <meta-data android:name="i_app_errLogOutput" android:value="shi"/>
-       <service android:name="miao.byusi.properos.two.MyUpnpService"/>
+
+        <service android:name="miao.byusi.properos.two.MyUpnpService"/>
         <service android:name="androidx.room.MultiInstanceInvalidationService" android:directBootAware="true" android:exported="false" tools:ignore="MissingServiceExportedEqualsTrue"/>
+
     </application>
 
-<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-<uses-permission android:name="android.permission.INTERNET"/>
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-<uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
-
-<!-- 读取手机状态和身份 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <!-- 拥有完全的网络访问权限 -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <!-- 读取您的USB存储设备中的内容 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <!-- 修改或删除您的USB存储设备中的内容 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <!-- 查看WLAN连接 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <!-- 允许接收WLAN多播 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
-    <!-- 查看网络连接 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-<uses-feature android:name="android.hardware.nfc" android:required="false"/>
-<uses-permission android:name="android.permission.USE_FINGERPRINT"/>
-<uses-permission android:name="android.permission.BATTERY_STATS"/>
-<uses-permission android:name="com.termux.permission.RUN_COMMAND"/>
-<uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-<uses-permission android:name="android.permission.CLEAR_APP_CACHE"/>
-<uses-permission android:name="android.permission.BLUETOOTH"/>
-<uses-permission android:name="android.permission.BIND_DEVICE_ADMIN"/>
-<uses-permission android:name="android.permission.BIND_APPWIDGET"/>
-<uses-permission android:name="android.permission.ACCESS_SURFACE_FLINGER"/>
-<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
-<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-<uses-permission android:name="android.permission.ACCESS_CHECKIN_PROPERTIES"/>
-<uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
-<uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-<uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
-<uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/>
-<uses-permission android:name="android.permission.WAKE_LOCK"/>
-<uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS"/>
-<uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA"/>
-<uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE"/>
-<uses-permission android:name="android.permission.SET_WALLPAPER"/>
-<uses-permission android:name="android.permission.SET_WALLPAPER_HINTS"/>
-<uses-permission android:name="android.permission.WRITE_CALENDAR"/>
-<uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
-<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-<uses-permission android:name="android.permission.USE_BIOMETRIC"/>
-<uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
-<uses-permission android:name="android.permission.DETECT_SCREEN_CAPTURE"/>
-<uses-permission android:name="android.permission.FOREGROUND_SERVICE_HEALTH"/>
-<uses-permission android:name="com.asus.msa.SupplementaryDID.ACCESS"/>
-<uses-permission android:name="com.vivo.assistant.permission.sport.broadcast"/>
-<uses-permission android:name="com.vivo.assistant.permission.access.provider"/>
-<uses-permission android:name="com.vivo.assistant.StepProvider"/>
-<uses-permission android:name="com.hihonor.push.permission.READ_PUSH_NOTIFICATION_INFO"/>
-<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-<uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
-<uses-permission android:name="com.tencent.permission.VIRUS_SCAN"/>
-<uses-permission android:name="android.permission.GET_TASKS"/>
-<uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
-<uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
-<uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
-<uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT"/>
-<uses-permission android:name="android.software.verified_boot"/>
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+    <uses-permission android:name="android.permission.BATTERY_STATS"/>
+    <uses-permission android:name="com.termux.permission.RUN_COMMAND"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.CLEAR_APP_CACHE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN"/>
+    <uses-permission android:name="android.permission.BIND_APPWIDGET"/>
+    <uses-permission android:name="android.permission.ACCESS_SURFACE_FLINGER"/>
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_CHECKIN_PROPERTIES"/>
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE"/>
+    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
+    <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS"/>
+    <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.DETECT_SCREEN_CAPTURE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_HEALTH"/>
+    <uses-permission android:name="com.asus.msa.SupplementaryDID.ACCESS"/>
+    <uses-permission android:name="com.vivo.assistant.permission.sport.broadcast"/>
+    <uses-permission android:name="com.vivo.assistant.permission.access.provider"/>
+    <uses-permission android:name="com.vivo.assistant.StepProvider"/>
+    <uses-permission android:name="com.hihonor.push.permission.READ_PUSH_NOTIFICATION_INFO"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+    <uses-permission android:name="com.tencent.permission.VIRUS_SCAN"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
+    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT"/>
+    <uses-permission android:name="android.software.verified_boot"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_SUPERUSER"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+
 </manifest>

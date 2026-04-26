@@ -1,0 +1,65 @@
+//检查用户是否登录
+fe("$user/userinfo.json",yanz)
+fr("$user/userinfo.json",userinfo)
+json(userinfo,data)
+json(data,"get","preferred_username",preferred_username)
+json(data,"get","picture",picture)
+json(data,"get","email",email)
+f(yanz == true)
+{
+	us(setting_nr_2.2,"visibility","gone")
+	us(setting_nr_2.7,"visibility","visible")
+	fr("@resources/template/html/Avatar.html",html)
+	sr(html,"[IMG]",picture,html)
+	fw("$user/profile_picture.html",html)
+	us(setting_nr_2.22,"url","$user/profile_picture.html")
+	us(setting_nr_2.15,"text",preferred_username)
+	us(setting_nr_2.18,"text",email)
+	//空间大小
+	t()
+	{
+		fr("$user/token.json",token)
+		json(token,token_data)
+		json(token_data,"get","access_token",access_token)
+		json(token_data,"get","refresh_token",refresh_token)
+		hs("https://www.cdifit.cn/api/v4/user/capacity",null,"utf-8",null,true,"Authorization="+access_token,url)
+		json(url,url)
+		f(url != null)
+		{
+			json(url,"get","code",code)
+			f(code == "0")
+			{
+				json(url,"get","data",datad)
+				json(datad,"get","total",total)
+				json(datad,"get","used",used)
+				json(datad,"get","storage_pack_total",storage_pack_total)
+				sn(used / "1024",used)
+				sn(total / "1024",total)
+				sn(storage_pack_total / "1024",storage_pack_total)
+				sn(total + storage_pack_total,total)
+				s2(used / "1024",used)
+				s2(total / "1024",total)
+				ufnsui()
+				{
+					us(setting_nr_2.25,"text",total+"GB / "+used+"GB")
+				}
+			}
+			else
+			{
+				ufnsui()
+				{
+					fn tw.tw2("返回数据错误，正在重试",1)
+					us(setting_nr_2.25,"text","返回数据错误，正在重试")
+				}
+			}
+		}
+		else
+		{
+			ufnsui()
+			{
+				fn tw.tw2("网络连接失败，请检查网络连接",1)
+				us(setting_nr_2.25,"text","网络连接失败，请检查网络连接")
+			}
+		}
+	}
+}

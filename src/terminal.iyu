@@ -109,10 +109,70 @@ visibility=gone</ppt>
 </View>
 <UIEventset><eventItme type="loading">fn byusi.ztl()
 fn byusi.uycl()
-fn lib.wp(2)</eventItme><eventItme type="loadingComplete">fn terminalLib.echo2("欢迎使用 ProperOS 2 Terminal")
+fn lib.wp(2)</eventItme><eventItme type="loadingComplete">/.
+fn terminalLib.echo2("欢迎使用 ProperOS 2 Terminal")
 f(sss.script != null)
 {
 	us(4,"visibility","gone")
 	fr(sss.script,code)
 	fn system.code(code,10)
+}
+./
+// 在载入事件中创建终端
+s termTool = null
+
+java {
+    miao.byusi.properos.two.terminal.TerminalTool tool = 
+        new miao.byusi.properos.two.terminal.TerminalTool(activity);
+    s.put("termTool", tool);
+    tool.showTerminal();
+}
+/.
+// 等待终端初始化后发送命令（例如放到按钮点击事件中）
+f(termTool != null)
+{
+    java {
+        miao.byusi.properos.two.terminal.TerminalTool tool = 
+            (miao.byusi.properos.two.terminal.TerminalTool) s.get("termTool");
+        tool.sendCommand("ls -la");
+    }
+}
+
+// 调整字体大小
+f(termTool != null)
+{
+    java {
+        miao.byusi.properos.two.terminal.TerminalTool tool = 
+            (miao.byusi.properos.two.terminal.TerminalTool) s.get("termTool");
+        tool.changeFontSize(true);  // true增大，false减小
+    }
+}
+
+// 销毁界面事件中关闭终端
+f(termTool != null)
+{
+    java {
+        miao.byusi.properos.two.terminal.TerminalTool tool = 
+            (miao.byusi.properos.two.terminal.TerminalTool) s.get("termTool");
+        tool.closeTerminal();
+    }
+}
+./</eventItme><eventItme type="downkey">f(st_kC == 4)
+{
+	utw(null,"","确定退出吗？","确定","取消",true,v)
+	{
+		// 销毁界面事件中关闭终端
+f(termTool != null)
+{
+    java {
+        miao.byusi.properos.two.terminal.TerminalTool tool = 
+            (miao.byusi.properos.two.terminal.TerminalTool) s.get("termTool");
+        tool.closeTerminal();
+    }
+}
+	}
+    else
+    {
+    	endutw()
+    }
 }</eventItme></UIEventset>

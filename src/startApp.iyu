@@ -36,9 +36,7 @@ syso("被加载的URL："+st_url)
 ug(st_vId,"title",title)
 us(28,"app_title",title)
 sss AppTitle =title
-syso("获取到Title："+title)
-us(8,"visibility","gone")</eventItme><eventItme type="shouldoverrideurlloading">us(8,"visibility","gone")
-f(st_url ?* "http")
+syso("获取到Title："+title)</eventItme><eventItme type="shouldoverrideurlloading">f(st_url ?* "http")
 {
 	us(st_vId,"url",st_url)
 }
@@ -49,76 +47,71 @@ else f(st_url ?* "file://")
 else
 {
 	hws(st_url)
-}</eventItme><eventItme type="onreceivederror">/.
-fn Lottie.loaddex()
-fr("@resources/Lottie/error.json",data)
-fn Lottie.setImageLottie(9,data,0,true)
-./
-//错误信息配置
+}</eventItme><eventItme type="onreceivederror">us(8,"visibility","visible")
 f(st_url ?* "http")
 {
-	us(8,"visibility","visible")
 	sss Root_Interlinkage =st_url
 	syso(sss.Root_Interlinkage)
 	ss("(html)&lt;p&gt;在加载该链接时发生了错误&lt;br&gt;错误代码：&lt;a href=\"https://cn.bing.com/search?q="+st_dN+"\"&gt;"+st_dN+"&lt;/a&gt;\n报错的加载链接：ProperOS_Two:Root_Interlinkage&lt;/p&gt;",ii)
-    sss Root_Interlinkage =st_url
+	sss Root_Interlinkage =st_url
 	us(12,"text",ii)
 }
 else
 {
-	us(8,"visibility","visible")
 	fdir("$",root_file)
 	ss("file://"+root_file,root_file)
 	stobm(root_file,"utf-8",root_file)
 	sr(st_url,root_file,"ProperOS_Two:Root_Files/",root)
 	ss("(html)&lt;p&gt;错误代码：&lt;a href=\"https://cn.bing.com/search?q="+st_dN+"\"&gt;"+st_dN+"&lt;/a&gt;&lt;br&gt;在加载该链接时发生了错误："+root+"&lt;/p&gt;",ii)
 	us(12,"text",ii)
-}
-/.
-call(v,"mjava","ExpandableTextView.createExpandableTextView",ii)
-nvw(v,11)
-//获取控件,添加控件
-us(v,"textcolor","#ff000000")
-us(v,"textsize","16sp")
-us(v,"layout_marginLeft","10dp")
-us(v,"typeface","@fontFile/acbt80.ttf")
-./</eventItme><eventItme type="ondownloadstart">sj(st_cN,';filename="','"',name_impurity)
-
-f(st_cH &gt; "1024")
+}</eventItme><eventItme type="ondownloadstart">f(sss.type == "properos.app.store")
 {
-	sn(st_cH / "1024",cdu)
-	f(cdu &gt; "1024")
+	utw(null,"功能测试","检测到软件下载行为，下载链接为："+st_url,"确定",false,v)
 	{
-		sn(cdu / "1024",cdu)
+		endutw()
+	}
+}
+else
+{
+	sj(st_cN,';filename="','"',name_impurity)
+
+	f(st_cH &gt; "1024")
+	{
+		sn(st_cH / "1024",cdu)
 		f(cdu &gt; "1024")
 		{
 			sn(cdu / "1024",cdu)
-			ss(cdu+"TB",cddw)
+			f(cdu &gt; "1024")
+			{
+				sn(cdu / "1024",cdu)
+				ss(cdu+"TB",cddw)
+			}
+			else
+			{
+				ss(cdu+"MB",cddw)
+			}
 		}
 		else
 		{
-			ss(cdu+"MB",cddw)
+			ss(cdu+"KB",cddw)
 		}
 	}
 	else
 	{
-		ss(cdu+"KB",cddw)
+		ss(st_cH+"K",cddw)
+	}
+	ss("被下载文件大小："+cddw+"\n文件名："+name_impurity+"\n被下载文件下载链接："+st_url,tsc)
+	utw(null,"发现文件下载事件",tsc,"下载","取消",false,v)
+	{
+		endutw()
+		hws(st_url)
+	}
+	else
+	{
+		endutw()
 	}
 }
-else
-{
-	ss(st_cH+"K",cddw)
-}
-ss("被下载文件大小："+cddw+"\n文件名："+name_impurity+"\n被下载文件下载链接："+st_url,tsc)
-utw(null,"发现文件下载事件",tsc,"下载","取消",false,v)
-{
-	endutw()
-	hws(st_url)
-}
-else
-{
-	endutw()
-}</eventItme><eventItme type="onpagestarted">us(8,"visibility","gone")</eventItme></event>
+us(4,"visibility","gone")</eventItme><eventItme type="onpagestarted">us(8,"visibility","gone")</eventItme></event>
 </View>
 <View id="4" did="1" type="LinearLayout">
 <ppt>width=-1
@@ -328,10 +321,75 @@ else
 		endutw()
 	}
 }
+// 修复后的启动代码
+/.
+s url = sss.url
+s port = sss.port
+
+f(url ?* "http")
+{
+	us(3,"url",url)
+}
+else f(url != null && url != "")
+{
+	fdir(url, url)
+	
+	// 修复：确保端口是整数
+	s portNum = 8050
+	f(port != null && port != "")
+	{
+		s portNum = port
+	}
+	
+	java {
+		try {
+			String urlStr = (String) s.get("url");
+			// 修复：正确获取端口整数
+			Object portObj = s.get("portNum");
+			int portInt = 8050;
+			if (portObj instanceof Integer) {
+				portInt = (Integer) portObj;
+			} else if (portObj instanceof String) {
+				portInt = Integer.parseInt((String) portObj);
+			} else if (portObj instanceof Long) {
+				portInt = ((Long) portObj).intValue();
+			}
+			
+			android.util.Log.i("startAppUI", "url: " + urlStr + ", port: " + portInt);
+			boolean result = miao.byusi.properos.two.app.startAppUI.startServer(urlStr, portInt);
+			s.put("start_result", result);
+		} catch (Exception e) {
+			android.util.Log.e("startAppUI", "error: " + e.getMessage());
+			e.printStackTrace();
+			s.put("start_result", false);
+		}
+	}
+	
+	f(start_result == true)
+	{
+		us(3,"url","http://127.0.0.1:" + portNum)
+		syso("服务启动成功")
+	}
+	else
+	{
+		syso("服务启动失败")
+		utw(null,"","服务启动失败",false,v)
+		{
+		}
+	}
+}
+else
+{
+	utw("@fail.png","错误","并没有传入参数","确定",true,v)
+	{
+		endutw()
+	}
+}
+./
 
 f(sss.type == "properos.app.store")
 {
-	
+	fn tw.tw("欢迎使用 ProperOS_Two App Store，下载软件请长按进行下载")
 }
 gvs(28,toolbar)
 java(titleView,toolbar,"android.view.ViewGroup.getChildAt","int",0)
@@ -346,6 +404,18 @@ us(titleView,"app_TitleColor","#ffffffff")</eventItme><eventItme type="downkey">
 	else
 	{
 		end()
+		java {
+			boolean result = miao.byusi.properos.two.app.startAppUI.stopServer();
+			s.put("stop_result", result);
+		}
+		f(stop_result == true)
+		{
+			syso("服务已关闭")
+		}
+		else
+		{
+			syso("服务未运行")
+		}
 	}
 }</eventItme><eventItme type="menu">case 查看源代码:
 
@@ -368,8 +438,19 @@ fn tw.tw2("暂不开放",1)
 
 break
 
+// 修复停止代码
 case 强制关闭该软件:
 
 end()
+java {
+	try {
+		boolean result = miao.byusi.properos.two.app.startAppUI.stopServer();
+		s.put("stop_result", result);
+		android.util.Log.i("startAppUI", "stop result: " + result);
+	} catch (Exception e) {
+		android.util.Log.e("startAppUI", "stop error: " + e.getMessage());
+		s.put("stop_result", false);
+	}
+}
 
 break</eventItme></UIEventset>

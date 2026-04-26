@@ -1,0 +1,21 @@
+fr("@about.json",about)
+json(about,data)
+json(data,"get","version",version)
+fe("$System/Config/Initialization.sett",isett)
+f(isett == true)
+{
+	fr("$System/Config/Initialization.sett",iisett)
+	f(iisett == version)
+	{
+		fn core.uigo("home.iyu")
+	}
+	else
+	{
+		fn core.uigo("initialization.iyu")
+	}
+}
+else
+{
+	fn core.uigo("initialization.iyu")
+}
+end()

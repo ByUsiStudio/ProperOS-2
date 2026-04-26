@@ -12,11 +12,11 @@ end fn
 
 fn echo2(text)
 
-ss(text,head)
+s head =text
 ula(sss.terminal,3=head,4="")
 uls(6,sss.terminal,"terminal_list.iyu",-1,-2)
 gvs(6,list)
-call(null,"mjava","output.awayroll")
+call(null,"mjava","output.awayroll",list)
 
 end fn
 

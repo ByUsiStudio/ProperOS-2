@@ -127,7 +127,6 @@ for(dm;code)
 			ss(lfb+dm,dm)
 		}
 	}
-	
 	ss(answer+"\n"+dm,answer)
 }
 ssg(answer,1,answer)

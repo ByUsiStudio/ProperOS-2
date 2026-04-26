@@ -49,6 +49,27 @@ height=-2
 text=测试守护进程服务</ppt>
 <event><eventItme type="clicki">fn guardianService.run(7)</eventItme></event>
 </View>
+<View id="8" did="3" type="com.google.android.material.materialswitch.MaterialSwitch">
+<ppt>width=-2
+height=-2</ppt>
+<event></event>
+</View>
+<View id="9" did="3" type="com.google.android.material.loadingindicator.LoadingIndicator">
+<ppt>width=-2
+height=-2</ppt>
+<event></event>
+</View>
+<View id="10" did="3" type="com.google.android.material.slider.Slider">
+<ppt>width=-2
+height=-2</ppt>
+<event></event>
+</View>
+<View id="11" did="3" type="Button">
+<ppt>width=-2
+height=-2
+text=校验获取测试</ppt>
+<event><eventItme type="clicki">fn system.hash("@w.png")</eventItme></event>
+</View>
 <View id="7" did="1" type="Button">
 <ppt>width=-2
 height=-2
@@ -58,4 +79,8 @@ visibility=gone</ppt>
 </View>
 <UIEventset><eventItme type="loading">fn byusi.ztl()
 fn byusi.uycl()
-fn lib.wp(2)</eventItme></UIEventset>
+fn lib.wp(2)
+
+java {
+	miao.byusi.properos.two.tools.getTheHash.init(activity);
+}</eventItme></UIEventset>

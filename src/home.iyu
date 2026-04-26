@@ -104,7 +104,14 @@ ps=刷新界面
 visibility=gone</ppt>
 <event><eventItme type="clicki">syso(" ")</eventItme></event>
 </View>
-<View id="17" did="13" type="RoundImageView">
+<View id="19" did="13" type="CardView">
+<ppt>width=-2
+height=-2
+app_CardcornerRadius=45dp
+app_CardElevation=35dp</ppt>
+<event></event>
+</View>
+<View id="17" did="19" type="ImageView">
 <ppt>width=-2
 height=-2
 src=@logo/properos2.png</ppt>
@@ -136,57 +143,6 @@ visibility=gone</ppt>
 <UIEventset><eventItme type="loading">fn byusi.ztl()
 fn byusi.uycl()
 fn lib.wp(2)
-call(fh,"mjava","Permission.pd",activity)
-f(fh == true || fh == "true")
-{
-}
-else
-{
-	fn tw.tw(fh)
-}
-
-javags(SDK_INT,null,"android.os.Build$VERSION","SDK_INT")
-f(SDK_INT &lt; 23)
-{
-	fn tw.tw2("警告：系统版本过低，部分功能不会开启",1)
-}
-java(appInfo,activity,"android.content.Context.getApplicationInfo")
-javags(targetSdkVersion,appInfo,"android.content.pm.ApplicationInfo","targetSdkVersion")
-f(targetSdkVersion &lt; 23)
-{
-	fn tw.tw2("请将targetSdkVersion提升至23！",1)
-}
-loadjar("permissions",sss.dex)
-java(appClassLoader,activity,"android.content.Context.getClassLoader")
-javass(fixup,sss.dex,"java.lang.ClassLoader","parent",appClassLoader)
-f(!fixup) {
-	fn tw.tw2("无法更改ClassLoader的parent",1)
-	end()
-	endcode
-	}
-
-cls(sss.dex,"com.canyie.permissions.PermissionHandlerFragment",testClass)
-f(testClass == null) {
-	fn tw.tw2("拿不到Fragment类(&gt;﹏&lt;)",1)
-	end()
-	endcode
-	}
-
-cls(sss.dex,"com.canyie.permissions.PermissionsHelper",sss.klass)
-f(sss.klass == null) {
-	fn tw.tw2("拿不到Helper类(&gt;﹏&lt;)",1)
-	end()
-	endcode
-	}
-javanew(ss.permissionsHelper,sss.klass,"androidx.fragment.app.FragmentActivity",activity)
-//ps：每个要用的界面都需要创建一个PermissionsHelper
-f(ss.permissionsHelper == null) {
-	fn tw.tw2("创建不了helper(&gt;﹏&lt;)",1)
-	end()
-	endcode
-	}
-javax(null,ss.permissionsHelper,sss.klass,"attach","int",15)
-//2是那个空白布局的id
 
 //工具栏字体设置
 gvs(11,toolbar)
@@ -267,7 +223,9 @@ case 关闭ProperOS:
 utw(null,"","确定关闭 ProperOS 吗？","确定","取消",false,v)
 {
 	fw("$System/Config/DaemonServiceOn.sett","false")
-	end()
+	java {
+			miao.youwan.to_be_riftinued.tools.Quit.exitApp(activity);
+	}
 }
 else
 {
@@ -276,5 +234,14 @@ else
 
 break</eventItme><eventItme type="downkey">f(st_kC == 4)
 {
-	
+	utw(null,"","请选择操作类型","关闭ProperOS Two","误触",true,v)
+	{
+		java {
+			miao.youwan.to_be_riftinued.tools.Quit.exitApp(activity);
+		}
+	}
+	else
+	{
+		endutw()
+	}
 }</eventItme></UIEventset>

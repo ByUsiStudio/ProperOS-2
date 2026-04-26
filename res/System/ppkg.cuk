@@ -1,0 +1,32 @@
+s base_api_url ="https://ppkg.properos.cn"
+sj(sss.term,"install ",null,ppkg)
+t()
+{
+	hs(base_api_url+"/search?q="+ppkg,url)
+	json(url,url)
+	f(url != null)
+	{
+		json(url,"get","code",code)
+		f(code == "0")
+		{
+			ufnsui()
+			{
+				utw(null,"测试返回数据，以下为返回的数据",url,"确定",true,v)
+				{
+					endutw()
+				}
+			}
+		}
+		else
+		{
+			fn tw.tw2("返回的参数错误",1)
+		}
+	}
+	else
+	{
+		ufnsui()
+		{
+			fn tw.tw2("获取软件失败，请检查网络连接",1)
+		}
+	}
+}

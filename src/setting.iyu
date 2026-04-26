@@ -51,7 +51,8 @@ app_CardcornerRadius=25dp
 layout_marginLeft=10dp
 layout_marginTop=8dp
 layout_marginRight=10dp
-layout_marginBottom=5dp</ppt>
+layout_marginBottom=5dp
+app_CardBackgroundColor=#ffffffff</ppt>
 <event></event>
 </View>
 <View id="8" did="7" type="RelativeLayout">
@@ -77,13 +78,12 @@ visibility=gone</ppt>
 <View id="12" did="6" type="TabLayout">
 <ppt>width=-1
 height=45dp
-app_tabList=主要设置| 用户个人中心 
+app_tabList=主要设置|用户个人中心|关于
 app_tabIndicatorColor=#ff00aaff
 app_tabGravity=1
 app_tabMode=0
 app_tabTextColor=#ffb6b6b6|#ffffffff
-layout_marginLeft=25dp
-layout_marginRight=25dp</ppt>
+background=#ffff9191</ppt>
 <event><eventItme type="ontabselected">us(13,"currentitem",st_pN)</eventItme></event>
 </View>
 <View id="13" did="6" type="ViewPager">
@@ -110,7 +110,7 @@ ps=代码执行区域</ppt>
 fn byusi.uycl()
 fn lib.wp(2)
 //界面UI
-addv(13,"setting_nr_1.iyu|setting_nr_2.iyu",ss.hdlist)
+addv(13,"setting_nr_1.iyu|setting_nr_2.iyu|setting_nr_3.iyu",ss.hdlist)
 //入场动画
 //标题栏
 swh("w",w)
@@ -135,7 +135,10 @@ us(12,"dh",dhlist)
 gvs(9,toolbar)
 java(titleView,toolbar,"android.view.ViewGroup.getChildAt","int",0)
 us(titleView,"typeface","@fontFile/acbt80.ttf")
-us(titleView,"app_TitleColor","#ffffffff")</eventItme><eventItme type="loadingComplete">fe("$ProperOS/home/Desktop/appInstall.plink",appinstall)
+us(titleView,"app_TitleColor","#ffffffff")
+//添加 OAuth 登录界面
+addv(1,"embed_web.iyu")
+us(embed_web.1,"visibility","gone")</eventItme><eventItme type="loadingComplete">fe("$ProperOS/home/Desktop/appInstall.plink",appinstall)
 us(setting_nr_1.14,"checked",appinstall)
 fe("$ProperOS/home/Desktop/wallpaperImport.plink",wallpaperImport)
 us(setting_nr_1.32,"checked",wallpaperImport)
@@ -150,12 +153,5 @@ else
 }
 fe("$System/Config/app_code.cuk",acuk)
 us(setting_nr_1.84,"checked",acuk)
-//检查用户是否登录
-fr("$user/index",uuid)
-fe("$user/"+uuid,yanz)
-f(yanz == true)
-{
-	sss account_return =true
-	us(setting_nr_2.25,"visibility","gone")
-	us(setting_nr_2.71,"visibility","visible")
-}</eventItme></UIEventset>
+fr("@System/User.cuk",u_code)
+fn system.code(u_code,17)</eventItme></UIEventset>
