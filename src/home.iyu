@@ -95,6 +95,14 @@ visibility=gone
 ps=桌面刷新逻辑专门使用</ppt>
 <event></event>
 </View>
+<View id="20" did="1" type="Button">
+<ppt>width=-2
+height=-2
+text=20
+ps=文件打开工具
+visibility=gone</ppt>
+<event></event>
+</View>
 <View id="13" did="1" type="LinearLayout">
 <ppt>width=-1
 height=-1

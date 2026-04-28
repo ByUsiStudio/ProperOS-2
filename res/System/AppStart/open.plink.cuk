@@ -1,0 +1,47 @@
+syso("类型为 PeoperOS 软件")
+fr(sss.fileDir,plinkData)
+json(plinkData,data)
+json(data,"get","sign",sign)
+json(sign,"get","uuid",uuid)
+json(plinkData,"get","port",port)
+sss port =port
+syso("被启动应用UUID："+uuid)
+f(uuid == "properos.app.store")
+{
+	sss type ="properos.app.store"
+	sss script =null
+}
+else
+{
+	sss type =null
+	sss script =null
+}
+json(data,"get","startUrl",startUrl)
+json(startUrl,"get","qiyue",startUrl_qiyue)
+json(data,"get","systemUi",systemUi)
+json(systemUi,"get","qiyue",systemUi_qiyue)
+f(startUrl_qiyue == true)
+{
+	json(startUrl,"get","url",url)
+	sss url =url
+	fn core.uigo("startApp.iyu")
+}
+else f(systemUi_qiyue == true)
+{
+	json(systemUi,"get","ui",ui)
+	syso("应用设置默认打开系统界面："+ui)
+	json(systemUi,"get","variable",variable)
+	fn core.uigo(ui)
+	sss url =variable
+}
+else
+{
+	json(data,"get","package",package)
+	syso("被启动应用包名："+package)
+	json(data,"get","guide",guide)
+	ss("$user/data/software/"+package+"/src/",catalogue)
+	ss("$user/data/software/"+package+"/src/"+guide,url)
+	//sss catalogue =catalogue
+	sss url =url
+	fn core.uigo("startApp.iyu")
+}

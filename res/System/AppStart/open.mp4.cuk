@@ -1,0 +1,3 @@
+syso("类型为视频文件")
+sss url =sss.fileDir
+fn core.uigo("player.iyu")

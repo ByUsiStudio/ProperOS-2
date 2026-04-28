@@ -1,0 +1,8 @@
+utw("@fail.png","提醒","[ERROR] 无法打开文件 \""+sss.fileDir+"\" 请检查\n\n点击 \"确定\" 关闭","确定","安卓打开",true,v)
+{
+	endutw()
+}
+else
+{
+	fo(sss.fileDir)
+}

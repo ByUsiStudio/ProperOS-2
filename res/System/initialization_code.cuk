@@ -1,5 +1,6 @@
 t()
 {
+	fd("$System/code/startApp.cuk",yz)
 	fuzs("@resources/icon.zip","$System/icon/",fuzs)
 	fr("@PLink/plink-system.json",pksm)
 	json(pksm,pksm_setting)
