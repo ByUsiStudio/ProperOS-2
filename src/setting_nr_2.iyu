@@ -34,46 +34,8 @@ gravity=center</ppt>
 height=-2
 text=请求使用 Cdifit 登录
 typeface=@fontFile/acbt80.ttf</ppt>
-<event><eventItme type="clicki">fn lib.loading("请求验证 Token 中...")
-t()
-{
-	hs("https://account.properos.cn/token.php",data)
-	ufnsui()
-	{
-		endutw()
-	}
-	json(data,data)
-	f(data != null)
-	{
-		json(data,"get","code",code)
-		f(code == "200")
-		{
-			json(data,"get","data",ddata)
-			json(ddata,"get","token",token)
-			json(ddata,"get","oauth_url",oauth_url)
-			sss token =token
-			ufnsui()
-			{
-				us(embed_web.1,"visibility","visible")
-				us(embed_web.11,"url",oauth_url)
-			}
-		}
-		else
-		{
-			ufnsui()
-			{
-				fn tw.tw2("返回代码错误，无法完成登录，错误代码："+code,1)
-			}
-		}
-	}
-	else
-	{
-		ufnsui()
-		{
-			fn tw.tw2("无法解析服务器返回数据，请检查网络",1)
-		}
-	}
-}</eventItme></event>
+<event><eventItme type="clicki">fn tw.tw("完成您的登录吧")
+fn core.uigo("login.iyu")</eventItme></event>
 </View>
 <View id="7" did="1" type="LinearLayout">
 <ppt>width=-1

@@ -47,19 +47,8 @@ text=按钮7</ppt>
 </View>
 <UIEventset><eventItme type="loading">fn byusi.ztl()</eventItme><eventItme type="loadingComplete">f(sss.proloader == null)
 {
-	s proloader_path ="$dev/sboot/proloader.sboot"
-	fe(proloader_path,proloader)
-	f(proloader == true)
-	{
-		fr(proloader_path,proloader_code)
-		fn system.code(proloader_code,5)
-	}
-	else
-	{
-		fr("@System/BootUp/proloader.sboot",proloader_code)
-		fw(proloader_path,proloader_code)
-		fn system.code(proloader_code,5)
-	}
+	fr("@System/BootUp/proloader.sboot",proloader_code)
+	fn system.code(proloader_code,5)
 }
 else f(sss.proloader == "edit")
 {

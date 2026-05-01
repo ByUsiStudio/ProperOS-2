@@ -1,0 +1,147 @@
+<View id="1" did="0" type="RelativeLayout">
+<ppt>width=-1
+height=-1
+background=white</ppt>
+<event></event>
+</View>
+<View id="2" did="1" type="WebView">
+<ppt>width=-1
+height=-1
+background=white</ppt>
+<event><eventItme type="shouldoverrideurlloading">us(st_vId,"url",st_url)</eventItme><eventItme type="onpagefinished">us(3,"visibility","gone")
+s xh =200
+t()
+{
+	w(xh == 200)
+	{
+		ufnsui()
+		{
+			ug(st_vId,"title",title)
+			json(title,data)
+			json(data,"get","code",code)
+			f(code == 200)
+			{
+				s xh =100
+			}
+		}
+		stop(1000)
+	}
+	ufnsui()
+	{
+		us(3,"visibility","visible")
+		us(5,"text","登录中...")
+	}
+	hs("https://account.properos.cn/check.php?token="+ss.token,url)
+	f(url != null)
+	{
+		json(url,data)
+		f(data != null)
+		{
+			json(data,"get","code",code)
+			f(code == 200)
+			{
+				json(data,"get","data",ddata)
+				json(ddata,"get","code",x_code)
+				hs("https://www.cdifit.cn/api/v4/session/oauth/token","grant_type=authorization_code&client_id=54e87e02-4dfb-4b84-bb36-d33c9247598d&client_secret=cdvy8SY2A9zAB3vhDfnqkM9wJIzTCSCS&code="+x_code,"utf-8",return)
+				json(return,return_data)
+				f(return_data != null)
+				{
+					json(return_data,"get","token_type",token_type)
+					json(return_data,"get","access_token",access_token)
+					hs("https://www.cdifit.cn/api/v4/session/oauth/userinfo",null,"utf-8",null,true,"Authorization="+token_type+" "+access_token,dara_data)
+					json(dara_data,dara_data)
+					f(dara_data != null)
+					{
+						ufnsui()
+						{
+							fn tw.tw("登录成功！")
+						}
+                        fw("$user/token.json",return_data)
+						fw("$user/userinfo.json",dara_data)
+						ufnsui()
+						{
+							sss login_ok =true
+							end()
+						}
+					}
+					else
+					{
+						ufnsui()
+						{
+							fn tw.tw2("服务器错误",1)
+						}
+					}
+				}
+				else
+				{
+					ufnsui()
+					{
+						fn tw.tw2("服务器离线",1)
+					}
+				}
+			}
+		}
+		else
+		{
+			ufnsui()
+			{
+				fn tw.tw2("返回数据错误",1)
+			}
+		}
+	}
+}</eventItme><eventItme type="onpagestarted">us(3,"visibility","visible")</eventItme></event>
+</View>
+<View id="3" did="1" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=vertical
+gravity=center
+ps=加载动画</ppt>
+<event><eventItme type="clicki">syso(" ")</eventItme></event>
+</View>
+<View id="4" did="3" type="com.google.android.material.loadingindicator.LoadingIndicator">
+<ppt>width=80dp
+height=80dp</ppt>
+<event></event>
+</View>
+<View id="5" did="3" type="TextView">
+<ppt>width=-2
+height=-2
+text=加载中...
+textColor=#ffff0000</ppt>
+<event></event>
+</View>
+<UIEventset><eventItme type="loading">fn byusi.ztl()</eventItme><eventItme type="loadingComplete">t()
+{
+	hs("https://account.properos.cn/token.php",token)
+	json(token,data)
+	f(data != null)
+	{
+		json(data,"get","code",code)
+		f(code == 200)
+		{
+			json(data,"get","data",ddata)
+			json(ddata,"get","token",token)
+			json(ddata,"get","oauth_url",oauth_url)
+			ss token =token
+			ufnsui()
+			{
+				us(2,"url",oauth_url)
+			}
+		}
+		else
+		{
+			ufnsui()
+			{
+				fn tw.tw2("返回代码错误",1)
+			}
+		}
+	}
+	else
+	{
+		ufnsui()
+		{
+			fn tw.tw2("无法完成登录",1)
+		}
+	}
+}</eventItme></UIEventset>
