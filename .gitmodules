@@ -1,0 +1,3 @@
+[submodule "res"]
+    path = res
+    url = https://gitee.com/properos/properos-two-data.git

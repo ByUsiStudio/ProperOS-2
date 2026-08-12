@@ -702,7 +702,8 @@ layout_marginRight=16dp
 layout_marginBottom=8dp
 app_CardcornerRadius=15dp
 ps=一设置列表项基本布局
-app_CardBackgroundColor=#ffffffff</ppt>
+app_CardBackgroundColor=#ffffffff
+visibility=gone</ppt>
 <event></event>
 </View>
 <View id="67" did="66" type="RelativeLayout">
@@ -947,7 +948,7 @@ gravity=left|center</ppt>
 <View id="98" did="97" type="ImageView">
 <ppt>width=45dp
 height=45dp
-src=@resources/icon/tool.png
+src=@logo/proloader.png
 layout_marginLeft=10dp</ppt>
 <event></event>
 </View>

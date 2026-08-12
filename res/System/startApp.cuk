@@ -1,6 +1,3 @@
-//启动服务
-// 启动服务器
-s url = "/data/data/miao.byusi.properos.two/files/user/data/software/包名/src/"
 s port = sss.port
 
 f(port == null || port == 0)

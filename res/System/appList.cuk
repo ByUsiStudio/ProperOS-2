@@ -19,7 +19,7 @@ else
 {
 	se(sss.fileDir,"\\.([a-zA-Z0-9]+)$",0,shuc)
 	se(shuc,"find",find)
-	syso("FIND输出"+find)
+	syso("FIND输出："+find)
 	f(find == true)
 	{
 		se(shuc,"group",1,suffx)

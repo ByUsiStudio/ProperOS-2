@@ -165,9 +165,8 @@ f(huk == true)
 }
 else
 {
-	fn core.uigo("setting.iyu")
-	fn tw.tw2("请通过更新功能获取并安装最新的桌面刷新解析逻辑",1)
-	end()
+	fr("@System/homeLib.cuk",code)
+    fn system.code(code,16)
 }
 //工具栏初始化
 utb(11)

@@ -109,15 +109,14 @@ visibility=gone</ppt>
 </View>
 <UIEventset><eventItme type="loading">fn byusi.ztl()
 fn byusi.uycl()
-fn lib.wp(2)</eventItme><eventItme type="loadingComplete">/.
-fn terminalLib.echo2("欢迎使用 ProperOS 2 Terminal")
+fn lib.wp(2)</eventItme><eventItme type="loadingComplete">fn terminalLib.echo2("欢迎使用 ProperOS 2 Terminal")
 f(sss.script != null)
 {
 	us(4,"visibility","gone")
 	fr(sss.script,code)
 	fn system.code(code,10)
 }
-./
+/.
 // 在载入事件中创建终端
 s termTool = null
 
@@ -161,15 +160,7 @@ f(termTool != null)
 {
 	utw(null,"","确定退出吗？","确定","取消",true,v)
 	{
-		// 销毁界面事件中关闭终端
-f(termTool != null)
-{
-    java {
-        miao.byusi.properos.two.terminal.TerminalTool tool = 
-            (miao.byusi.properos.two.terminal.TerminalTool) s.get("termTool");
-        tool.closeTerminal();
-    }
-}
+		end()
 	}
     else
     {

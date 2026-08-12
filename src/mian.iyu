@@ -20,9 +20,9 @@ visibility=gone
 ps=代码执行区</ppt>
 <event></event>
 </View>
-<UIEventset><eventItme type="loading">fn byusi.ztl()</eventItme><eventItme type="downkey">f(st_kC == 4)
+<UIEventset><eventItme type="loading">fn byusi.ztl()
+/. 防止某些傻逼的项目被感染之后来感染我的项目</eventItme><eventItme type="downkey">f(st_kC == 4)
 {
-	
 }</eventItme><eventItme type="menu">shb()</eventItme><eventItme type="loadingComplete">java {
 	miao.byusi.properos.two.tools.getTheHash.init(activity);
 }
