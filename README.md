@@ -18,7 +18,7 @@
 <summary><b>国内镜像（推荐）</b></summary>
 
 ```bash
-git clone https://gitee.com/properos/properos2.git
+git clone --recurse-submodules https://gitee.com/properos/properos2.git
 ```
 </details>
 
@@ -26,7 +26,7 @@ git clone https://gitee.com/properos/properos2.git
 <summary><b>GitHub 源</b></summary>
 
 ```bash
-git clone https://github.com/ByUsiTeam/ProperOS-2.git
+git clone --recurse-submodules https://github.com/ByUsiTeam/ProperOS-2.git
 ```
 </details>
 
