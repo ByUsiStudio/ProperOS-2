@@ -1,3 +1,0 @@
-syso("类型为 ProperOS 脚本文件")
-sss script =sss.fileDir
-fn core.uigo("terminal.iyu")

@@ -1,3 +1,0 @@
-ss(sss.name+" "+sss.term,code)
-syso("终端拼接执行器拼接命令\n"+code)
-fn system.code(code,10)
