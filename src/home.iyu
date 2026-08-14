@@ -156,7 +156,25 @@ fn lib.wp(2)
 gvs(11,toolbar)
 java(titleView,toolbar,"android.view.ViewGroup.getChildAt","int",0)
 us(titleView,"typeface","@fontFile/acbt80.ttf")
-us(titleView,"app_TitleColor","#ffffffff")</eventItme><eventItme type="loadingComplete">//桌面刷新逻辑，后续会使用.cuk脚本来写
+us(titleView,"app_TitleColor","#ffffffff")
+
+//一言
+fr("$System/Config/hitokoto.sett",hitokoto_zt)
+f(hitokoto_zt != false)
+{
+	t()
+	{
+		hs("https://api.www.cdifit.cn/yy/?encode=json",url)
+		json(url,data)
+		json(data,"get","hitokoto",hitokoto)
+		ufnsui()
+		{
+			utw(null,"",hitokoto,false,v)
+			{
+			}
+		}
+	}
+}</eventItme><eventItme type="loadingComplete">//桌面刷新逻辑，后续会使用.cuk脚本来写
 fe("$System/code/homeLib.cuk",huk)
 f(huk == true)
 {
@@ -166,7 +184,7 @@ f(huk == true)
 else
 {
 	fr("@System/homeLib.cuk",code)
-    fn system.code(code,16)
+	fn system.code(code,16)
 }
 //工具栏初始化
 utb(11)

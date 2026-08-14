@@ -150,6 +150,12 @@ else
 }
 fe("$System/Config/app_code.cuk",acuk)
 us(setting_nr_1.84,"checked",acuk)
+fe("$System/Config/hitokoto.sett",yy_sett)
+f(yy_sett == true)
+{
+	fr("$System/Config/hitokoto.sett",yy_sett)
+	us(setting_nr_1.113,"checked",yy_sett)
+}
 fr("@System/User.cuk",u_code)
 fn system.code(u_code,17)</eventItme><eventItme type="restart">f(sss.login_ok == true)
 {

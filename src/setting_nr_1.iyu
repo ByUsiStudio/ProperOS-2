@@ -540,6 +540,86 @@ else
 	fd("$System/Config/app_code.cuk",yyz)
 }</eventItme></event>
 </View>
+<View id="105" did="3" type="CardView">
+<ppt>width=-1
+height=55dp
+layout_marginTop=6dp
+layout_marginLeft=16dp
+layout_marginRight=16dp
+layout_marginBottom=8dp
+app_CardcornerRadius=15dp
+ps=一设置列表项基本布局
+app_CardBackgroundColor=#ffffffff</ppt>
+<event></event>
+</View>
+<View id="106" did="105" type="RelativeLayout">
+<ppt>width=-1
+height=-1</ppt>
+<event></event>
+</View>
+<View id="107" did="106" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=horizontal
+gravity=left|center</ppt>
+<event></event>
+</View>
+<View id="108" did="107" type="ImageView">
+<ppt>width=45dp
+height=45dp
+src=$System/icon/ic_settings_voice_assistant.png
+layout_marginLeft=10dp</ppt>
+<event></event>
+</View>
+<View id="109" did="107" type="LinearLayout">
+<ppt>width=-2
+height=-1
+orientation=vertical
+gravity=left|center
+layout_marginLeft=6dp</ppt>
+<event></event>
+</View>
+<View id="110" did="109" type="TextView">
+<ppt>width=-2
+height=-2
+text=开启进入桌面一言提示
+typeface=@fontFile/acbt80.ttf
+textColor=#ff000000
+textSize=12sp</ppt>
+<event></event>
+</View>
+<View id="111" did="109" type="TextView">
+<ppt>width=-2
+height=-2
+text=跳过开机动画直接进入桌面（不建议开启）
+typeface=@fontFile/acbt80.ttf
+textSize=8sp
+visibility=gone</ppt>
+<event></event>
+</View>
+<View id="112" did="107" type="LinearLayout">
+<ppt>width=-1
+height=-1
+orientation=horizontal
+ps=选项用
+gravity=right|center</ppt>
+<event></event>
+</View>
+<View id="113" did="112" type="com.google.android.material.materialswitch.MaterialSwitch">
+<ppt>width=-2
+height=-2
+layout_marginRight=16dp
+thumbTint=#ff00aaff
+checked=true</ppt>
+<event><eventItme type="oncheckedchanged">f(st_iC == true)
+{
+	fw("$System/Config/hitokoto.sett","true")
+}
+else
+{
+	fw("$System/Config/hitokoto.sett","false")
+}</eventItme></event>
+</View>
 <View id="45" did="3" type="CardView">
 <ppt>width=-1
 height=55dp
