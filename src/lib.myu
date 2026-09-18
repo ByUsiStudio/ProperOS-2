@@ -10,7 +10,7 @@ f(wpp == true)
 else f(wpp == false)
 {
 	us(id,"visibility","visible")
-	sran(1,2,sjs)
+	sran(1,3,sjs)
 	us(id,"src","@DefaultWallpaper/"+sjs+".png")
 }
 

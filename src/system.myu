@@ -18,6 +18,7 @@ f(jspk != null)
 			json(byusi_user_system,"get","email",email)
 			t()
 			{
+				/.
 				ufnsui()
 				{
 					fn lib.loading("请求开发者信息中...")
@@ -30,9 +31,13 @@ f(jspk != null)
 				}
 				json(name1,name1)
 				json(name2,name2)
+                ./
+                s name1 =""
+                s name2 =""
 				f(name1 != null && name2 != null)
 				{
-					json(name1,"get","status",status)
+					//json(name1,"get","status",status)
+                    s status ="success"
 					f(status == "success")
 					{
 						json(name1,"get","username",username)
@@ -86,6 +91,7 @@ f(jspk != null)
 				json(user_byusi,"get","uuid",byusi_uuid)
 				t()
 				{
+					/.
 					ufnsui()
 					{
 						fn lib.loading("请求开发者信息中...")
@@ -96,12 +102,16 @@ f(jspk != null)
 						endutw()
 					}
 					json(hd,hdd)
+                    ./
+                    s hdd =""
 					f(hdd != null)
 					{
-						json(hdd,"get","status",status)
+						//json(hdd,"get","status",status)
+                        s status ="success"
 						f(status == "success")
 						{
-							json(hdd,"get","username",username)
+							//json(hdd,"get","username",username)
+                            s username ="暂不支持获取"
 							ufnsui()
 							{
 								utw(null,"","应用名："+app_name+"\n包名："+app_package+"\n开发者："+username+"\n\n确定安装该应用吗？","确定","取消",true,v)
@@ -312,5 +322,26 @@ java {
 	miao.byusi.properos.two.tools.getTheHash.getFileHash(file,sss);
 }
 syso("返回数据："+sss.hash)
+
+end fn
+
+fn codecin(dir,path,log_path)
+
+// 载入事件
+syso("codecin 准备执行")
+
+java {
+    String execDir  = s.get("dir");
+    String execFile = s.get("path");
+    String logFile  = s.get("log_path");
+
+    boolean ok = miao.byusi.libs.codecin.codecin.exec(
+        execDir, execFile, logFile);
+
+    syso(yuc, "codecin exec result: " + ok);
+    syso(yuc, "log file: " + logFile);
+}
+
+syso("codecin 调用结束，请查看日志文件")
 
 end fn
