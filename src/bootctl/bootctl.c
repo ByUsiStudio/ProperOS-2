@@ -16,6 +16,7 @@ static void usage(void)
     printf("  set-active <a|b>    select the slot for the next boot\n");
     printf("  mark-good           mark current slot as good (clear failure count)\n");
     printf("  rollback            roll back to the other slot\n");
+    printf("  sync                copy the active slot to the other slot (fill B)\n");
 }
 
 static int ensure_esp(void)
@@ -116,6 +117,57 @@ static int cmd_rollback(void)
     return rc == 0 ? 0 : 1;
 }
 
+/* 把活动槽的内核/initramfs/校验和复制到另一槽，让 B 槽可用；
+ * 这是 OTA 与手工「补槽」的共同底座。 */
+static int cmd_sync(void)
+{
+    kvlist_t st, cfg;
+    if (load(&st, &cfg) < 0) return 1;
+
+    const char *active = kv_get(&st, "active", "a");
+    const char *other = strcmp(active, "a") ? "a" : "b";
+    printf("sync slot %s -> %s\n", active, other);
+
+    static const char *files[] = { "Image", "initramfs.img", "SHA256SUMS" };
+    int ok = 0, fail = 0;
+    for (size_t i = 0; i < ARRAY_LEN(files); i++) {
+        char src[512], dst[512];
+        snprintf(src, sizeof(src), ESP "/slots/%s/%s", active, files[i]);
+        snprintf(dst, sizeof(dst), ESP "/slots/%s/%s", other, files[i]);
+        if (access(src, F_OK) != 0) {
+            printf("  skip  %-14s (missing in slot %s)\n", files[i], active);
+            fail++;
+            continue;
+        }
+        if (copy_file(src, dst, 0644) == 0) {
+            printf("  ok    %-14s\n", files[i]);
+            ok++;
+        } else {
+            printf("  FAIL  %-14s\n", files[i]);
+            fail++;
+        }
+    }
+
+    if (ok == 0) {
+        err("nothing copied, slot %s stays empty", other);
+        kv_free(&st); kv_free(&cfg);
+        return 1;
+    }
+
+    char key[8];
+    snprintf(key, sizeof(key), "%s_good", other);
+    kv_set(&st, key, "1");
+    snprintf(key, sizeof(key), "%s_tries", other);
+    kv_set(&st, key, "0");
+    kv_set(&st, "synced_from", active);
+    kv_set(&st, "synced_epoch", xasprintf("%ld", (long)time(NULL)));
+    int rc = kv_save(&st, STATE);
+    printf("\nslot %s is now bootable (%d file(s), %d skipped)\n", other, ok, fail);
+    if (rc != 0) err("failed to update slot state");
+    kv_free(&st); kv_free(&cfg);
+    return rc == 0 ? 0 : 1;
+}
+
 int main(int argc, char **argv)
 {
     plog_open("bootctl");
@@ -124,6 +176,7 @@ int main(int argc, char **argv)
     if (!strcmp(argv[1], "set-active") && argc >= 3) return cmd_set(argv[2]);
     if (!strcmp(argv[1], "mark-good")) return cmd_mark_good();
     if (!strcmp(argv[1], "rollback")) return cmd_rollback();
+    if (!strcmp(argv[1], "sync")) return cmd_sync();
     if (!strcmp(argv[1], "--version")) {
         printf("properos-bootctl %s (%s)\n", PROPEROS_VERSION, PROPEROS_VENDOR);
         return 0;

@@ -27,6 +27,7 @@ ROOT_PASS=""
 AUTO=0
 FORCE=0
 TTY_UI=0
+PROGRESS=0
 [ -t 0 ] && [ -t 1 ] && TTY_UI=1
 
 export DEBIAN_FRONTEND=noninteractive
@@ -55,6 +56,9 @@ c_err()  { printf '\033[1;31m  [xx] %s\033[0m\n' "$*" >&2; }
 log()    { printf '[%s] %s\n' "$(date +%H:%M:%S)" "$*" >>"$LOG"; }
 
 die() {
+    if [ "$PROGRESS" = 1 ]; then
+        printf '##E %s\n' "$*" >&3 2>/dev/null || true
+    fi
     c_err "$*"
     log "FATAL: $*"
     if [ "$TTY_UI" = 1 ] && command -v whiptail >/dev/null; then
@@ -79,7 +83,13 @@ ui_password(){ whiptail --backtitle "$BACKTITLE" --title "$1" --passwordbox "$2"
 
 # ---------------- 进度 ----------------
 
+# GUI 模式：进度行写到原始 stdout（管道），其余输出进日志
 gauge_open() {
+    if [ "$PROGRESS" = 1 ]; then
+        exec 3>&1
+        exec >>"$LOG" 2>&1
+        return 0
+    fi
     # 保存终端（fd 9）：进度条阶段要把普通输出全部改道到日志，
     # 否则 c_info 之类的文字会直接画在 whiptail 的进度框上，把界面糊掉。
     exec 9>&1
@@ -93,6 +103,11 @@ gauge_open() {
 }
 gauge() {
     local pct="$1"; shift
+    if [ "$PROGRESS" = 1 ]; then
+        printf '##P %s|%s\n' "$pct" "$*" >&3
+        log "$pct% $*"
+        return 0
+    fi
     if [ "$TTY_UI" = 1 ] && command -v whiptail >/dev/null; then
         # whiptail --gauge 只吃百分比行（文本行会被当成百分比解析失败而丢弃），
         # 所以说明文字用固定的 --gauge 文案，进度只发数字最稳。
@@ -103,6 +118,7 @@ gauge() {
     log "$pct% $*"
 }
 gauge_close() {
+    [ "$PROGRESS" = 1 ] && return 0
     exec 3>&- 2>/dev/null || true
     # 恢复终端输出，后面的提示（含失败对话框）才能显示
     [ -e /dev/fd/9 ] && exec 1>&9 2>&9 9>&-
@@ -466,46 +482,46 @@ do_install() {
     [ -n "$DISK" ] || die "No target disk"
     [ -b "$DISK" ] || die "Not a block device: $DISK"
 
-    if [ "$FORCE" -ne 1 ] && [ "$AUTO" -ne 1 ]; then
+    if [ "$FORCE" -ne 1 ] && [ "$AUTO" -ne 1 ] && [ "$PROGRESS" -ne 1 ]; then
         ui_yesno "Confirm" "All data on $DISK will be destroyed.\n\nContinue?" || exit 1
     fi
 
     : >"$LOG"
     gauge_open
 
-    gauge 5  "Partitioning $DISK"
+    gauge 5  "正在分区 $DISK"
     partition_disk "$DISK"
 
-    gauge 15 "Formatting partitions"
+    gauge 15 "正在格式化分区"
     format_partitions
 
-    gauge 25 "Mounting target"
+    gauge 25 "正在挂载目标系统"
     mount_target
 
-    gauge 35 "Copying system files"
+    gauge 35 "正在复制系统文件"
     copy_system
 
-    gauge 65 "Configuring system"
+    gauge 65 "正在配置系统"
     setup_identity
     setup_root
     setup_fstab
     setup_services
 
-    gauge 78 "Installing boot loader"
+    gauge 78 "正在安装引导程序"
     setup_boot_files
     write_grub_cfg
     install_bootloader || c_warn "Boot loader reported warnings (see $LOG)"
 
-    gauge 92 "Finalizing"
+    gauge 92 "正在完成收尾工作"
     mkdir -p "$MNT/data/apps" "$MNT/data/.trash"
     rm -f "$MNT/data/.first-boot"
     : > "$MNT/data/.first-boot"
 
-    gauge 97 "Syncing"
+    gauge 97 "正在同步磁盘"
     sync
     cleanup_target
 
-    gauge 100 "Installation complete"
+    gauge 100 "安装完成"
     gauge_close
 
     c_ok "ProperOS $VERSION installed on $DISK"
@@ -582,6 +598,7 @@ while [ $# -gt 0 ]; do
         --yes|-y) AUTO=1; shift ;;
         --force) FORCE=1; shift ;;
         --auto) AUTO=1; shift ;;
+        --progress) PROGRESS=1; TTY_UI=0; shift ;;
         --version) echo "ProperOS installer $VERSION"; exit 0 ;;
         --help)
             cat <<EOF
@@ -593,13 +610,18 @@ usage: properos-install [options]
   --hostname <name>    hostname (default: properos)
   --yes                skip confirmation
   --force              skip the confirmation dialog even in auto mode
+  --progress           emit "##P percent|message" lines on stdout for the GUI
 EOF
             exit 0 ;;
         *) die "Unknown option: $1" ;;
     esac
 done
 
-if [ -n "$DISK" ] && [ "$AUTO" = 1 ]; then
+if [ "$PROGRESS" = 1 ]; then
+    [ -n "$DISK" ] || die "GUI 模式必须提供 --disk"
+    do_install
+    printf '##D done\n' >&3 2>/dev/null || true
+elif [ -n "$DISK" ] && [ "$AUTO" = 1 ]; then
     do_install
 else
     wizard

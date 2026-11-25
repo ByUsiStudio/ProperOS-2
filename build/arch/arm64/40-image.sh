@@ -29,6 +29,16 @@ cp -f "$DIST/kernel/Image-properos-2.5" "$STAGE/esp/slots/a/Image"
 cp -f "$ROOT/boot/initramfs-properos.img" "$STAGE/esp/slots/a/initramfs.img"
 ( cd "$STAGE/esp/slots/a" && sha256sum Image initramfs.img > SHA256SUMS )
 
+# 可选设备树：真机（U-Boot / 无 UEFI 内建 DTB 的板子）用 PROPEROS_DTB 指定
+DTB_ARG=""
+if [[ -n "${PROPEROS_DTB:-}" ]]; then
+    [[ -f "$PROPEROS_DTB" ]] || { echo "PROPEROS_DTB 不存在：$PROPEROS_DTB" >&2; exit 1; }
+    mkdir -p "$STAGE/esp/dtb"
+    cp -f "$PROPEROS_DTB" "$STAGE/esp/dtb/board.dtb"
+    DTB_ARG="devicetree /dtb/board.dtb"
+    log "设备树：$PROPEROS_DTB → /dtb/board.dtb"
+fi
+
 cat > "$STAGE/esp/boot/grub/grub.cfg" <<EOF
 # ProperOS 2.5 Mobile · ARM64（镜像内置）
 set timeout=3
@@ -38,18 +48,21 @@ set gfxpayload=keep
 menuentry "ProperOS 2.5 Mobile  ·  槽 A" --class properos {
     search --no-floppy --label --set=root PROPEROS
     linux /slots/a/Image root=PARTUUID=$SYS_PARTUUID rootfstype=ext4 rw rootwait quiet loglevel=4 console=ttyAMA0,115200 console=tty0 properos.slot=a
+$DTB_ARG
     initrd /slots/a/initramfs.img
 }
 
 menuentry "ProperOS 2.5 Mobile  ·  槽 A（详细日志）" {
     search --no-floppy --label --set=root PROPEROS
     linux /slots/a/Image root=PARTUUID=$SYS_PARTUUID rootfstype=ext4 rw rootwait loglevel=7 console=ttyAMA0,115200 console=tty0 properos.slot=a
+$DTB_ARG
     initrd /slots/a/initramfs.img
 }
 
 menuentry "Recovery shell（单用户）" {
     search --no-floppy --label --set=root PROPEROS
     linux /slots/a/Image root=PARTUUID=$SYS_PARTUUID rootfstype=ext4 rw rootwait loglevel=7 console=ttyAMA0,115200 console=tty0 properos.slot=a init=/bin/bash
+$DTB_ARG
     initrd /slots/a/initramfs.img
 }
 EOF

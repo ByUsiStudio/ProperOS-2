@@ -1,0 +1,213 @@
+{
+  "title": "计算器",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "计算器",
+      "widgets": [
+        {
+          "t": "spacer",
+          "h": 26
+        },
+        {
+          "t": "text",
+          "text": "{{expr}}",
+          "align": "right",
+          "px": 34,
+          "color": "#16181D"
+        },
+        {
+          "t": "text",
+          "text": "= {{result}}",
+          "align": "right",
+          "px": 26,
+          "color": "#E95420"
+        },
+        {
+          "t": "spacer",
+          "h": 22
+        },
+        {
+          "t": "tiles",
+          "cols": 4,
+          "cell": 78,
+          "items": [
+            {
+              "title": "C",
+              "tint": "#6B7280",
+              "action": {
+                "type": "clear",
+                "key": "expr"
+              }
+            },
+            {
+              "title": "退格",
+              "tint": "#6B7280",
+              "action": {
+                "type": "bs",
+                "key": "expr"
+              }
+            },
+            {
+              "title": "00",
+              "tint": "#6B7280",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "00"
+              }
+            },
+            {
+              "title": "÷",
+              "tint": "#E95420",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "/"
+              }
+            },
+            {
+              "title": "7",
+              "tint": "#FFFFFF",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "7"
+              }
+            },
+            {
+              "title": "8",
+              "tint": "#FFFFFF",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "8"
+              }
+            },
+            {
+              "title": "9",
+              "tint": "#FFFFFF",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "9"
+              }
+            },
+            {
+              "title": "×",
+              "tint": "#E95420",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "*"
+              }
+            },
+            {
+              "title": "4",
+              "tint": "#FFFFFF",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "4"
+              }
+            },
+            {
+              "title": "5",
+              "tint": "#FFFFFF",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "5"
+              }
+            },
+            {
+              "title": "6",
+              "tint": "#FFFFFF",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "6"
+              }
+            },
+            {
+              "title": "-",
+              "tint": "#E95420",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "-"
+              }
+            },
+            {
+              "title": "1",
+              "tint": "#FFFFFF",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "1"
+              }
+            },
+            {
+              "title": "2",
+              "tint": "#FFFFFF",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "2"
+              }
+            },
+            {
+              "title": "3",
+              "tint": "#FFFFFF",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "3"
+              }
+            },
+            {
+              "title": "+",
+              "tint": "#E95420",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "+"
+              }
+            },
+            {
+              "title": "0",
+              "tint": "#FFFFFF",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "0"
+              }
+            },
+            {
+              "title": ".",
+              "tint": "#FFFFFF",
+              "action": {
+                "type": "append",
+                "key": "expr",
+                "text": "."
+              }
+            },
+            {
+              "title": "=",
+              "tint": "#E95420",
+              "action": {
+                "type": "calc",
+                "key": "result"
+              },
+              "span": 2
+            }
+          ]
+        },
+        {
+          "t": "note",
+          "text": "支持 + − × ÷ 与小数，长按 ⌫ 可清空。计算历史会保存在本地状态文件中。"
+        }
+      ]
+    }
+  }
+}

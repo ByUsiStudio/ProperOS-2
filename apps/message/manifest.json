@@ -1,0 +1,14 @@
+{
+  "id": "miao.byusistudio.message",
+  "name": "消息",
+  "version": "2.5",
+  "icon": "message",
+  "color": "#3E7BFF",
+  "developer": "ByUsi Studio · 北啊呢",
+  "summary": "短信与即时消息",
+  "entry": "ui/main.json",
+  "permissions": [],
+  "categories": [
+    "application"
+  ]
+}

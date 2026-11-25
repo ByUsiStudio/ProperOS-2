@@ -1,0 +1,618 @@
+{
+  "title": "设置",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "设置",
+      "widgets": [
+        {
+          "t": "stats",
+          "items": [
+            {
+              "value": "{{battery}}",
+              "label": "电池"
+            },
+            {
+              "value": "23 GB",
+              "label": "可用空间"
+            },
+            {
+              "value": "{{wifi}}",
+              "label": "WLAN"
+            }
+          ]
+        },
+        {
+          "t": "group",
+          "title": "网络与互联网"
+        },
+        {
+          "t": "switch",
+          "icon": "wifi",
+          "title": "WLAN",
+          "sub": "ProperOS-5G",
+          "key": "wifi",
+          "setting": "wifi"
+        },
+        {
+          "t": "switch",
+          "icon": "bluetooth",
+          "title": "蓝牙",
+          "sub": "未连接设备",
+          "key": "bt",
+          "setting": "bt"
+        },
+        {
+          "t": "row",
+          "icon": "signal",
+          "title": "移动网络",
+          "sub": "中国移动",
+          "value": "4G",
+          "to": "mobile"
+        },
+        {
+          "t": "group",
+          "title": "设备"
+        },
+        {
+          "t": "row",
+          "icon": "brightness",
+          "title": "显示与亮度",
+          "sub": "亮度、深色模式、休眠",
+          "to": "display"
+        },
+        {
+          "t": "row",
+          "icon": "volume",
+          "title": "声音与振动",
+          "sub": "媒体、铃声、勿扰",
+          "to": "sound"
+        },
+        {
+          "t": "row",
+          "icon": "battery",
+          "title": "电池",
+          "value": "{{battery}}",
+          "to": "battery"
+        },
+        {
+          "t": "group",
+          "title": "个性化"
+        },
+        {
+          "t": "switch",
+          "icon": "dnd",
+          "title": "深色模式",
+          "sub": "界面与系统应用",
+          "key": "dark",
+          "setting": "dark"
+        },
+        {
+          "t": "row",
+          "icon": "grid",
+          "title": "主屏与壁纸",
+          "sub": "图标布局、壁纸",
+          "to": "home"
+        },
+        {
+          "t": "group",
+          "title": "系统"
+        },
+        {
+          "t": "row",
+          "icon": "files",
+          "title": "存储",
+          "value": "23 GB / 64 GB",
+          "to": "storage"
+        },
+        {
+          "t": "row",
+          "icon": "update",
+          "title": "系统更新",
+          "sub": "A/B 双槽，失败自动回滚",
+          "to": "update"
+        },
+        {
+          "t": "row",
+          "icon": "about",
+          "title": "关于本机",
+          "to": "about"
+        },
+        {
+          "t": "spacer",
+          "h": 12
+        }
+      ]
+    },
+    "display": {
+      "title": "显示与亮度",
+      "widgets": [
+        {
+          "t": "slider",
+          "title": "屏幕亮度",
+          "key": "brightness",
+          "min": 5,
+          "max": 100,
+          "value": 70,
+          "setting": "brightness"
+        },
+        {
+          "t": "switch",
+          "title": "自动亮度",
+          "sub": "根据环境光调节",
+          "key": "auto_bright",
+          "on": 1
+        },
+        {
+          "t": "divider"
+        },
+        {
+          "t": "switch",
+          "icon": "dnd",
+          "title": "深色模式",
+          "key": "dark",
+          "setting": "dark"
+        },
+        {
+          "t": "switch",
+          "icon": "rotate",
+          "title": "自动旋转屏幕",
+          "key": "auto_rotate",
+          "on": 1
+        },
+        {
+          "t": "group",
+          "title": "休眠"
+        },
+        {
+          "t": "row",
+          "title": "屏幕超时",
+          "value": "30 秒",
+          "to": "timeout"
+        },
+        {
+          "t": "note",
+          "text": "降低亮度与缩短超时可延长续航。深色模式会同时应用到设置、文件、时钟等 .jspk 应用。"
+        }
+      ]
+    },
+    "timeout": {
+      "title": "屏幕超时",
+      "widgets": [
+        {
+          "t": "row",
+          "title": "15 秒",
+          "to": "display"
+        },
+        {
+          "t": "row",
+          "title": "30 秒",
+          "to": "display"
+        },
+        {
+          "t": "row",
+          "title": "1 分钟",
+          "to": "display"
+        },
+        {
+          "t": "row",
+          "title": "5 分钟",
+          "to": "display"
+        },
+        {
+          "t": "row",
+          "title": "永不",
+          "to": "display"
+        }
+      ]
+    },
+    "sound": {
+      "title": "声音与振动",
+      "widgets": [
+        {
+          "t": "slider",
+          "title": "媒体音量",
+          "key": "vol_media",
+          "min": 0,
+          "max": 100,
+          "value": 65,
+          "setting": "volume"
+        },
+        {
+          "t": "slider",
+          "title": "铃声音量",
+          "key": "vol_ring",
+          "min": 0,
+          "max": 100,
+          "value": 80
+        },
+        {
+          "t": "slider",
+          "title": "闹钟音量",
+          "key": "vol_alarm",
+          "min": 0,
+          "max": 100,
+          "value": 90
+        },
+        {
+          "t": "switch",
+          "icon": "dnd",
+          "title": "勿扰模式",
+          "sub": "仅允许收藏联系人",
+          "key": "dnd",
+          "setting": "dnd"
+        },
+        {
+          "t": "switch",
+          "title": "触摸振动",
+          "key": "haptic",
+          "on": 1
+        },
+        {
+          "t": "group",
+          "title": "铃声"
+        },
+        {
+          "t": "row",
+          "title": "来电铃声",
+          "value": "Classic",
+          "action": {
+            "type": "toast",
+            "text": "铃声选择器将在下个版本开放"
+          }
+        },
+        {
+          "t": "row",
+          "title": "通知声音",
+          "value": "默认",
+          "action": {
+            "type": "toast",
+            "text": "铃声选择器将在下个版本开放"
+          }
+        }
+      ]
+    },
+    "battery": {
+      "title": "电池",
+      "widgets": [
+        {
+          "t": "stats",
+          "items": [
+            {
+              "value": "{{battery}}",
+              "label": "当前电量"
+            },
+            {
+              "value": "9 小时",
+              "label": "预计可用"
+            },
+            {
+              "value": "正常",
+              "label": "电池健康"
+            }
+          ]
+        },
+        {
+          "t": "switch",
+          "title": "省电模式",
+          "sub": "限制后台活动",
+          "key": "saver",
+          "setting": "battery_saver"
+        },
+        {
+          "t": "switch",
+          "title": "优化充电",
+          "sub": "充到 80% 后放缓",
+          "key": "charge_limit",
+          "on": 1
+        },
+        {
+          "t": "group",
+          "title": "耗电排行"
+        },
+        {
+          "t": "row",
+          "icon": "browser",
+          "title": "浏览器",
+          "value": "18%"
+        },
+        {
+          "t": "row",
+          "icon": "message",
+          "title": "消息",
+          "value": "9%"
+        },
+        {
+          "t": "row",
+          "icon": "settings",
+          "title": "设置",
+          "value": "4%"
+        }
+      ]
+    },
+    "mobile": {
+      "title": "移动网络",
+      "widgets": [
+        {
+          "t": "switch",
+          "title": "移动数据",
+          "key": "data",
+          "on": 1,
+          "setting": "data"
+        },
+        {
+          "t": "switch",
+          "title": "数据漫游",
+          "key": "roaming"
+        },
+        {
+          "t": "group",
+          "title": "运营商"
+        },
+        {
+          "t": "row",
+          "title": "中国移动",
+          "sub": "4G · 已注册",
+          "value": "信号良好"
+        },
+        {
+          "t": "row",
+          "title": "网络模式",
+          "value": "5G/4G/3G 自动",
+          "to": "mobile"
+        },
+        {
+          "t": "note",
+          "text": "移动网络由 ModemManager 管理，需要设备树中声明 modem 节点。QEMU 环境中此项为占位。"
+        }
+      ]
+    },
+    "home": {
+      "title": "主屏与壁纸",
+      "widgets": [
+        {
+          "t": "group",
+          "title": "壁纸"
+        },
+        {
+          "t": "tiles",
+          "cols": 3,
+          "cell": 84,
+          "items": [
+            {
+              "title": "晨雾",
+              "tint": "#4A6FA5",
+              "action": {
+                "type": "setting",
+                "key": "wallpaper",
+                "value": "mist"
+              }
+            },
+            {
+              "title": "暮色",
+              "tint": "#8C5A8C",
+              "action": {
+                "type": "setting",
+                "key": "wallpaper",
+                "value": "dusk"
+              }
+            },
+            {
+              "title": "青竹",
+              "tint": "#3F7A5E",
+              "action": {
+                "type": "setting",
+                "key": "wallpaper",
+                "value": "bamboo"
+              }
+            }
+          ]
+        },
+        {
+          "t": "group",
+          "title": "桌面"
+        },
+        {
+          "t": "switch",
+          "title": "显示搜索栏",
+          "key": "show_search",
+          "on": 1
+        },
+        {
+          "t": "switch",
+          "title": "图标名称",
+          "key": "show_label",
+          "on": 1
+        },
+        {
+          "t": "switch",
+          "title": "主屏循环滚动",
+          "key": "loop_pages",
+          "on": 1
+        },
+        {
+          "t": "row",
+          "title": "图标大小",
+          "value": "标准",
+          "to": "home"
+        },
+        {
+          "t": "note",
+          "text": "主屏、Dock 与快捷设置由 properos-shell 提供，应用图标来自 .jspk 包与 .plink 快捷方式。"
+        }
+      ]
+    },
+    "storage": {
+      "title": "存储",
+      "widgets": [
+        {
+          "t": "progress",
+          "pct": 64,
+          "text": "已用 41 GB / 64 GB"
+        },
+        {
+          "t": "group",
+          "title": "分类"
+        },
+        {
+          "t": "row",
+          "icon": "photos",
+          "title": "图片",
+          "value": "8.2 GB"
+        },
+        {
+          "t": "row",
+          "icon": "music",
+          "title": "音频",
+          "value": "2.1 GB"
+        },
+        {
+          "t": "row",
+          "icon": "download",
+          "title": "下载",
+          "value": "1.4 GB"
+        },
+        {
+          "t": "row",
+          "icon": "files",
+          "title": "应用",
+          "value": "12 GB"
+        },
+        {
+          "t": "row",
+          "icon": "chip",
+          "title": "系统",
+          "value": "4.0 GB"
+        },
+        {
+          "t": "group",
+          "title": "存储位置"
+        },
+        {
+          "t": "keyvalue",
+          "key": "/data",
+          "value": "ext4 · 可清空"
+        },
+        {
+          "t": "keyvalue",
+          "key": "系统分区",
+          "value": "只读 squashfs"
+        },
+        {
+          "t": "button",
+          "text": "清理缓存",
+          "kind": "secondary",
+          "action": {
+            "type": "toast",
+            "text": "已清理 1.8 GB 缓存"
+          }
+        }
+      ]
+    },
+    "update": {
+      "title": "系统更新",
+      "widgets": [
+        {
+          "t": "image",
+          "icon": "update",
+          "title": "ProperOS 2.5",
+          "sub": "build 2026.11.26"
+        },
+        {
+          "t": "keyvalue",
+          "key": "当前槽位",
+          "value": "A"
+        },
+        {
+          "t": "keyvalue",
+          "key": "备用槽位",
+          "value": "B（空）"
+        },
+        {
+          "t": "note",
+          "text": "更新写入备用槽，重启后由 ProLoader 校验并切换；启动失败会自动回滚到上一槽。"
+        },
+        {
+          "t": "button",
+          "text": "检查更新",
+          "action": {
+            "type": "toast",
+            "text": "已是最新版本"
+          }
+        },
+        {
+          "t": "button",
+          "text": "复制 A 槽到 B 槽",
+          "kind": "secondary",
+          "action": {
+            "type": "run",
+            "cmd": "properos-bootctl clone a b >/tmp/clone.log 2>&1 &"
+          }
+        }
+      ]
+    },
+    "about": {
+      "title": "关于本机",
+      "widgets": [
+        {
+          "t": "image",
+          "icon": "chip",
+          "title": "ProperOS 2.5",
+          "sub": "移动操作系统 · ARM64"
+        },
+        {
+          "t": "card",
+          "children": [
+            {
+              "t": "keyvalue",
+              "key": "设备名称",
+              "value": "properos"
+            },
+            {
+              "t": "keyvalue",
+              "key": "系统版本",
+              "value": "2.5 (2026.11)"
+            },
+            {
+              "t": "keyvalue",
+              "key": "内核",
+              "value": "Linux 7.3.6"
+            },
+            {
+              "t": "keyvalue",
+              "key": "应用格式",
+              "value": "jspk 1.0"
+            },
+            {
+              "t": "keyvalue",
+              "key": "开发者",
+              "value": "ByUsi Studio · 北啊呢"
+            }
+          ]
+        },
+        {
+          "t": "spacer",
+          "h": 6
+        },
+        {
+          "t": "button",
+          "text": "系统信息",
+          "kind": "secondary",
+          "action": {
+            "type": "run",
+            "cmd": "uname -a > /data/home/.last-uname 2>&1"
+          }
+        },
+        {
+          "t": "button",
+          "text": "开源许可",
+          "kind": "ghost",
+          "action": {
+            "type": "toast",
+            "text": "GPL-2.0 · 见 /usr/share/licenses"
+          }
+        }
+      ]
+    }
+  }
+}

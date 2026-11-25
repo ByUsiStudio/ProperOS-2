@@ -1,0 +1,132 @@
+{
+  "title": "时钟",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "时钟",
+      "widgets": [
+        {
+          "t": "spacer",
+          "h": 28
+        },
+        {
+          "t": "text",
+          "text": "{{time}}",
+          "align": "center",
+          "px": 76,
+          "color": "#16181D"
+        },
+        {
+          "t": "text",
+          "text": "{{date}}",
+          "align": "center",
+          "px": 16
+        },
+        {
+          "t": "spacer",
+          "h": 30
+        },
+        {
+          "t": "card",
+          "title": "世界时钟",
+          "children": [
+            {
+              "t": "keyvalue",
+              "key": "北京",
+              "value": "+08:00"
+            },
+            {
+              "t": "keyvalue",
+              "key": "伦敦",
+              "value": "+00:00"
+            },
+            {
+              "t": "keyvalue",
+              "key": "纽约",
+              "value": "-05:00"
+            }
+          ]
+        },
+        {
+          "t": "spacer",
+          "h": 10
+        },
+        {
+          "t": "tiles",
+          "cols": 2,
+          "cell": 84,
+          "items": [
+            {
+              "title": "闹钟",
+              "sub": "2 个已启用",
+              "icon": "clock",
+              "tint": "#E8A33D",
+              "to": "alarm"
+            },
+            {
+              "title": "秒表",
+              "sub": "00:00.00",
+              "icon": "play",
+              "tint": "#3E7BFF",
+              "to": "stopwatch"
+            }
+          ]
+        }
+      ]
+    },
+    "alarm": {
+      "title": "闹钟",
+      "widgets": [
+        {
+          "t": "row",
+          "title": "07:00",
+          "sub": "工作日",
+          "value": "开"
+        },
+        {
+          "t": "row",
+          "title": "09:30",
+          "sub": "周末",
+          "value": "关"
+        },
+        {
+          "t": "button",
+          "text": "+ 新建闹钟",
+          "action": {
+            "type": "toast",
+            "text": "闹钟编辑将在下一个版本开放"
+          }
+        }
+      ]
+    },
+    "stopwatch": {
+      "title": "秒表",
+      "widgets": [
+        {
+          "t": "text",
+          "text": "00:00.00",
+          "align": "center",
+          "px": 64,
+          "color": "#16181D"
+        },
+        {
+          "t": "button",
+          "text": "开始",
+          "action": {
+            "type": "toast",
+            "text": "已开始计时"
+          }
+        },
+        {
+          "t": "button",
+          "text": "复位",
+          "kind": "secondary",
+          "action": {
+            "type": "toast",
+            "text": "已复位"
+          }
+        }
+      ]
+    }
+  }
+}

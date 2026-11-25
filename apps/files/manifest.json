@@ -1,0 +1,16 @@
+{
+  "id": "miao.byusistudio.files",
+  "name": "文件",
+  "version": "2.5",
+  "icon": "files",
+  "color": "#2FA84F",
+  "developer": "ByUsi Studio · 北啊呢",
+  "summary": "浏览存储与最近文件",
+  "entry": "ui/main.json",
+  "permissions": [
+    "run"
+  ],
+  "categories": [
+    "application"
+  ]
+}

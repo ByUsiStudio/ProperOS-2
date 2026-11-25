@@ -1,0 +1,16 @@
+{
+  "id": "miao.byusistudio.welcome",
+  "name": "欢迎",
+  "version": "2.5",
+  "icon": "about",
+  "color": "#3584E4",
+  "developer": "ByUsi Studio · 北啊呢",
+  "summary": "首次启动引导",
+  "entry": "ui/main.json",
+  "permissions": [
+    "run"
+  ],
+  "categories": [
+    "system"
+  ]
+}

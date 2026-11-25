@@ -1,0 +1,104 @@
+{
+  "title": "应用商店",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "应用商店",
+      "widgets": [
+        {
+          "t": "input",
+          "key": "q",
+          "hint": "搜索应用与组件"
+        },
+        {
+          "t": "tiles",
+          "cols": 2,
+          "cell": 82,
+          "items": [
+            {
+              "title": "推荐",
+              "sub": "本周精选",
+              "icon": "store",
+              "tint": "#7C4DFF",
+              "to": "list"
+            },
+            {
+              "title": "已安装",
+              "sub": "9 个应用",
+              "icon": "check",
+              "tint": "#2FA84F",
+              "to": "list"
+            }
+          ]
+        },
+        {
+          "t": "group",
+          "title": "系统组件"
+        },
+        {
+          "t": "row",
+          "icon": "settings",
+          "title": "设置",
+          "sub": "jspk · 已安装",
+          "value": "2.5"
+        },
+        {
+          "t": "row",
+          "icon": "files",
+          "title": "文件",
+          "sub": "jspk · 已安装",
+          "value": "2.5"
+        },
+        {
+          "t": "row",
+          "icon": "terminal",
+          "title": "终端",
+          "sub": "ppkg · 已安装",
+          "value": "2.5"
+        },
+        {
+          "t": "note",
+          "text": "应用以 .jspk 交付（ZIP + 声明式界面），系统应用在安装时自动部署到 /usr/share/properos/apps。"
+        }
+      ]
+    },
+    "list": {
+      "title": "应用列表",
+      "widgets": [
+        {
+          "t": "row",
+          "icon": "calc",
+          "title": "计算器",
+          "sub": "jspk · 1.0 KiB",
+          "value": "打开",
+          "action": {
+            "type": "run",
+            "cmd": "properos-jspk /usr/share/properos/apps/calc.jspk &"
+          }
+        },
+        {
+          "t": "row",
+          "icon": "clock",
+          "title": "时钟",
+          "sub": "jspk · 1.1 KiB",
+          "value": "打开",
+          "action": {
+            "type": "run",
+            "cmd": "properos-jspk /usr/share/properos/apps/clock.jspk &"
+          }
+        },
+        {
+          "t": "row",
+          "icon": "camera",
+          "title": "相机",
+          "sub": "jspk · 0.9 KiB",
+          "value": "打开",
+          "action": {
+            "type": "run",
+            "cmd": "properos-jspk /usr/share/properos/apps/camera.jspk &"
+          }
+        }
+      ]
+    }
+  }
+}

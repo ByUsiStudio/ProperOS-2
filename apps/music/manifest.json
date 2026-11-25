@@ -1,0 +1,14 @@
+{
+  "id": "miao.byusistudio.music",
+  "name": "音乐",
+  "version": "2.5",
+  "icon": "music",
+  "color": "#9B59B6",
+  "developer": "ByUsi Studio · 北啊呢",
+  "summary": "本地音乐播放器",
+  "entry": "ui/main.json",
+  "permissions": [],
+  "categories": [
+    "application"
+  ]
+}

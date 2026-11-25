@@ -1,0 +1,168 @@
+{
+  "title": "文件",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "文件",
+      "widgets": [
+        {
+          "t": "progress",
+          "pct": 64,
+          "text": "内部存储 · 已用 41 GB / 64 GB"
+        },
+        {
+          "t": "grid",
+          "cols": 4,
+          "icon": 44,
+          "items": [
+            {
+              "title": "图片",
+              "icon": "photos",
+              "tint": "#E95420",
+              "to": "images"
+            },
+            {
+              "title": "音频",
+              "icon": "music",
+              "tint": "#9B59B6",
+              "to": "audio"
+            },
+            {
+              "title": "下载",
+              "icon": "download",
+              "tint": "#2FA84F",
+              "to": "downloads"
+            },
+            {
+              "title": "文档",
+              "icon": "notes",
+              "tint": "#3E7BFF",
+              "to": "docs"
+            }
+          ]
+        },
+        {
+          "t": "group",
+          "title": "最近"
+        },
+        {
+          "t": "row",
+          "icon": "photos",
+          "title": "IMG_20261124_1832.jpg",
+          "sub": "图片 · 3.2 MB · 昨天"
+        },
+        {
+          "t": "row",
+          "icon": "notes",
+          "title": "会议记录.md",
+          "sub": "文本 · 12 KB · 昨天"
+        },
+        {
+          "t": "row",
+          "icon": "download",
+          "title": "properos-2.5-arm64.iso",
+          "sub": "镜像 · 216 MB · 11 月 20 日"
+        },
+        {
+          "t": "group",
+          "title": "位置"
+        },
+        {
+          "t": "row",
+          "icon": "files",
+          "title": "主目录",
+          "sub": "/data/home",
+          "action": {
+            "type": "toast",
+            "text": "/data/home"
+          }
+        },
+        {
+          "t": "row",
+          "icon": "chip",
+          "title": "系统分区",
+          "sub": "只读 · squashfs"
+        },
+        {
+          "t": "note",
+          "text": "文件应用通过 properd 提供的 storage 接口访问 /data；系统分区只读，避免误删导致无法启动。"
+        }
+      ]
+    },
+    "images": {
+      "title": "图片",
+      "widgets": [
+        {
+          "t": "grid",
+          "cols": 3,
+          "icon": 56,
+          "items": [
+            {
+              "title": "IMG_1832",
+              "icon": "photos",
+              "tint": "#E95420"
+            },
+            {
+              "title": "IMG_1833",
+              "icon": "photos",
+              "tint": "#C74B1E"
+            },
+            {
+              "title": "IMG_1834",
+              "icon": "photos",
+              "tint": "#E08A2E"
+            }
+          ]
+        },
+        {
+          "t": "note",
+          "text": "缩略图由相册服务生成，当前版本使用占位图。"
+        }
+      ]
+    },
+    "audio": {
+      "title": "音频",
+      "widgets": [
+        {
+          "t": "row",
+          "title": "暂无音频文件",
+          "sub": "连接设备后会自动索引"
+        }
+      ]
+    },
+    "downloads": {
+      "title": "下载",
+      "widgets": [
+        {
+          "t": "row",
+          "icon": "download",
+          "title": "properos-2.5-arm64.iso",
+          "sub": "216 MB"
+        },
+        {
+          "t": "row",
+          "icon": "download",
+          "title": "sample.jspk",
+          "sub": "12 KB"
+        }
+      ]
+    },
+    "docs": {
+      "title": "文档",
+      "widgets": [
+        {
+          "t": "row",
+          "icon": "notes",
+          "title": "会议记录.md",
+          "sub": "12 KB"
+        },
+        {
+          "t": "row",
+          "icon": "notes",
+          "title": "设备移植.md",
+          "sub": "48 KB"
+        }
+      ]
+    }
+  }
+}

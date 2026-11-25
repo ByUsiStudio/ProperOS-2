@@ -1,0 +1,51 @@
+{
+  "title": "欢迎使用",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "欢迎使用",
+      "widgets": [
+        {
+          "t": "image",
+          "icon": "chip",
+          "title": "ProperOS 2.5",
+          "sub": "移动操作系统 · ARM64 · ByUsi Studio"
+        },
+        {
+          "t": "card",
+          "title": "开始之前",
+          "children": [
+            {
+              "t": "text",
+              "text": "系统应用全部以 .jspk 交付，桌面由 properos-shell 提供：顶部状态栏、底部 Dock、应用抽屉与快捷设置。"
+            },
+            {
+              "t": "text",
+              "text": "从屏幕顶部下滑打开快捷设置，从底部上滑打开应用抽屉，左右滑动切换主屏页。"
+            }
+          ]
+        },
+        {
+          "t": "spacer",
+          "h": 8
+        },
+        {
+          "t": "button",
+          "text": "打开设置",
+          "action": {
+            "type": "run",
+            "cmd": "properos-jspk /usr/share/properos/apps/settings.jspk &"
+          }
+        },
+        {
+          "t": "button",
+          "text": "完成",
+          "kind": "secondary",
+          "action": {
+            "type": "close"
+          }
+        }
+      ]
+    }
+  }
+}

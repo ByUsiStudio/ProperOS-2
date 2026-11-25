@@ -1,6 +1,7 @@
 /* ProperOS 2.5 Mobile · ppkg
  *
- * 角色：系统级包管理器（对标 dpkg）。包格式 .jspk：
+ * 角色：系统级包管理器（对标 dpkg）。包格式 .ppkg（ZIP + SHA-256 + 可选签名）。
+ * 注意：.jspk 是应用包（properos-jspk 运行），两者不要混用。
  *   PKGINFO      元数据（name/version/arch/description/depends）
  *   FILES        payload 内全部文件的 SHA-256 清单
  *   payload/     安装文件树
@@ -21,11 +22,11 @@ static void usage(void)
 {
     printf("ProperOS ppkg %s — 系统包管理器\n\n", PROPEROS_VERSION);
     printf("用法:\n");
-    printf("  ppkg install <包.jspk>    安装/升级\n");
+    printf("  ppkg install <包.ppkg>    安装/升级\n");
     printf("  ppkg remove <包名>        卸载\n");
     printf("  ppkg list                 已安装包\n");
     printf("  ppkg info <包名>          包信息\n");
-    printf("  ppkg verify <包.jspk>     校验（哈希 + 可选签名）\n");
+    printf("  ppkg verify <包.ppkg>     校验（哈希 + 可选签名）\n");
     printf("  ppkg build <目录> <输出>  构建包\n");
 }
 

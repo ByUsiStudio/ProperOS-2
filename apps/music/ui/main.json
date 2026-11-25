@@ -1,0 +1,74 @@
+{
+  "title": "音乐",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "音乐",
+      "widgets": [
+        {
+          "t": "image",
+          "icon": "music",
+          "title": "Night Drive",
+          "sub": "ByUsi Studio"
+        },
+        {
+          "t": "progress",
+          "pct": 42,
+          "text": "01:32 / 03:48"
+        },
+        {
+          "t": "tiles",
+          "cols": 3,
+          "cell": 66,
+          "items": [
+            {
+              "title": "上一首",
+              "icon": "skip",
+              "tint": "#4A3B57",
+              "action": {
+                "type": "toast",
+                "text": "上一首"
+              }
+            },
+            {
+              "title": "播放",
+              "icon": "play",
+              "tint": "#9B59B6",
+              "action": {
+                "type": "toast",
+                "text": "正在播放"
+              }
+            },
+            {
+              "title": "下一首",
+              "icon": "skip",
+              "tint": "#4A3B57",
+              "action": {
+                "type": "toast",
+                "text": "下一首"
+              }
+            }
+          ]
+        },
+        {
+          "t": "group",
+          "title": "播放列表"
+        },
+        {
+          "t": "row",
+          "icon": "music",
+          "title": "Night Drive",
+          "sub": "ByUsi Studio",
+          "value": "03:48"
+        },
+        {
+          "t": "row",
+          "icon": "music",
+          "title": "Morning Light",
+          "sub": "ByUsi Studio",
+          "value": "04:12"
+        }
+      ]
+    }
+  }
+}
