@@ -1,0 +1,23 @@
+[Unit]
+Description=ProperOS 2.5 Installer (live media)
+After=multi-user.target network-online.target
+Wants=network-online.target
+ConditionPathExists=/media/cdrom/live/rootfs.squashfs
+ConditionPathExists=!/var/lib/properos/installed
+
+[Service]
+Type=idle
+# 先换 UTF-8 控制台字体（80x25），否则 whiptail 边框与中文都会显示为乱码
+ExecStartPre=-/usr/local/sbin/properos-tty-console tty1 tty2 tty3 tty4 tty5 tty6
+ExecStart=/usr/local/sbin/properos-install
+StandardInput=tty-force
+StandardOutput=tty
+StandardError=tty
+TTYPath=/dev/tty1
+TTYReset=yes
+TTYVHangup=yes
+TTYVTDisallocate=yes
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

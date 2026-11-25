@@ -1,0 +1,29 @@
+ProperOS 2.5 Mobile
+===================
+
+开发者：ByUsi Studio · 北啊呢
+应用包名前缀：miao.byusistudio.***
+
+本项目在架构语义上延续 ProperOS 2（https://gitee.com/properos/properos2），
+但运行底座由 Android iApp 应用替换为 Linux 内核 + systemd + 标准用户空间，
+并把原项目中的 ProLoader、StBoot、ppkg、codeProcessor 等概念实现为原生组件：
+
+  src/proloader   ProLoader   引导阶段 1（A/B 槽、校验、挂载）
+  src/stboot      StBoot      引导阶段 2（数据分区、可写层、switch_root）
+  src/properd     properd     服务与应用管理器
+  src/papp        papp        应用包与沙箱运行时
+  src/ppkg        ppkg        系统包管理器
+  src/shell       properos-shell  framebuffer 启动器
+
+许可
+----
+与上游保持一致，采用 MIT 与 AGPL-3.0 双协议。二次分发须标注原始仓库地址：
+
+  https://gitee.com/properos/properos2
+
+内核部分（Linux 7.3.6）遵循 GPL-2.0，源码可从
+https://mirrors.tuna.tsinghua.edu.cn/kernel/v7.x/ 获取，
+配置文件见 kernel/properos_2.5_arm64_defconfig 与 kernel/properos_2.5_defconfig。
+
+用户空间基于 Debian bookworm（各软件包遵循其自身许可）。
+字体图集由 Noto Sans CJK（SIL OFL 1.1）与 DejaVu（Bitstream Vera 许可）烘焙。

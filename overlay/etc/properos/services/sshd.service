@@ -1,0 +1,5 @@
+# 由 properd 托管的 SSH 服务（systemd 的 ssh.service 已在镜像中屏蔽）
+Name=sshd
+Exec=/bin/sh -c 'mkdir -p /run/sshd; exec /usr/sbin/sshd -D -e'
+User=root
+Restart=always

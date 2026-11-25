@@ -1,0 +1,103 @@
+#!/bin/busybox sh
+# ProperOS 2.5 live initramfs init
+# 职责：找到安装介质 → 用 overlayfs 组装可写根 → switch_root 到 live 系统
+# 注意：此阶段没有字体/终端初始化，所有提示必须是纯 ASCII，否则会显示成方块。
+set -e
+
+/bin/busybox --install -s /bin
+
+mount -t proc     proc /proc
+mount -t sysfs    sys  /sys
+mount -t devtmpfs dev  /dev 2>/dev/null || true
+mkdir -p /run /tmp /cdrom /ro /overlay /newroot
+mount -t tmpfs -o mode=0755 tmpfs /run
+
+echo "=============================================="
+echo "  ProperOS 2.5  -  live installer bootstrap"
+echo "=============================================="
+
+# 等待块设备就绪（USB / 光驱枚举有延迟，最多 10 秒）
+i=0
+while [ $i -lt 20 ]; do
+    if [ -e /dev/sr0 ] || [ -e /dev/sda ] || [ -e /dev/vda ] || [ -e /dev/mmcblk0 ]; then
+        break
+    fi
+    sleep 0.5
+    i=$((i+1))
+done
+
+# 枚举所有块设备：光驱优先，其次 U 盘 / SD 卡 / 虚拟盘
+list_blockdevs() {
+    for d in /dev/sr* /dev/sd* /dev/vd* /dev/hd* /dev/nvme*n* /dev/mmcblk*; do
+        [ -b "$d" ] || continue
+        case "$d" in
+            *[0-9]|*p[0-9]|*sr*) echo "$d" ;;
+        esac
+    done
+}
+
+MEDIA=""
+for pass in 1 2 3; do
+    for dev in $(list_blockdevs); do
+        # pass1 只试光驱，pass2 只试整盘，pass3 再兜底重试一次（慢速 U 盘）
+        case "$pass:$dev" in
+            1:/dev/sr*) ;;
+            1:*) continue ;;
+            2:/dev/sr*) continue ;;
+        esac
+        if mount -t iso9660 -o ro "$dev" /cdrom 2>/dev/null; then
+            if [ -f /cdrom/live/rootfs.squashfs ]; then
+                MEDIA="$dev"
+                break
+            fi
+            umount /cdrom 2>/dev/null || true
+        fi
+    done
+    [ -n "$MEDIA" ] && break
+    [ "$pass" = "1" ] && sleep 1
+done
+
+if [ -z "$MEDIA" ]; then
+    echo "[FATAL] installation media with live/rootfs.squashfs not found"
+    echo "Block devices seen by kernel:"
+    list_blockdevs | while read -r d; do
+        echo "  $d  ($(cat "/sys/class/block/$(basename "$d")/size" 2>/dev/null || echo '?') sectors)"
+    done
+    echo "Dropping to emergency shell. Type 'exit' to panic."
+    exec /bin/sh
+fi
+echo "[ OK ] installation media: $MEDIA"
+
+mount -t squashfs -o ro,loop /cdrom/live/rootfs.squashfs /ro
+echo "[ OK ] read-only root mounted"
+
+# 内存盘作为可写上层，live 期间所有修改不落盘
+mount -t tmpfs -o mode=0755 tmpfs /overlay
+mkdir -p /overlay/upper /overlay/work
+mount -t overlay overlay \
+    -o lowerdir=/ro,upperdir=/overlay/upper,workdir=/overlay/work /newroot
+echo "[ OK ] overlay root assembled"
+
+# ---- live 专用改动：全部写进 overlay 上层，掉电即弃，不进入 squashfs ----
+# 1) 清空 fstab：目标机的 LABEL=PROPEROS / PROPEROS-DATA 在安装介质上并不存在，
+#    systemd 会一直等 dev-disk-by\x2dlabel 设备，最后落进 emergency mode。
+: > /newroot/etc/fstab
+mkdir -p /newroot/etc/systemd/system
+# 2) 安装器独占 tty1 与 framebuffer：屏蔽普通 getty 和桌面启动器
+ln -sf /dev/null /newroot/etc/systemd/system/getty@tty1.service
+ln -sf /dev/null /newroot/etc/systemd/system/properos-shell.service
+
+# 注意：不能放在 /run 下——systemd 会用 tmpfs 覆盖 /run，导致安装器找不到介质
+mkdir -p /newroot/media/cdrom
+mount --move /cdrom /newroot/media/cdrom
+
+# 把只读的 squashfs 根 bind 出来给安装器用。安装器必须拷贝这一份"纯净"系统，
+# 而不是 overlay 出来的运行根——后者带着 live 专用的改动（例如被 mask 掉的
+# 单元、空的 /etc/fstab、/ro 与 /overlay 挂载点），装到设备上会直接坏掉。
+mkdir -p /newroot/media/live-root
+mount --bind /ro /newroot/media/live-root
+mount --move /proc  /newroot/proc 2>/dev/null || true
+mount --move /sys   /newroot/sys  2>/dev/null || true
+mount --move /dev   /newroot/dev  2>/dev/null || true
+
+exec switch_root /newroot /sbin/init

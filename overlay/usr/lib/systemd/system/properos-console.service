@@ -1,0 +1,15 @@
+[Unit]
+Description=ProperOS console font (80x25 Unicode)
+Documentation=file:///usr/share/doc/properos/README.md
+DefaultDependencies=no
+After=local-fs.target
+Before=getty@tty1.service getty@tty2.service properos-shell.service
+ConditionPathExists=/usr/local/sbin/properos-tty-console
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/properos-tty-console tty1 tty2 tty3 tty4 tty5 tty6
+
+[Install]
+WantedBy=multi-user.target

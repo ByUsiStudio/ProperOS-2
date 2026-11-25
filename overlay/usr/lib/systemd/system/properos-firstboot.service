@@ -1,0 +1,16 @@
+[Unit]
+Description=ProperOS first boot setup
+Documentation=file:///usr/lib/properos/firstboot
+ConditionPathExists=/data/.first-boot
+After=local-fs.target
+Before=properd.service
+Wants=network-pre.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/lib/properos/firstboot
+RemainAfterExit=yes
+TimeoutStartSec=120
+
+[Install]
+WantedBy=multi-user.target

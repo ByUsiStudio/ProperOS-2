@@ -1,0 +1,13 @@
+PRETTY_NAME="ProperOS 2.5 Mobile"
+NAME="ProperOS"
+VERSION_ID="2.5"
+VERSION="2.5 (Mobile)"
+VERSION_CODENAME=mobile
+ID=properos
+ID_LIKE=debian
+ANSI_COLOR="1;34"
+HOME_URL="https://gitee.com/properos/properos2"
+VENDOR="ByUsi Studio"
+VENDOR_NAME="ByUsi Studio"
+DEVELOPER="北啊呢"
+APPLICATION_ID_PREFIX="miao.byusistudio"

@@ -1,0 +1,23 @@
+[Unit]
+Description=ProperOS service and application manager
+Documentation=man:properd(8)
+After=local-fs.target
+Before=properos-shell.service
+ConditionPathExists=/usr/sbin/properd
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/properd
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=2
+KillMode=mixed
+TimeoutStopSec=10
+
+# 服务管理器本身以 root 运行，但不获得额外能力
+NoNewPrivileges=yes
+ProtectHome=no
+ProtectSystem=no
+
+[Install]
+WantedBy=multi-user.target

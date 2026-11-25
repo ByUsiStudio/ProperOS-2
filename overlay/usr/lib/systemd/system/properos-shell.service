@@ -1,0 +1,26 @@
+[Unit]
+Description=ProperOS mobile launcher (framebuffer)
+After=properd.service systemd-udev-settle.service
+Wants=properd.service
+ConditionPathExists=/dev/fb0
+Conflicts=getty@tty7.service
+
+[Service]
+Type=simple
+# 启动器直接写 /dev/fb0，必须把前台 VT 切到 tty7：留在 tty1 会被 getty 的
+# 控制台输出一帧帧盖掉（fbcon 会重绘整屏）。
+ExecStartPre=-/bin/sh -c 'command -v chvt >/dev/null && chvt 7 || true'
+ExecStart=/usr/bin/properos-shell
+ExecStopPost=-/bin/sh -c 'command -v chvt >/dev/null && chvt 1 || true' 
+TTYPath=/dev/tty7
+StandardInput=tty
+StandardOutput=journal
+StandardError=journal
+Restart=on-failure
+RestartSec=3
+# 启动器直接写 framebuffer，控制台输出会覆盖画面，故不占用 tty1
+TTYReset=yes
+TTYVHangup=yes
+
+[Install]
+WantedBy=multi-user.target
