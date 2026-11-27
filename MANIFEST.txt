@@ -1,0 +1,35 @@
+ProperOS 25.0.0 完整资源清单 (MANIFEST)
+============================================================
+总文件数: 199855
+总字节数: 3988386246 (3.71 GiB)
+
+--- 各目录规模 ---
+README.md                               1 文件      4.05 KiB
+build-artifacts/                               71 文件      6.97 MiB
+kernel/                                    199479 文件   3673.90 MiB
+system/                                       272 文件    122.69 MiB
+vm-test/                                       32 文件      0.06 MiB
+
+--- 顶层完整列表 ---
+./  (1 files)
+  build-artifacts/  (0 files)
+    build-artifacts/initramfs-arm64/  (1 files)
+    build-artifacts/initramfs-host/  (1 files)
+    build-artifacts/initramfs-live-arm64/  (1 files)
+  kernel/  (0 files)
+    kernel/arm64/  (28 files)
+    kernel/host/  (15 files)
+    kernel/source-tarball/  (1 files)
+  system/  (3 files)
+    system/apps/  (0 files)
+    system/build/  (7 files)
+    system/container/  (2 files)
+    system/dist/  (1 files)
+    system/docs/  (11 files)
+    system/installer/  (6 files)
+    system/kernel/  (2 files)
+    system/overlay/  (0 files)
+    system/site/  (5 files)
+    system/src/  (1 files)
+    system/tools/  (7 files)
+  vm-test/  (32 files)

@@ -1,0 +1,21 @@
+# 构建产物
+dist/
+build/out/
+*.iso
+*.sha256
+*.img
+*.qcow2
+
+# 内核与 rootfs 工作目录
+linux-*/
+rootfs/
+initramfs/
+iso/
+iso-auto/
+*.tar.xz
+*.log
+
+# 编辑器
+.idea/
+.vscode/
+*.swp

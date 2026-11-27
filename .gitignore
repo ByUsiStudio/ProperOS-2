@@ -5,7 +5,6 @@ build/out/
 *.sha256
 *.img
 *.qcow2
-delivery/
 
 # 内核与 rootfs 工作目录
 linux-*/
@@ -15,12 +14,11 @@ iso/
 iso-auto/
 *.tar.xz
 *.log
-*.tar.zst
 
 # 编辑器
 .idea/
 .vscode/
 *.swp
-
-# 其它
-*.bak
+*.tar.zst
+*.zip
+system/delivery/
