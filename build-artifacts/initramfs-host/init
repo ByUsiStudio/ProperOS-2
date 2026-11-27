@@ -1,0 +1,63 @@
+#!/bin/busybox sh
+# ProperOS 2.5 live initramfs init
+# 职责：找到安装介质 → 用 overlayfs 组装可写根 → switch_root 到 live 系统
+set -e
+
+/bin/busybox --install -s /bin
+
+mount -t proc     proc /proc
+mount -t sysfs    sys  /sys
+mount -t devtmpfs dev  /dev 2>/dev/null || true
+mkdir -p /run /tmp /cdrom /ro /overlay /newroot
+mount -t tmpfs -o mode=0755 tmpfs /run
+
+echo "=============================================="
+echo "  ProperOS 2.5  ·  live installer bootstrap"
+echo "=============================================="
+
+# 等待块设备就绪（USB / 光驱枚举有延迟）
+i=0
+while [ $i -lt 20 ]; do
+    [ -e /dev/sr0 ] && break
+    sleep 0.5
+    i=$((i+1))
+done
+
+MEDIA=""
+for dev in /dev/sr0 /dev/sr1 /dev/vda /dev/vdb /dev/sda /dev/sdb /dev/nvme0n1; do
+    [ -b "$dev" ] || continue
+    if mount -t iso9660 -o ro "$dev" /cdrom 2>/dev/null; then
+        if [ -f /cdrom/live/rootfs.squashfs ]; then
+            MEDIA="$dev"
+            break
+        fi
+        umount /cdrom 2>/dev/null || true
+    fi
+done
+
+if [ -z "$MEDIA" ]; then
+    echo "[FATAL] 未找到包含 live/rootfs.squashfs 的安装介质"
+    echo "可用块设备："
+    ls /dev | grep -E '^(sd|vd|nvme|sr)' || true
+    exec /bin/sh
+fi
+echo "[ OK ] 安装介质: $MEDIA"
+
+mount -t squashfs -o ro,loop /cdrom/live/rootfs.squashfs /ro
+echo "[ OK ] 只读根已挂载"
+
+# 内存盘作为可写上层，live 期间所有修改不落盘
+mount -t tmpfs -o mode=0755 tmpfs /overlay
+mkdir -p /overlay/upper /overlay/work
+mount -t overlay overlay \
+    -o lowerdir=/ro,upperdir=/overlay/upper,workdir=/overlay/work /newroot
+echo "[ OK ] overlay 根已组装"
+
+# 注意：不能放在 /run 下——systemd 会用 tmpfs 覆盖 /run，导致安装器找不到介质
+mkdir -p /newroot/media/cdrom
+mount --move /cdrom /newroot/media/cdrom
+mount --move /proc  /newroot/proc 2>/dev/null || true
+mount --move /sys   /newroot/sys  2>/dev/null || true
+mount --move /dev   /newroot/dev  2>/dev/null || true
+
+exec switch_root /newroot /sbin/init
