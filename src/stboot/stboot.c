@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · StBoot
+/* ProperOS 25.0.0 Mobile · StBoot
  *
  * 角色：引导阶段 2，接管 ProLoader 挂载好的只读系统分区，完成：
  *   1. 挂载 /data 数据分区（读写）

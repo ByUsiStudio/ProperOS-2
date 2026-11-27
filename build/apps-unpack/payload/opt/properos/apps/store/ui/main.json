@@ -1,0 +1,54 @@
+{
+  "title": "应用商店",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "应用商店",
+      "widgets": [
+        {
+          "t": "group",
+          "title": "已安装应用（papp）"
+        },
+        {
+          "t": "rows",
+          "src": "pkg.installed",
+          "rowh": 60,
+          "empty": "/data/apps 下没有目录形态应用"
+        },
+        {
+          "t": "group",
+          "title": "系统应用（.jspk）"
+        },
+        {
+          "t": "rows",
+          "src": "pkg.apps",
+          "rowh": 58
+        },
+        {
+          "t": "group",
+          "title": "本地安装包"
+        },
+        {
+          "t": "rows",
+          "src": "pkg.local",
+          "rowh": 60,
+          "empty": "/data/home/Downloads 里没有 deb 或 ppkg"
+        },
+        {
+          "t": "group",
+          "title": "系统包（ppkg 数据库）"
+        },
+        {
+          "t": "rows",
+          "src": "pkg.db",
+          "rowh": 58,
+          "empty": "还没有安装任何系统包"
+        },
+        {
+          "t": "note",
+          "text": "点击 deb 会先由 deb2ppkg 转成 ppkg 再安装；内核与引导相关包在 Pin、apt 钩子和 dpkg 代理三层被拦下。"
+        }
+      ]
+    }
+  }
+}

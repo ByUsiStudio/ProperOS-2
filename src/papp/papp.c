@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · papp
+/* ProperOS 25.0.0 Mobile · papp
  *
  * 角色：应用包管理与沙箱运行器。
  *   包格式 .papp = tar.gz，内含

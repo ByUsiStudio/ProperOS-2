@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=欢迎使用
+Name[zh_CN]=欢迎使用
+Comment=本机信息与上手引导
+Comment[zh_CN]=本机信息与上手引导
+Icon=application-x-executable
+Exec=/usr/bin/properos-app /opt/properos/apps/welcome
+TryExec=/usr/bin/properos-app
+Terminal=false
+Categories=Utility;
+StartupNotify=true
+StartupWMClass=properos-app
+X-ProperOS-App=miao.byusistudio.welcome
+X-ProperOS-Package=properos-app-welcome

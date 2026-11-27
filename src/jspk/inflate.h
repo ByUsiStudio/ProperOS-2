@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · DEFLATE 解压（RFC 1951）
+/* ProperOS 25.0.0 Mobile · DEFLATE 解压（RFC 1951）
  *
  * .jspk 是 ZIP 容器，aarch64 交叉工具链没有 zlib 静态库，这里自带一份
  * 只做解压的实现（store + fixed/dynamic Huffman）。

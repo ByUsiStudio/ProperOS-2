@@ -19,7 +19,7 @@ fi
 cd "$WORK/linux-$KVER"
 [ -f .config ] || make defconfig
 
-log "应用 ProperOS 2.5 内核配置"
+log "应用 ProperOS 25.0.0 内核配置"
 ./scripts/config \
   --enable NAMESPACES --enable UTS_NS --enable IPC_NS --enable PID_NS --enable NET_NS --enable USER_NS \
   --enable CGROUPS --enable CGROUP_PIDS --enable CGROUP_FREEZER --enable CGROUP_BPF --enable CGROUP_SCHED --enable MEMCG \
@@ -61,12 +61,12 @@ for k in CONFIG_OVERLAY_FS CONFIG_USER_NS CONFIG_CGROUPS CONFIG_VETH CONFIG_NF_N
     grep -q "^$k=y" .config || die "内核配置缺少 $k"
 done
 
-cp .config "$PROJECT/kernel/properos_2.5_defconfig"
+cp .config "$PROJECT/kernel/properos_25.0.0_defconfig"
 
 log "编译内核（-j$JOBS）"
 make -j"$JOBS" bzImage
 
 mkdir -p "$DIST/kernel"
-cp -f arch/x86/boot/bzImage "$DIST/kernel/vmlinuz-properos-2.5"
-cp -f .config "$DIST/kernel/config-2.5.0-properos"
-log "内核产物: $DIST/kernel/vmlinuz-properos-2.5 ($(du -h "$DIST/kernel/vmlinuz-properos-2.5" | cut -f1))"
+cp -f arch/x86/boot/bzImage "$DIST/kernel/vmlinuz-properos-25.0.0"
+cp -f .config "$DIST/kernel/config-25.0.0-properos"
+log "内核产物: $DIST/kernel/vmlinuz-properos-25.0.0 ($(du -h "$DIST/kernel/vmlinuz-properos-25.0.0" | cut -f1))"

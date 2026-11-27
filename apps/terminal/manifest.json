@@ -1,0 +1,16 @@
+{
+  "id": "miao.byusistudio.terminal",
+  "name": "终端",
+  "version": "25.0.0",
+  "icon": "terminal",
+  "color": "#1F232B",
+  "developer": "ByUsi Studio · 北啊呢",
+  "summary": "真实 PTY 终端",
+  "entry": "ui/main.json",
+  "permissions": [
+    "run"
+  ],
+  "categories": [
+    "application"
+  ]
+}

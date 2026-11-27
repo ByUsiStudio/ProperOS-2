@@ -1,5 +1,5 @@
 #!/bin/busybox sh
-# ProperOS 2.5 live initramfs init
+# ProperOS 25.0.0 live initramfs init
 # 职责：找到安装介质 → 用 overlayfs 组装可写根 → switch_root 到 live 系统
 # 注意：此阶段没有字体/终端初始化，所有提示必须是纯 ASCII，否则会显示成方块。
 set -e
@@ -13,7 +13,7 @@ mkdir -p /run /tmp /cdrom /ro /overlay /newroot
 mount -t tmpfs -o mode=0755 tmpfs /run
 
 echo "=============================================="
-echo "  ProperOS 2.5  -  live installer bootstrap"
+echo "  ProperOS 25.0.0  -  live installer bootstrap"
 echo "=============================================="
 
 # 等待块设备就绪（USB / 光驱枚举有延迟，最多 10 秒）
@@ -83,9 +83,10 @@ echo "[ OK ] overlay root assembled"
 #    systemd 会一直等 dev-disk-by\x2dlabel 设备，最后落进 emergency mode。
 : > /newroot/etc/fstab
 mkdir -p /newroot/etc/systemd/system
-# 2) 安装器独占 tty1 与 framebuffer：屏蔽普通 getty 和桌面启动器
+# 2) 安装器独占 tty1 与 framebuffer：屏蔽普通 getty、桌面启动器与 Plasma 会话
 ln -sf /dev/null /newroot/etc/systemd/system/getty@tty1.service
 ln -sf /dev/null /newroot/etc/systemd/system/properos-shell.service
+ln -sf /dev/null /newroot/etc/systemd/system/properos-session.service
 
 # 注意：不能放在 /run 下——systemd 会用 tmpfs 覆盖 /run，导致安装器找不到介质
 mkdir -p /newroot/media/cdrom

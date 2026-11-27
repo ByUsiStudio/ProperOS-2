@@ -1,0 +1,18 @@
+{
+  "id": "miao.byusistudio.files",
+  "name": "文件",
+  "version": "25.0.0",
+  "icon": "files",
+  "color": "#E95420",
+  "developer": "ByUsi Studio · 北啊呢",
+  "summary": "真实文件系统浏览",
+  "entry": "ui/main.json",
+  "permissions": [],
+  "categories": [
+    "application"
+  ],
+  "init": {
+    "cwd": "/data/home",
+    "newname": ""
+  }
+}

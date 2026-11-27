@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · 极简 JSON（jspk 清单与界面描述）
+/* ProperOS 25.0.0 Mobile · 极简 JSON（jspk 清单与界面描述）
  *
  * 只做解析与取值，不做序列化。支持对象/数组/字符串/数字/布尔/null，
  * 字符串支持 \\uXXXX 与代理对。

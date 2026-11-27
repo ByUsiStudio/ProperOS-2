@@ -1,0 +1,19 @@
+{
+  "id": "miao.byusistudio.message",
+  "name": "消息",
+  "version": "25.0.0",
+  "icon": "message",
+  "color": "#3E7BFF",
+  "developer": "ByUsi Studio · 北啊呢",
+  "summary": "本机会话与真实发送状态",
+  "entry": "ui/main.json",
+  "permissions": [],
+  "categories": [
+    "application"
+  ],
+  "init": {
+    "draft": "",
+    "thread": "",
+    "newnum": ""
+  }
+}

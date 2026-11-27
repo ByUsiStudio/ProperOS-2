@@ -1,0 +1,94 @@
+#!/bin/sh
+# ProperOS session launcher —— 启动真正的 Plasma Mobile（KWin + phoneshell）
+#
+# 有 DRM 设备时由 properos-session.service 调起；KWin 起不来（无 GL、权限、
+# 驱动问题）就回落到 framebuffer 版 properos-shell，保证设备永远有可用界面。
+#
+# 开发者：ByUsi Studio · 北啊呢
+
+# 没有 DRM 设备就没有 Wayland 可谈，直接交给 framebuffer 桌面
+if [ ! -e /dev/dri/card0 ]; then
+    echo "properos-session: 没有 /dev/dri/card0，使用 framebuffer 桌面" >&2
+    exec /usr/bin/properos-shell
+fi
+
+UID_N=$(id -u)
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$UID_N}"
+export XDG_SESSION_TYPE=wayland
+export XDG_CURRENT_DESKTOP=KDE
+export XDG_SESSION_DESKTOP=KDE
+export DESKTOP_SESSION=plasma
+
+# Qt / Plasma Mobile
+export QT_QPA_PLATFORM=wayland
+export QT_QPA_PLATFORMTHEME=KDE
+export QT_QUICK_CONTROLS_MOBILE=1
+export QT_QUICK_CONTROLS_STYLE=org.kde.breeze
+export PLASMA_PLATFORM="${PLASMA_PLATFORM:-phone:handset}"
+export PLASMA_DEFAULT_SHELL=org.kde.plasma.phoneshell
+export QT_SCALE_FACTOR="${QT_SCALE_FACTOR:-1}"
+export QT_AUTO_SCREEN_SCALE_FACTOR=0
+
+# 软件渲染：虚拟 GPU 只提供 dumb buffer，没有 virgl，用 Mesa 的 kms_swrast
+# （GBM 上的软件 OpenGL）。这里不能设 LIBGL_ALWAYS_SOFTWARE：KWin 用
+# EGL_PLATFORM_GBM 显式指定设备，Mesa 会以
+# "Not allowed to force software rendering when API explicitly selects a hardware device"
+# 拒绝初始化，合成器拿不到后端，画面就是全黑。
+if [ -r /sys/class/drm/card0/device/vendor ]; then
+    vendor=$(cat /sys/class/drm/card0/device/vendor 2>/dev/null)
+    case "$vendor" in
+        0x1af4|0x1234|0x1b36)   # virtio-gpu / bochs / qxl
+            unset LIBGL_ALWAYS_SOFTWARE
+            export MESA_LOADER_DRIVER_OVERRIDE="${MESA_LOADER_DRIVER_OVERRIDE:-kms_swrast}"
+            ;;
+    esac
+fi
+# Plasma 5.26 起 KWin 删除了 QPainter 合成后端。不要设 KWIN_COMPOSE=Q：
+# 旧版本上它表示「用 QPainter」，新版本上等于要求一个不存在的后端，
+# 表现是 KWin 进程活着、DRM 输出也连着，但屏幕永远黑色。
+unset KWIN_COMPOSE
+
+mkdir -p "$XDG_RUNTIME_DIR"
+chmod 700 "$XDG_RUNTIME_DIR" 2>/dev/null || true
+
+# 没有 DBus 会话总线时自己起一个
+if [ -z "${DBUS_SESSION_BUS_ADDRESS:-}" ] && command -v dbus-launch >/dev/null 2>&1; then
+    eval "$(dbus-launch --sh-syntax)"
+fi
+
+LOCK=""
+[ "${PROPEROS_SESSION_LOCK:-0}" = "1" ] && LOCK="--lockscreen"
+
+# plasmashell 实际加载哪个 shell 由 plasmashellrc 决定；环境变量
+# PLASMA_DEFAULT_SHELL 只在部分版本生效。Debian 的默认是 org.kde.plasma.nano
+# （嵌入式空白 shell，什么都不画，看起来就是黑屏），必须显式写成 phoneshell。
+HOME_DIR="${HOME:-/root}"
+mkdir -p "$HOME_DIR/.config"
+if ! grep -qs "org.kde.plasma.phoneshell" "$HOME_DIR/.config/plasmashellrc"; then
+    printf '[Shell]\nShell=org.kde.plasma.phoneshell\nShellPackage=org.kde.plasma.phoneshell\n' \
+        > "$HOME_DIR/.config/plasmashellrc"
+fi
+
+# 注意：不传 --exit-with-session=<script>，Plasma 5.27 里那个脚本路径是 Plasma 6
+# 的布局（Debian 包中不存在），传了会让会话一启动就退出。
+/usr/bin/startplasma-wayland --xwayland $LOCK --inputmethod maliit-keyboard &
+SPID=$!
+
+# 兜底：KWin 在 TCG 软件渲染下可能要 60-90 秒才建好输出，
+# 给足 150 秒；期间把 startplasma 的输出留在日志里便于诊断。
+i=0
+while [ $i -lt 150 ]; do
+    sleep 1
+    i=$((i + 1))
+    kill -0 "$SPID" 2>/dev/null || break
+    pgrep -x kwin_wayland >/dev/null 2>&1 && break
+done
+
+if ! pgrep -x kwin_wayland >/dev/null 2>&1; then
+    kill "$SPID" 2>/dev/null
+    sleep 1
+    echo "properos-session: Plasma 未能在 150 秒内启动 KWin，回落到 framebuffer 桌面" >&2
+    exec /usr/bin/properos-shell
+fi
+
+wait "$SPID"

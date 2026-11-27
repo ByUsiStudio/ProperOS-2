@@ -1,0 +1,18 @@
+{
+  "id": "miao.byusistudio.calc",
+  "name": "计算器",
+  "version": "25.0.0",
+  "icon": "calc",
+  "color": "#E95420",
+  "developer": "ByUsi Studio · 北啊呢",
+  "summary": "四则运算",
+  "entry": "ui/main.json",
+  "permissions": [],
+  "categories": [
+    "application"
+  ],
+  "init": {
+    "expr": "0",
+    "result": "0"
+  }
+}

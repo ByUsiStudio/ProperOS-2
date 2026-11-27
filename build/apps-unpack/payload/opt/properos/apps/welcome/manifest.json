@@ -1,0 +1,16 @@
+{
+  "id": "miao.byusistudio.welcome",
+  "name": "欢迎使用",
+  "version": "25.0.0",
+  "icon": "chip",
+  "color": "#3E7BFF",
+  "developer": "ByUsi Studio · 北啊呢",
+  "summary": "本机信息与上手引导",
+  "entry": "ui/main.json",
+  "permissions": [
+    "run"
+  ],
+  "categories": [
+    "application"
+  ]
+}

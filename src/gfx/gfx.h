@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · gfx 图形基础库
+/* ProperOS 25.0.0 Mobile · gfx 图形基础库
  *
  * 直接操作 framebuffer 的 2D 绘图与文本渲染层，供安装器与桌面共用。
  * 设计约束：无 X11 / 无 Wayland / 无 OpenGL，纯 CPU 光栅化，静态链接。
@@ -41,6 +41,7 @@ typedef struct {
     size_t size;
     int w, h, bpp, line;
     uint32_t *buf;          /* 32 位后缓冲，所有绘制先落这里 */
+    void *wl;               /* 非空表示走 Wayland 客户端输出（见 wl.h） */
     /* 裁剪区（含左闭右开） */
     int cx0, cy0, cx1, cy1;
 } gfx_t;

@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=消息
+Name[zh_CN]=消息
+Comment=本机会话与真实发送状态
+Comment[zh_CN]=本机会话与真实发送状态
+Icon=internet-chat
+Exec=/usr/bin/properos-app /opt/properos/apps/message
+TryExec=/usr/bin/properos-app
+Terminal=false
+Categories=Utility;
+StartupNotify=true
+StartupWMClass=properos-app
+X-ProperOS-App=miao.byusistudio.message
+X-ProperOS-Package=properos-app-message

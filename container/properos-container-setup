@@ -1,0 +1,143 @@
+#!/bin/bash
+# ProperOS 25.0.0 容器运行时初始化（rootful podman）
+# 在安装目标系统内执行，也可在已装系统上重复执行以修复配置。
+set -euo pipefail
+
+OFFLINE=0
+[ "${1:-}" = "--offline" ] && OFFLINE=1
+
+log() { printf '[container-setup] %s\n' "$*"; }
+
+# ---------- 1. 内核能力自检（功能性探测，避免内置驱动无 /sys/module 条目） ----------
+log "检查内核容器能力"
+MISSING=""
+probe() {
+    local name="$1"; shift
+    if "$@" >/dev/null 2>&1; then
+        printf '  %-24s %s\n' "$name" "OK"
+    else
+        printf '  %-24s %s\n' "$name" "FAIL"
+        MISSING="$MISSING $name"
+    fi
+}
+[ -e /proc/self/ns/pid ] && printf '  %-24s %s\n' "pid namespace" "OK" || MISSING="$MISSING pidns"
+[ -e /sys/fs/cgroup/cgroup.controllers ] && printf '  %-24s %s\n' "cgroup v2" "OK" || MISSING="$MISSING cgroup2"
+grep -qw overlay /proc/filesystems && printf '  %-24s %s\n' "overlayfs" "OK" || MISSING="$MISSING overlay"
+probe "veth"      ip link add pveth0 type veth peer name pveth1
+ip link del pveth0 >/dev/null 2>&1 || true
+probe "nftables"  nft list tables
+probe "iptables"  iptables -t nat -L -n
+
+if [ -n "$MISSING" ]; then
+    log "警告：以下能力探测失败:$MISSING。请确认使用 ProperOS 自带内核。"
+else
+    log "内核容器能力齐备"
+fi
+
+if [ -f /sys/fs/cgroup/cgroup.controllers ]; then
+    log "启用 cgroup v2 控制器"
+    for c in cpu cpuset io memory pids; do
+        [ -e "/sys/fs/cgroup/cgroup.subtree_control" ] && \
+            echo "+$c" > /sys/fs/cgroup/cgroup.subtree_control 2>/dev/null || true
+    done
+fi
+
+# ---------- 2. 目录与配置 ----------
+log "写入容器配置"
+install -d -m 0755 /etc/containers /var/lib/containers/storage /etc/containers/registries.conf.d
+
+# Debian 将 netavark/aardvark-dns 放在 /usr/lib/podman，podman 部分版本从
+# /usr/libexec/podman 查找，补一份软链保证两种布局都能命中
+install -d /usr/libexec/podman
+for b in netavark aardvark-dns rootlessport; do
+    [ -x "/usr/lib/podman/$b" ] && ln -sf "/usr/lib/podman/$b" "/usr/libexec/podman/$b"
+done
+# 默认网络改用 netavark + nftables，移除 podman 自带 CNI 配置避免启动期告警
+rm -f /etc/cni/net.d/87-podman-bridge.conflist 2>/dev/null || true
+rm -f /etc/cni/net.d/podman.conflist 2>/dev/null || true
+
+cat > /etc/containers/storage.conf <<'EOF'
+[storage]
+driver = "overlay"
+runroot = "/run/containers/storage"
+graphroot = "/var/lib/containers/storage"
+
+[storage.options.overlay]
+# rootful 直接使用内核 overlayfs；fuse-overlayfs 仅 rootless 场景需要
+mountopt = "nodev"
+
+[storage.options]
+size = ""
+EOF
+
+# 国内镜像加速；按顺序尝试
+cat > /etc/containers/registries.conf <<'EOF'
+unqualified-search-registries = ["docker.io"]
+
+[[registry]]
+prefix = "docker.io"
+location = "docker.io"
+
+[[registry.mirror]]
+location = "docker.m.daocloud.io"
+
+[[registry.mirror]]
+location = "dockerproxy.net"
+EOF
+
+cat > /etc/containers/containers.conf <<'EOF'
+[engine]
+cgroup_manager = "systemd"
+# Debian 将 netavark/rootlessport 放在 /usr/lib/podman
+helper_binaries_dir = ["/usr/lib/podman", "/usr/libexec/podman"]
+events_logger = "file"
+runtime = "crun"
+
+[engine.runtimes]
+crun = ["/usr/bin/crun"]
+runc = ["/usr/bin/runc"]
+
+[containers]
+default_capabilities = [
+  "CHOWN","DAC_OVERRIDE","FSETID","FOWNER","MKNOD","NET_RAW","SETGID",
+  "SETUID","SETFCAP","SETPCAP","NET_BIND_SERVICE","SYS_CHROOT","KILL","AUDIT_WRITE"
+]
+no_new_privileges = true
+pids_limit = 2048
+log_driver = "journald"
+
+[network]
+network_backend = "netavark"
+EOF
+
+# ---------- 3. 校验运行时 ----------
+log "校验 podman"
+if command -v podman >/dev/null 2>&1; then
+    podman --version || true
+    if [ "$OFFLINE" -eq 0 ]; then
+        podman info >/dev/null 2>&1 && log "podman 运行正常（rootful）" || log "podman info 失败，请检查 cgroup/overlay"
+    fi
+else
+    log "podman 未安装，跳过运行时校验"
+fi
+
+# ---------- 4. 系统服务 ----------
+if [ -d /etc/systemd/system ]; then
+    cat > /etc/systemd/system/properos-container.target <<'EOF'
+[Unit]
+Description=ProperOS container runtime
+After=network-online.target
+Wants=network-online.target
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    systemctl enable properos-container.target >/dev/null 2>&1 || true
+fi
+
+# ---------- 5. SELinux/AppArmor 提示 ----------
+if [ -d /sys/fs/selinux ]; then
+    log "检测到 SELinux，容器卷挂载需加 :z 标签"
+fi
+
+log "完成。使用 'properos-container run ...' 或 'sudo podman run ...' 启动容器。"

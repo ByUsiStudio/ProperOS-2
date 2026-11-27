@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · properd
+/* ProperOS 25.0.0 Mobile · properd
  *
  * 角色：移动端会话与服务管理器（Android init/zygote 的对应层）。
  *   - 扫描 /etc/properos/services/*.service，拉起并守护系统服务

@@ -1,0 +1,19 @@
+{
+  "id": "miao.byusistudio.settings",
+  "name": "设置",
+  "version": "25.0.0",
+  "icon": "settings",
+  "color": "#5B6470",
+  "developer": "ByUsi Studio · 北啊呢",
+  "summary": "真实硬件状态与控制",
+  "entry": "ui/main.json",
+  "permissions": [],
+  "categories": [
+    "application"
+  ],
+  "init": {
+    "brightness": 70,
+    "volume": 65,
+    "dark": 0
+  }
+}

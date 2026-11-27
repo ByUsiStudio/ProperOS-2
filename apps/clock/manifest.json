@@ -1,15 +1,13 @@
 {
   "id": "miao.byusistudio.clock",
   "name": "时钟",
-  "version": "2.5",
+  "version": "25.0.0",
   "icon": "clock",
   "color": "#E8A33D",
   "developer": "ByUsi Studio · 北啊呢",
-  "summary": "时间、闹钟与计时器",
+  "summary": "时间、世界时钟、闹钟与秒表",
   "entry": "ui/main.json",
-  "permissions": [
-    "run"
-  ],
+  "permissions": [],
   "categories": [
     "application"
   ]

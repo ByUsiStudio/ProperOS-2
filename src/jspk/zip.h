@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · ZIP 容器读取（.jspk 包格式）
+/* ProperOS 25.0.0 Mobile · ZIP 容器读取（.jspk 包格式）
  *
  * 只读、只支持单个中央目录、不支持 ZIP64（应用包远小于 4 GB）。
  * 压缩方法支持 0（store）与 8（deflate）。

@@ -1,0 +1,10 @@
+Explanation: 内核与引导链由 ProperOS 自行构建和升级（A/B 槽 + properos-bootctl），
+Explanation: 不允许 Debian 源里的 linux-image / linux-modules / grub / shim 覆盖，
+Explanation: 否则 /boot 与 EFI 分区会被换成无法引导的组合。
+Package: linux-image-* linux-headers-* linux-modules-* linux-kbuild-* linux-source-* linux-support-* linux-perf-* linux-config-*
+Pin: version *
+Pin-Priority: -1
+
+Package: grub-efi-* grub-common grub2-common grub-pc grub-pc-bin shim-signed systemd-boot systemd-boot-efi
+Pin: version *
+Pin-Priority: -1

@@ -16,9 +16,9 @@ fi
 log "写入系统标识"
 cat > "$ROOTFS/etc/properos-release" <<EOF
 NAME="ProperOS"
-VERSION="2.5"
-VERSION_ID="2.5"
-PRETTY_NAME="ProperOS 2.5 (Kernel $KVER)"
+VERSION="25.0.0"
+VERSION_ID="25.0.0"
+PRETTY_NAME="ProperOS 25.0.0 (Kernel $KVER)"
 ID=properos
 ID_LIKE=debian
 HOME_URL="https://www.properos.cn"
@@ -37,7 +37,7 @@ install -D -m 0755 "$PROJECT/container/properos-container-setup" "$ROOTFS/usr/lo
 install -D -m 0755 "$PROJECT/container/properos-container" "$ROOTFS/usr/local/bin/properos-container"
 
 log "部署内核"
-install -D -m 0644 "$DIST/kernel/vmlinuz-properos-2.5" "$ROOTFS/boot/vmlinuz-properos-2.5"
+install -D -m 0644 "$DIST/kernel/vmlinuz-properos-25.0.0" "$ROOTFS/boot/vmlinuz-properos-25.0.0"
 
 log "配置 live 启动行为"
 # 安装器独占 tty1；tty2 保留交互登录，便于安装器异常时排查
@@ -57,7 +57,7 @@ cat > "$ROOTFS/etc/issue" <<'EOF'
   ██║     ██║  ██║╚██████╔╝██║  ██║███████╗██║  ██║╚██████╔╝███████║
   ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝
 
-  ProperOS 2.5  ·  Kernel KVER_PLACEHOLDER  ·  \l
+  ProperOS 25.0.0  ·  Kernel KVER_PLACEHOLDER  ·  \l
 
 EOF
 sed -i "s/KVER_PLACEHOLDER/$KVER/" "$ROOTFS/etc/issue"

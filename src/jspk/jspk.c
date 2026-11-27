@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · .jspk 应用运行时
+/* ProperOS 25.0.0 Mobile · .jspk 应用运行时
  *
  * 一个 .jspk 是 ZIP 容器：
  *   manifest.json   应用元信息（id/name/icon/color/entry/permissions）
@@ -15,8 +15,11 @@
 #include "gfx.h"
 #include "ui.h"
 #include "input.h"
+#include "wl.h"
 #include "json.h"
 #include "zip.h"
+#include "native.h"
+#include "term.h"
 
 #include <errno.h>
 #include <fcntl.h>
@@ -101,6 +104,24 @@ typedef struct {
 
     int tty_w, tty_h;
     float dn;
+
+    /* 真终端：只有当前页声明了 term 控件时才创建 */
+    term_t *term;
+    int term_page;
+    int term_focus;
+    int term_x, term_y, term_w, term_h;
+    int term_drag_y0;
+    int term_drag_acc;
+
+    /* 文本预览（文件应用真实读取的结果） */
+    char preview[4096];
+    char preview_name[128];
+
+    /* 秒表（真实计时，退出后仍保留累计值） */
+    int64_t sw_start;
+    int64_t sw_accum;
+    int sw_run;
+    int64_t slider_ms;
 } app_t;
 
 static app_t A;
@@ -113,6 +134,8 @@ static int DP(int v)
 }
 static volatile sig_atomic_t g_quit;
 static int g_debug;   /* PROPEROS_JSPK_DEBUG=1：把手势事件写进 /dev/kmsg */
+
+static int64_t mono_ms(void);
 
 /* 界面文本模板：{{time}} {{date}} {{battery}} {{wifi}} {{model}} */
 static const char *tpl(const char *s)
@@ -134,7 +157,7 @@ static const char *tpl(const char *s)
                 if (klen < sizeof(key)) {
                     memcpy(key, p + 2, klen);
                     key[klen] = '\0';
-                    char val[64] = "";
+                    char val[112] = "";
                     if (!strcmp(key, "time")) {
                         time_t t = time(NULL);
                         struct tm tm;
@@ -147,12 +170,22 @@ static const char *tpl(const char *s)
                         static const char *wd[] = { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
                         snprintf(val, sizeof(val), "%d年%d月%d日 %s", tm.tm_year + 1900,
                                  tm.tm_mon + 1, tm.tm_mday, wd[tm.tm_wday]);
-                    } else if (!strcmp(key, "battery")) {
-                        snprintf(val, sizeof(val), "%s", "87%");
-                    } else if (!strcmp(key, "wifi")) {
-                        snprintf(val, sizeof(val), "%s", "已连接");
-                    } else if (!strcmp(key, "model")) {
-                        snprintf(val, sizeof(val), "%s", "ProperOS Phone");
+                    } else if (!strcmp(key, "sw")) {
+                        int64_t ms = A.sw_accum;
+                        if (A.sw_run && A.sw_start) ms += mono_ms() - A.sw_start;
+                        long cs = (long)(ms % 1000) / 10;
+                        long s2 = (long)(ms / 1000) % 60;
+                        long m2 = (long)(ms / 60000);
+                        snprintf(val, sizeof(val), "%02ld:%02ld.%02ld", m2, s2, cs);
+                    } else if (!strcmp(key, "os")) {
+                        snprintf(val, sizeof(val), "ProperOS 25.0.0");
+                    } else if (!strcmp(key, "battery") || !strcmp(key, "wifi") ||
+                               !strcmp(key, "model") || !strcmp(key, "kernel") ||
+                               !strcmp(key, "mem") || !strcmp(key, "disk") ||
+                               !strcmp(key, "rootdisk") || !strcmp(key, "uptime") ||
+                               !strcmp(key, "cpu") || !strcmp(key, "temp") ||
+                               !strcmp(key, "media")) {
+                        snprintf(val, sizeof(val), "%s", nv_status(key));
                     } else {
                         /* 其余键按应用状态变量插值（计算器、拨号盘等） */
                         for (int i = 0; i < A.nvars; i++)
@@ -417,6 +450,194 @@ static jval_t *cur_page(app_t *a)
     return p;
 }
 
+/* ================= 原生数据源 ================= */
+/*
+ * 界面里的 rows/grid 可以带 "src"：
+ *   { "t": "rows", "src": "fs.dir", "arg": "{{cwd}}" }
+ * 条目由 native.c 现场枚举（目录项、音频、包、接口…）。一帧里测量与绘制
+ * 各调用一次，所以结果按 (src,arg) 缓存一小段时间；执行动作后立即失效。
+ */
+
+#define SRC_SLOTS 6
+#define SRC_MAX_ITEMS 96
+
+typedef struct {
+    char key[600];
+    nvi_t items[SRC_MAX_ITEMS];
+    int n;
+    int64_t ms;
+} src_cache_t;
+
+static src_cache_t g_src[SRC_SLOTS];
+static int g_src_rr;
+
+static void src_invalidate(void)
+{
+    for (int i = 0; i < SRC_SLOTS; i++) g_src[i].key[0] = '\0';
+}
+
+/* 模板替换到独立缓冲：tpl() 内部是环形槽，嵌套调用会互相覆盖 */
+static void tpl_copy(char *dst, size_t n, const char *s)
+{
+    const char *v = s ? tpl(s) : "";
+    snprintf(dst, n, "%s", v ? v : "");
+}
+
+static const nvi_t *src_items(jval_t *w, int *count)
+{
+    const char *src = json_str(json_get(w, "src"), NULL);
+    *count = 0;
+    if (!src || !src[0]) return NULL;
+
+    char arg[400] = "";
+    jval_t *av = json_get(w, "arg");
+    if (av && av->t == JSTR) tpl_copy(arg, sizeof(arg), av->str);
+
+    char key[600];
+    snprintf(key, sizeof(key), "%s|%s", src, arg);
+    for (int i = 0; i < SRC_SLOTS; i++) {
+        if (!strcmp(g_src[i].key, key) && mono_ms() - g_src[i].ms < 1200) {
+            *count = g_src[i].n;
+            return g_src[i].items;
+        }
+    }
+    src_cache_t *c = &g_src[g_src_rr++ % SRC_SLOTS];
+    snprintf(c->key, sizeof(c->key), "%s", key);
+    int n = nv_source(src, arg, c->items, SRC_MAX_ITEMS);
+    c->n = n > 0 ? n : 0;
+    c->ms = mono_ms();
+    *count = c->n;
+    return c->items;
+}
+
+static int text_like(const char *path)
+{
+    static const char *ex[] = { "md", "txt", "log", "conf", "json", "c", "h", "sh", "py",
+                                "ini", "csv", "xml", "yaml", "yml", "desktop", "list", NULL };
+    const char *e = strrchr(path, '.');
+    if (!e) return 0;
+    e++;
+    for (int i = 0; ex[i]; i++)
+        if (!strcasecmp(e, ex[i])) return 1;
+    return 0;
+}
+
+static void do_native(app_t *a, const char *op, const char *arg, const char *arg2);
+
+/* 打开一个路径：目录进目录，文本进预览，音频直接播，其余如实报告 */
+static void open_path(app_t *a, const char *path)
+{
+    struct stat st;
+    if (!path || !path[0] || stat(path, &st) != 0) { toast(a, "路径不可访问"); return; }
+
+    if (S_ISDIR(st.st_mode)) {
+        var_set(a, "cwd", path);
+        src_invalidate();
+        const char *cur = a->depth > 0 ? a->stack[a->depth - 1] : "";
+        if (strcmp(cur, "browse")) push_page(a, "browse");
+        a->redraw = 1;
+        return;
+    }
+    if (text_like(path)) {
+        int fd = open(path, O_RDONLY | O_CLOEXEC);
+        if (fd < 0) { toast(a, "无法读取文件"); return; }
+        size_t got = 0;
+        while (got < sizeof(a->preview) - 1) {
+            ssize_t r = read(fd, a->preview + got, sizeof(a->preview) - 1 - got);
+            if (r <= 0) break;
+            got += (size_t)r;
+        }
+        close(fd);
+        a->preview[got] = '\0';
+        /* 截断在 UTF-8 字符边界，避免预览出现半个汉字 */
+        while (got > 0 && ((unsigned char)a->preview[got - 1] & 0xC0) == 0x80) got--;
+        if (got > 0 && ((unsigned char)a->preview[got - 1] & 0x80)) got--;
+        a->preview[got] = '\0';
+        snprintf(a->preview_name, sizeof(a->preview_name), "%s",
+                 strrchr(path, '/') ? strrchr(path, '/') + 1 : path);
+        const char *cur2 = a->depth > 0 ? a->stack[a->depth - 1] : "";
+        if (!strcmp(cur2, "view")) pop_page(a);
+        push_page(a, "view");
+        return;
+    }
+    const char *e = strrchr(path, '.');
+    if (e && (!strcasecmp(e, ".wav") || !strcasecmp(e, ".mp3") || !strcasecmp(e, ".ogg") ||
+              !strcasecmp(e, ".flac") || !strcasecmp(e, ".opus"))) {
+        do_native(a, "media.play", path, NULL);
+        return;
+    }
+    char msg[160];
+    snprintf(msg, sizeof(msg), "%s · %.1f MB", e ? e + 1 : "文件", (double)st.st_size / 1048576.0);
+    toast(a, msg);
+}
+
+static void do_native(app_t *a, const char *op, const char *arg, const char *arg2)
+{
+    if (!op || !op[0]) return;
+
+    if (!strcmp(op, "fs.open")) { open_path(a, arg); return; }
+    if (!strcmp(op, "fs.up")) {
+        char up[512];
+        snprintf(up, sizeof(up), "%s", var_get(a, "cwd", "/data/home"));
+        char *slash = strrchr(up, '/');
+        if (slash && slash != up) *slash = '\0';
+        else snprintf(up, sizeof(up), "/");
+        var_set(a, "cwd", up);
+        src_invalidate();
+        a->redraw = 1;
+        return;
+    }
+    if (!strcmp(op, "fs.mkdir")) {
+        char path[512], name[128];
+        snprintf(name, sizeof(name), "%s", arg ? arg : "");
+        if (!name[0]) { toast(a, "请输入文件夹名"); return; }
+        snprintf(path, sizeof(path), "%s/%s", var_get(a, "cwd", "/data/home"), name);
+        char msg[192];
+        nv_action(op, path, msg, sizeof(msg));
+        if (msg[0]) toast(a, msg);
+        var_set(a, "newname", "");
+        src_invalidate();
+        a->redraw = 1;
+        return;
+    }
+    if (!strcmp(op, "pkg.install") || !strcmp(op, "pkg.remove") || !strcmp(op, "app.remove")) {
+        char msg[256];
+        int ok = nv_action(op, arg, msg, sizeof(msg));
+        if (msg[0]) toast(a, msg);
+        src_invalidate();
+        a->redraw = 1;
+        (void)ok;
+        return;
+    }
+    if (!strcmp(op, "sms.send")) {
+        char buf[512];
+        const char *who = var_get(a, "thread", "");
+        snprintf(buf, sizeof(buf), "%s\n%s", who, arg ? arg : "");
+        char msg[256];
+        nv_action(op, buf, msg, sizeof(msg));
+        if (msg[0]) toast(a, msg);
+        /* 无论有没有 modem，消息都已经落进本机会话，草稿可以清掉 */
+        var_set(a, "draft", "");
+        src_invalidate();
+        a->redraw = 1;
+        return;
+    }
+    if (!strcmp(op, "sms.thread")) {
+        var_set(a, "thread", arg ? arg : "");
+        src_invalidate();
+        push_page(a, "chat");
+        return;
+    }
+
+    char msg[256];
+    int ok = nv_action(op, arg, msg, sizeof(msg));
+    if (msg[0]) toast(a, msg);
+    if (!ok && !msg[0]) toast(a, "操作未完成");
+    src_invalidate();
+    a->redraw = 1;
+    (void)arg2;
+}
+
 static void run_shell_cmd(const char *cmd)
 {
     if (!cmd || !cmd[0]) return;
@@ -570,6 +791,30 @@ static void do_action_obj(app_t *a, jval_t *act)
         var_set(a, key ? key : "result", out);
         if (key) state_save_key(a, key);
         a->redraw = 1;
+    } else if (!strcmp(type, "native")) {
+        const char *op = json_str(json_get(act, "op"), "");
+        char arg[400] = "";
+        const char *a1 = json_str(json_get(act, "arg"), NULL);
+        if (a1) tpl_copy(arg, sizeof(arg), a1);
+        const char *a2 = json_str(json_get(act, "text"), NULL);
+        if (a2 && !arg[0]) tpl_copy(arg, sizeof(arg), a2);
+        do_native(a, op, arg, NULL);
+    } else if (!strcmp(type, "sw.start")) {
+        if (!a->sw_run) { a->sw_start = mono_ms(); a->sw_run = 1; }
+        a->redraw = 1;
+    } else if (!strcmp(type, "sw.stop")) {
+        if (a->sw_run && a->sw_start) a->sw_accum += mono_ms() - a->sw_start;
+        a->sw_run = 0;
+        a->sw_start = 0;
+        a->redraw = 1;
+    } else if (!strcmp(type, "sw.reset")) {
+        a->sw_run = 0;
+        a->sw_start = 0;
+        a->sw_accum = 0;
+        a->redraw = 1;
+    } else if (!strcmp(type, "term")) {
+        a->term_focus = 1;
+        a->redraw = 1;
     } else if (!strcmp(type, "call")) {
         const char *num = json_str(json_get(act, "number"), "");
         char msg[128];
@@ -690,8 +935,16 @@ static int measure_widget(app_t *a, jval_t *w, int cw)
     if (!strcmp(t, "grid")) {
         int cols = json_int(json_get(w, "cols"), a->wide ? 6 : 4);
         int items = json_len(json_get(w, "items"));
-        int rows = (items + cols - 1) / cols;
         int cell = DP(json_int(json_get(w, "cell"), a->wide ? 48 : 50));
+        if (json_str(json_get(w, "src"), NULL)) {
+            int n2 = 0;
+            src_items(w, &n2);
+            items = n2;
+            if (items <= 0) return DP(110);
+            int rows0 = (items + cols - 1) / cols;
+            return rows0 * (cell + DP(30)) + DP(6);
+        }
+        int rows = (items + cols - 1) / cols;
         return rows * cell + DP(8);
     }
     if (!strcmp(t, "tiles")) {
@@ -700,6 +953,32 @@ static int measure_widget(app_t *a, jval_t *w, int cw)
         int rows = (items + cols - 1) / cols;
         return rows * (DP(json_int(json_get(w, "cell"), 46)) + DP(6)) + DP(5);
     }
+    if (!strcmp(t, "rows")) {
+        int n = 0;
+        const nvi_t *it = src_items(w, &n);
+        if (!it) n = json_len(json_get(w, "items"));
+        if (n <= 0) return DP(96);
+        int rh = json_int(json_get(w, "rowh"), 64);
+        return n * DP(rh) + DP(4);
+    }
+    if (!strcmp(t, "filetext")) {
+        /* 预览按可用宽度估算行数：UTF-8 中文按两格算 */
+        const char *s2 = json_str(json_get(w, "text"), NULL);
+        const char *txt = (s2 && !strcmp(s2, "{{preview}}")) ? A.preview : tpl(s2);
+        int px = FS_TINY;
+        int per = cw / (px + 2);
+        if (per < 8) per = 8;
+        int lines = 1;
+        for (const char *q = txt; *q; q++) {
+            if (*q == '\n') { lines++; continue; }
+        }
+        for (const char *q = txt; *q; q++) {
+            if ((unsigned char)*q >= 0xE0) lines++;
+        }
+        lines = lines + (int)(strlen(txt) / (size_t)per) + 2;
+        return lines * (px + 5) + DP(20);
+    }
+    if (!strcmp(t, "term")) return 0;
     if (!strcmp(t, "progress")) return DP(40);
     if (!strcmp(t, "input")) return DP(46);
     if (!strcmp(t, "divider")) return DP(13);
@@ -817,6 +1096,54 @@ static int draw_widget(app_t *a, jval_t *w, int x, int y, int cw, int top, int b
         return h;
     }
 
+    if (!strcmp(t, "rows")) {
+        int nsrc = 0;
+        const nvi_t *sit = src_items(w, &nsrc);
+        if (!sit || nsrc == 0) {
+            const char *empty = tpl(json_str(json_get(w, "empty"), "暂无内容"));
+            gfx_text_center_px(&a->g, x + cw / 2, y + DP(24), empty, sc, FS_SMALL);
+            return h;
+        }
+        int rh = DP(json_int(json_get(w, "rowh"), 64));
+        for (int i = 0; i < nsrc; i++) {
+            int ry = y + i * rh;
+            if (ry + rh < top || ry > bottom) continue;
+            const nvi_t *it = &sit[i];
+            if (pressed(a, x + 2, ry + 2, cw - 4, rh - 4))
+                gfx_round(&a->g, x + 2, ry + 2, cw - 4, rh - 4, 10, col(JK_SEL, JK_SEL_D));
+            int isz = DP(30);
+            int ix = x + DP(6);
+            if (it->icon[0]) {
+                draw_icon_tile(a, ix, ry + (rh - isz) / 2, isz, it->icon, a->color);
+                ix += isz + DP(9);
+            }
+            int ty = ry + (rh - (FS_BODY + FS_TINY + DP(4))) / 2;
+            char val[64];
+            snprintf(val, sizeof(val), "%s", tpl(it->value));
+            int vmax = cw * 52 / 100;
+            int vw = val[0] ? gfx_text_w_px(val, FS_TINY) : 0;
+            if (vw > vmax) vw = vmax;
+            int rw = cw - (ix - x) - DP(18) - (val[0] ? vw + DP(8) : 0);
+            gfx_text_fit_px(&a->g, ix, ty, rw, tpl(it->title), tc, FS_BODY);
+            if (it->sub[0])
+                gfx_text_fit_px(&a->g, ix, ty + FS_BODY + DP(4), rw, tpl(it->sub), sc, FS_TINY);
+            if (val[0])
+                gfx_text_fit_px(&a->g, x + cw - DP(10) - vw, ty + DP(2), vw, val, sc, FS_TINY);
+            gfx_fill_a(&a->g, ix, ry + rh - 1, cw - (ix - x) - DP(8), 1,
+                       col(JK_LINE, JK_LINE_D), 255);
+            if (it->op[0] && ui_hit(&a->u, x + 2, ry + 2, cw - 4, rh - 4))
+                do_native(a, it->op, it->arg, NULL);
+        }
+        return h;
+    }
+
+    if (!strcmp(t, "filetext")) {
+        const char *s2 = json_str(json_get(w, "text"), NULL);
+        const char *txt = (s2 && !strcmp(s2, "{{preview}}")) ? a->preview : tpl(s2);
+        gfx_text_wrap_px(&a->g, x + DP(4), y + DP(4), cw - DP(8), txt, tc, FS_TINY, DP(4));
+        return h;
+    }
+
     if (!strcmp(t, "row") || !strcmp(t, "switch")) {
         int row_h = has_sub(w) ? DP(72) : DP(62);
         const char *title = tpl(json_str(json_get(w, "title"), ""));
@@ -906,6 +1233,12 @@ static int draw_widget(app_t *a, jval_t *w, int x, int y, int cw, int top, int b
                 const char *sk = json_str(json_get(w, "setting"), NULL);
                 if (sk) sys_set(sk, v);
                 state_save_key(a, key);
+                /* 滑杆带 action 时把值真正写进硬件（亮度、音量） */
+                jval_t *sact = widget_action(w);
+                if (sact && mono_ms() - a->slider_ms > 220) {
+                    a->slider_ms = mono_ms();
+                    do_action_obj(a, sact);
+                }
             }
         }
         return h;
@@ -932,9 +1265,28 @@ static int draw_widget(app_t *a, jval_t *w, int x, int y, int cw, int top, int b
     if (!strcmp(t, "grid")) {
         int cols = json_int(json_get(w, "cols"), a->wide ? 6 : 4);
         int cell = DP(json_int(json_get(w, "cell"), a->wide ? 48 : 50));
+        int icon = DP(json_int(json_get(w, "icon"), 24));
+        int nsrc = 0;
+        const nvi_t *sit = src_items(w, &nsrc);
+        if (sit) {
+            for (int i = 0; i < nsrc; i++) {
+                int cx = x + (i % cols) * (cw / cols);
+                int cy = y + (i / cols) * (cell + DP(30));
+                int tx = cx + (cw / cols - icon) / 2;
+                if (pressed(a, cx, cy, cw / cols, cell + DP(28)))
+                    gfx_round(&a->g, cx + 6, cy + 2, cw / cols - 12, cell + DP(24), 12,
+                              col(JK_SEL, JK_SEL_D));
+                draw_icon_tile(a, tx, cy + DP(5), icon, sit[i].icon[0] ? sit[i].icon : "files",
+                               a->color);
+                gfx_text_fit_px(&a->g, cx + DP(6), cy + DP(5) + icon + DP(4),
+                                cw / cols - DP(12), sit[i].title, tc, FS_TINY);
+                if (ui_hit(&a->u, cx, cy, cw / cols, cell + DP(28)) && sit[i].op[0])
+                    do_native(a, sit[i].op, sit[i].arg, NULL);
+            }
+            return h;
+        }
         jval_t *items = json_get(w, "items");
         int n = json_len(items);
-        int icon = DP(json_int(json_get(w, "icon"), 24));
         for (int i = 0; i < n; i++) {
             int cx = x + (i % cols) * (cw / cols);
             int cy = y + (i / cols) * cell;
@@ -1100,10 +1452,22 @@ static int draw_widget(app_t *a, jval_t *w, int x, int y, int cw, int top, int b
             const char *v = tpl(json_str(json_get(it, "value"), ""));
             const char *l = json_str(json_get(it, "label"), "");
             int cx = x + i * tw;
-            gfx_round(&a->g, cx, y + 2, tw - DP(4), DP(48), DP(6), cardc);
-            gfx_text_center_px(&a->g, cx + (tw - DP(4)) / 2, y + DP(10), v, a->color, FS_H1);
-            gfx_text_center_px(&a->g, cx + (tw - DP(4)) / 2, y + DP(10) + FS_H1 + DP(6),
-                               l, sc, FS_TINY);
+            int cwi = tw - DP(4);
+            gfx_round(&a->g, cx, y + 2, cwi, DP(48), DP(6), cardc);
+            /* 真值可能比样例长（"1.8 / 8.2 GB"、"未连接"），按可用宽度缩字号 */
+            int vpx = FS_H1;
+            int tw2 = gfx_text_w_px(v, vpx);
+            int maxw = cwi - DP(12);
+            while (vpx > FS_SMALL && tw2 > maxw) {
+                vpx -= 2;
+                tw2 = gfx_text_w_px(v, vpx);
+            }
+            if (tw2 > maxw) {
+                gfx_text_fit_px(&a->g, cx + DP(6), y + DP(10), maxw, v, a->color, vpx);
+            } else {
+                gfx_text_px(&a->g, cx + (cwi - tw2) / 2, y + DP(10), v, a->color, vpx);
+            }
+            gfx_text_center_px(&a->g, cx + cwi / 2, y + DP(10) + FS_H1 + DP(6), l, sc, FS_TINY);
         }
         return h;
     }
@@ -1188,6 +1552,45 @@ static void draw_page(app_t *a)
     draw_app_bar(a, page, W);
     draw_footer(a, page, W, H);
 
+    /* 声明了 term 控件：整页交给真终端，不做页面滚动 */
+    jval_t *widgets0 = json_get(page, "widgets");
+    int n0 = json_len(widgets0);
+    for (int i = 0; i < n0; i++) {
+        jval_t *ww = json_at(widgets0, i);
+        if (strcmp(json_str(json_get(ww, "t"), ""), "term")) continue;
+        a->term_page = 1;
+        a->focus_key[0] = '\0';
+        if (getenv("PROPEROS_TERM_FOCUS")) a->term_focus = 1;
+        if (!a->term) {
+            a->term = term_new();
+            term_set_font(a->term, FS_SMALL + 3);
+        }
+        int bottom = a->content_bottom;
+        if (a->term_focus) bottom -= a->kb_h;
+        int th = bottom - a->content_top;
+        if (th < 80) th = 80;
+        a->term_x = 0;
+        a->term_y = a->content_top;
+        a->term_w = W;
+        a->term_h = th;
+        gfx_fill(&a->g, 0, a->content_top, W, th, 0x0B0D11);
+        term_draw(a->term, &a->g, 0, a->content_top, W, th);
+        if (!a->term_focus) {
+            const char *hint = "轻触屏幕唤起键盘";
+            int hw = gfx_text_w_px(hint, FS_SMALL) + 32;
+            int hy = a->content_top + th - 54;
+            gfx_round(&a->g, (W - hw) / 2, hy, hw, 38, 19, 0x232733);
+            gfx_text_center_px(&a->g, W / 2, hy + 9, hint, 0xC9D2E4, FS_SMALL);
+        }
+        if (ui_hit(&a->u, 0, a->content_top, W, th)) {
+            a->term_focus = 1;
+            A.kb_h = term_kb_height(A.g.h);
+            a->redraw = 1;
+        }
+        return;
+    }
+    a->term_page = 0;
+
     int pad = a->wide ? (W - 760) / 2 : 16;
     if (pad < 12) pad = 12;
     int cw = W - pad * 2;
@@ -1266,7 +1669,7 @@ static void handle_pointer(app_t *a, const in_event_t *ev, int n)
         if (g_debug && e->kind != IN_MOVE && e->kind != IN_UP) {
             int f = open("/dev/kmsg", O_WRONLY);
             if (f >= 0) {
-                dprintf(f, "properos-jspk[%s]: kind=%d x0=%d y0=%d dx=%d dy=%d\n",
+                dprintf(f, "properos-app[%s]: kind=%d x0=%d y0=%d dx=%d dy=%d\n",
                         a->id, (int)e->kind, e->x0, e->y0, e->dx, e->dy);
                 close(f);
             }
@@ -1279,6 +1682,16 @@ static void handle_pointer(app_t *a, const in_event_t *ev, int n)
             a->fling = 0;
             break;
         case IN_MOVE:
+            /* 终端区域内的上下滑动 = 回看历史，不参与页面滚动 */
+            if (a->term_page && a->term_focus && a->term &&
+                e->y0 >= a->term_y && e->y0 < a->term_y + a->term_h) {
+                a->term_drag_acc += e->dy;
+                int step = (FS_SMALL + 3) + 4;
+                while (a->term_drag_acc >= step) { term_scroll(a->term, 1); a->term_drag_acc -= step; }
+                while (a->term_drag_acc <= -step) { term_scroll(a->term, -1); a->term_drag_acc += step; }
+                a->redraw = 1;
+                break;
+            }
             if (a->u.down && !a->drag_active) {
                 int dy = e->y - a->drag_y0;
                 if (dy > 12 || dy < -12) a->drag_active = 1;
@@ -1303,6 +1716,8 @@ static void handle_pointer(app_t *a, const in_event_t *ev, int n)
             pop_page(a);
             break;
         case IN_KEY:
+            /* 实体键盘：在终端里直接送进伪终端 */
+            if (a->term_page && a->term_focus && a->term) term_key(a->term, e->key);
             break;
         default:
             break;
@@ -1417,7 +1832,7 @@ int main(int argc, char **argv)
         }
     }
     if (!pkg) {
-        fprintf(stderr, "用法：properos-jspk <应用.jspk|目录> [--render WxH file.bmp 页面]\n");
+        fprintf(stderr, "用法：properos-app <应用.jspk|目录> [--render WxH file.bmp 页面]\n");
         return 2;
     }
 
@@ -1428,6 +1843,8 @@ int main(int argc, char **argv)
         return 1;
     }
     state_load(&A);
+    nv_init();
+    if (!var_get(&A, "cwd", NULL)) var_set(&A, "cwd", "/data/home");
 
     char dv[8];
     if (sys_get("dark", dv, sizeof(dv))) A.dark = atoi(dv);
@@ -1439,9 +1856,15 @@ int main(int argc, char **argv)
         if (gfx_offscreen(&A.g, rw, rh) < 0) return 1;
     } else {
         if (gfx_open(&A.g, NULL) != 0) return 1;
-        gfx_console_grab(7);
-        atexit(gfx_console_release);
-        input_open(&A.in, A.g.w, A.g.h);
+        /* 只有直接驱动 framebuffer（无桌面会话）时才独占 VT。
+         * 在 Plasma Mobile 里 gfx_open 已经拿到 Wayland 窗口，再去
+         * VT_ACTIVATE + KD_GRAPHICS 会把合成器整个切走，用户看到的是
+         * 整屏黑——表现就是「点了图标打不开」。 */
+        if (!A.g.wl) {
+            gfx_console_grab(7);
+            atexit(gfx_console_release);
+            input_open(&A.in, A.g.w, A.g.h);
+        }
         signal(SIGINT, on_signal);
         signal(SIGTERM, on_signal);
     }
@@ -1468,7 +1891,26 @@ int main(int argc, char **argv)
             idx++;
         }
         ui_clear(&A.u);
+        A.kb_h = 0;
         draw_page(&A);
+        if (A.term_page && A.term) {
+            for (int k = 0; k < 20; k++) {
+                usleep(50000);
+                term_poll(A.term);
+            }
+            if (A.term_focus) A.kb_h = term_kb_height(A.g.h);
+            draw_page(&A);
+            if (A.term_focus)
+                term_keyboard(&A.u, A.term, 0, A.g.h - A.kb_h, A.g.w, A.kb_h);
+            /* 无显示器环境（串口、CI）用它确认伪终端真的跑起来了 */
+            if (getenv("PROPEROS_TERM_DUMP")) {
+                char ln[256];
+                for (int r = 0; r < 6; r++) {
+                    term_line_text(A.term, r, ln, sizeof(ln));
+                    fprintf(stderr, "term[%02d] %s\n", r, ln);
+                }
+            }
+        }
         gfx_save_bmp(&A.g, render_out);
         gfx_close(&A.g);
         return 0;
@@ -1477,13 +1919,23 @@ int main(int argc, char **argv)
     int64_t last_fling = mono_ms();
     while (!g_quit && !A.quit) {
         in_event_t ev[32];
-        int n = input_poll(&A.in, ev, 32, 16);
+        /* Wayland 会话里输入由合成器转发（坐标已是窗口本地坐标）；
+         * 直接读 evdev 会和 KWin 抢同一份设备事件，桌面和应用会同时响应。 */
+        int n = A.g.wl ? wl_poll_events(&A.in, ev, 32, 16)
+                       : input_poll(&A.in, ev, 32, 16);
         for (int i = 0; i < n; i++) ui_feed(&A.u, &ev[i]);
         handle_pointer(&A, ev, n);
         ui_begin(&A.u);
 
+        if (A.term) term_poll(A.term);
+        A.kb_h = (A.term_page && A.term_focus) ? term_kb_height(A.g.h) : 0;
         draw_page(&A);
-        draw_keyboard(&A);
+        if (A.term_page && A.term_focus && A.term) {
+            int kh = term_kb_height(A.g.h);
+            term_keyboard(&A.u, A.term, 0, A.g.h - kh, A.g.w, kh);
+        } else {
+            draw_keyboard(&A);
+        }
         draw_toast(&A);
         gfx_flush(&A.g);
 
@@ -1504,6 +1956,7 @@ int main(int argc, char **argv)
         }
     }
 
+    term_free(A.term);
     input_close(&A.in);
     gfx_close(&A.g);
     gfx_console_release();

@@ -1,0 +1,62 @@
+{
+  "title": "消息",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "消息",
+      "widgets": [
+        {
+          "t": "rows",
+          "src": "sms.threads",
+          "rowh": 64,
+          "empty": "本机还没有短信会话"
+        },
+        {
+          "t": "input",
+          "key": "newnum",
+          "hint": "新会话号码"
+        },
+        {
+          "t": "button",
+          "text": "打开会话",
+          "kind": "secondary",
+          "action": {
+            "type": "native",
+            "op": "sms.thread",
+            "arg": "{{newnum}}"
+          }
+        },
+        {
+          "t": "note",
+          "text": "会话保存在 /data/phone/sms/；没有 modem 时发送会存进本机并如实标注未发出。"
+        }
+      ]
+    },
+    "chat": {
+      "title": "{{thread}}",
+      "widgets": [
+        {
+          "t": "rows",
+          "src": "sms.messages",
+          "arg": "{{thread}}",
+          "rowh": 60,
+          "empty": "还没有消息"
+        },
+        {
+          "t": "input",
+          "key": "draft",
+          "hint": "输入短信内容"
+        },
+        {
+          "t": "button",
+          "text": "发送",
+          "action": {
+            "type": "native",
+            "op": "sms.send",
+            "arg": "{{draft}}"
+          }
+        }
+      ]
+    }
+  }
+}

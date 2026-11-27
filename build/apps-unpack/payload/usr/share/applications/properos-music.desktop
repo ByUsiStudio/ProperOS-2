@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=音乐
+Name[zh_CN]=音乐
+Comment=本地音频扫描与播放
+Comment[zh_CN]=本地音频扫描与播放
+Icon=media-optical-audio
+Exec=/usr/bin/properos-app /opt/properos/apps/music
+TryExec=/usr/bin/properos-app
+Terminal=false
+Categories=Utility;
+StartupNotify=true
+StartupWMClass=properos-app
+X-ProperOS-App=miao.byusistudio.music
+X-ProperOS-Package=properos-app-music

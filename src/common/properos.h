@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · 公共运行时工具
+/* ProperOS 25.0.0 Mobile · 公共运行时工具
  * 开发者：ByUsi Studio · 北啊呢
  */
 #ifndef PROPEROS_COMMON_H
@@ -21,7 +21,7 @@
 #include <dirent.h>
 #include <signal.h>
 
-#define PROPEROS_VERSION "2.5"
+#define PROPEROS_VERSION "25.0.0"
 #define PROPEROS_CODENAME "Mobile"
 #define PROPEROS_VENDOR "ByUsi Studio"
 #define PROPEROS_AUTHOR "北啊呢"

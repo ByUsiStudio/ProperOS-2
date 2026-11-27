@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# ProperOS 2.5 Mobile · ARM64 内核构建
+# ProperOS 25.0.0 Mobile · ARM64 内核构建
 # 目标：Linux 7.3.6 / arm64 / 单 Image（无模块，容器与手机基础驱动内建）
 set -euo pipefail
-source /workspace/properos-2.5/build/00-env.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/00-env.sh"
 
 SRC="${KERNEL_SRC_ARM64:-/root/build/linux-arm64}"
 JOBS="${JOBS:-5}"
@@ -83,7 +83,7 @@ log "编译 Image（-j$JOBS）"
 time make -s -j"$JOBS" Image
 ls -lh arch/arm64/boot/Image
 
-install -Dm644 arch/arm64/boot/Image "$DIST/kernel/Image-properos-2.5"
-install -Dm644 .config "$DIST/kernel/config-2.5.0-properos-arm64"
-install -Dm644 .config "$REPO/kernel/properos_2.5_arm64_defconfig"
-log "ARM64 内核完成：$DIST/kernel/Image-properos-2.5"
+install -Dm644 arch/arm64/boot/Image "$DIST/kernel/Image-properos-25.0.0"
+install -Dm644 .config "$DIST/kernel/config-25.0.0-properos-arm64"
+install -Dm644 .config "$REPO/kernel/properos_25.0.0_arm64_defconfig"
+log "ARM64 内核完成：$DIST/kernel/Image-properos-25.0.0"

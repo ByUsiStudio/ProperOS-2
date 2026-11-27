@@ -1,0 +1,126 @@
+{
+  "title": "时钟",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "时钟",
+      "widgets": [
+        {
+          "t": "spacer",
+          "h": 24
+        },
+        {
+          "t": "text",
+          "text": "{{time}}",
+          "align": "center",
+          "px": 76,
+          "color": "#16181D"
+        },
+        {
+          "t": "text",
+          "text": "{{date}}",
+          "align": "center",
+          "px": 16
+        },
+        {
+          "t": "spacer",
+          "h": 24
+        },
+        {
+          "t": "group",
+          "title": "世界时钟"
+        },
+        {
+          "t": "rows",
+          "src": "clock.world",
+          "rowh": 50
+        },
+        {
+          "t": "tiles",
+          "cols": 2,
+          "cell": 84,
+          "items": [
+            {
+              "title": "闹钟",
+              "sub": "本地闹钟表",
+              "icon": "clock",
+              "tint": "#E8A33D",
+              "to": "alarm"
+            },
+            {
+              "title": "秒表",
+              "sub": "{{sw}}",
+              "icon": "play",
+              "tint": "#3E7BFF",
+              "to": "stopwatch"
+            }
+          ]
+        }
+      ]
+    },
+    "alarm": {
+      "title": "闹钟",
+      "widgets": [
+        {
+          "t": "rows",
+          "src": "clock.alarms",
+          "rowh": 62,
+          "empty": "还没有闹钟"
+        },
+        {
+          "t": "input",
+          "key": "newalarm",
+          "hint": "07:30 起床"
+        },
+        {
+          "t": "button",
+          "text": "添加闹钟",
+          "action": {
+            "type": "native",
+            "op": "clock.add",
+            "arg": "{{newalarm}}"
+          }
+        },
+        {
+          "t": "note",
+          "text": "点击已有闹钟可开关；闹钟表保存在 /data/home/.config/properos/alarms.conf。"
+        }
+      ]
+    },
+    "stopwatch": {
+      "title": "秒表",
+      "widgets": [
+        {
+          "t": "text",
+          "text": "{{sw}}",
+          "align": "center",
+          "px": 64,
+          "color": "#16181D"
+        },
+        {
+          "t": "button",
+          "text": "开始",
+          "action": {
+            "type": "sw.start"
+          }
+        },
+        {
+          "t": "button",
+          "text": "暂停",
+          "kind": "secondary",
+          "action": {
+            "type": "sw.stop"
+          }
+        },
+        {
+          "t": "button",
+          "text": "复位",
+          "kind": "secondary",
+          "action": {
+            "type": "sw.reset"
+          }
+        }
+      ]
+    }
+  }
+}

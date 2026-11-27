@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
-# ProperOS 2.5 Mobile · ARM64 磁盘镜像（GPT + ESP + system + data）
+# ProperOS 25.0.0 Mobile · ARM64 磁盘镜像（GPT + ESP + system + data）
 # 无需 loop 挂载：mke2fs -d / mtools 直接填充文件系统
 set -euo pipefail
-source /workspace/properos-2.5/build/00-env.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/00-env.sh"
 
 ROOT="$ROOTFS_ARM64"
-OUT="$DIST/ProperOS-2.5-arm64.img"
+OUT="$DIST/ProperOS-25.0.0-arm64.img"
 STAGE="$WORK/img-stage-arm64"
 ESP_IMG="$STAGE/esp.img"
 SYS_IMG="$STAGE/system.img"
 DATA_IMG="$STAGE/data.img"
 
 ESP_MIB=256
-SYS_MIB=3072
-DATA_MIB=768
+SYS_MIB=6144
+DATA_MIB=1024
 TOTAL_MIB=$((1 + ESP_MIB + SYS_MIB + DATA_MIB))
 
 SYS_PARTUUID="1A2B3C4D-0002-4A2B-9C3D-000000000002"
@@ -25,7 +25,7 @@ rm -rf "$STAGE"; mkdir -p "$STAGE/esp"
 log "准备 ESP 内容"
 mkdir -p "$STAGE/esp"/{EFI/BOOT,boot/grub,slots/a,slots/b,proloader}
 cp -f "$REPO/overlay/usr/lib/properos/boot/BOOTAA64.EFI" "$STAGE/esp/EFI/BOOT/BOOTAA64.EFI"
-cp -f "$DIST/kernel/Image-properos-2.5" "$STAGE/esp/slots/a/Image"
+cp -f "$DIST/kernel/Image-properos-25.0.0" "$STAGE/esp/slots/a/Image"
 cp -f "$ROOT/boot/initramfs-properos.img" "$STAGE/esp/slots/a/initramfs.img"
 ( cd "$STAGE/esp/slots/a" && sha256sum Image initramfs.img > SHA256SUMS )
 
@@ -40,19 +40,19 @@ if [[ -n "${PROPEROS_DTB:-}" ]]; then
 fi
 
 cat > "$STAGE/esp/boot/grub/grub.cfg" <<EOF
-# ProperOS 2.5 Mobile · ARM64（镜像内置）
+# ProperOS 25.0.0 Mobile · ARM64（镜像内置）
 set timeout=3
 set default=0
 set gfxpayload=keep
 
-menuentry "ProperOS 2.5 Mobile  ·  槽 A" --class properos {
+menuentry "ProperOS 25.0.0 Mobile  ·  槽 A" --class properos {
     search --no-floppy --label --set=root PROPEROS
     linux /slots/a/Image root=PARTUUID=$SYS_PARTUUID rootfstype=ext4 rw rootwait quiet loglevel=4 console=ttyAMA0,115200 console=tty0 properos.slot=a
 $DTB_ARG
     initrd /slots/a/initramfs.img
 }
 
-menuentry "ProperOS 2.5 Mobile  ·  槽 A（详细日志）" {
+menuentry "ProperOS 25.0.0 Mobile  ·  槽 A（详细日志）" {
     search --no-floppy --label --set=root PROPEROS
     linux /slots/a/Image root=PARTUUID=$SYS_PARTUUID rootfstype=ext4 rw rootwait loglevel=7 console=ttyAMA0,115200 console=tty0 properos.slot=a
 $DTB_ARG
@@ -68,12 +68,12 @@ $DTB_ARG
 EOF
 
 cat > "$STAGE/esp/proloader/proloader.conf" <<EOF
-# ProLoader 配置 · ProperOS 2.5 Mobile
+# ProLoader 配置 · ProperOS 25.0.0 Mobile
 slots=a,b
 default_slot=a
 max_tries=3
 verify=1
-splash_message=ProperOS 2.5 Mobile · ByUsi Studio
+splash_message=ProperOS 25.0.0 Mobile · ByUsi Studio
 system_partuuid=$SYS_PARTUUID
 EOF
 

@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · ZIP 容器读取实现
+/* ProperOS 25.0.0 Mobile · ZIP 容器读取实现
  *
  * 开发者：ByUsi Studio · 北啊呢
  */

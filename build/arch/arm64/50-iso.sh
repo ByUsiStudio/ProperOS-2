@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# ProperOS 2.5 Mobile · ARM64 安装 ISO（UEFI 启动，Debian 风格文本安装界面）
+# ProperOS 25.0.0 Mobile · ARM64 安装 ISO（UEFI 启动，Debian 风格文本安装界面）
 set -euo pipefail
-source /workspace/properos-2.5/build/00-env.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/00-env.sh"
 
 ROOT="$ROOTFS_ARM64"
 STAGE="$WORK/iso-stage-arm64"
 LIVE="$WORK/live-rootfs-arm64"
-OUT="$DIST/ProperOS-2.5-arm64.iso"
+OUT="$DIST/ProperOS-25.0.0-arm64.iso"
 
 rm -rf "$STAGE" "$LIVE"
 mkdir -p "$STAGE"/{boot/grub,live} "$STAGE/efi/EFI/BOOT"
@@ -34,7 +34,7 @@ ln -sf /usr/lib/systemd/system/properos-live-installer.service \
 # 就是安装器要拷贝给目标设备的“系统本体”，改了会把 live 专用配置装到设备上。
 # live 运行期需要的改动一律放到 installer/init 里写进 overlay 上层。
 cat > "$LIVE/etc/issue" <<'EOF'
-ProperOS 2.5 Mobile Installer
+ProperOS 25.0.0 Mobile Installer
 EOF
 
 log "压缩 rootfs → squashfs（xz，约 3-6 分钟）"
@@ -45,28 +45,32 @@ mksquashfs "$LIVE" "$STAGE/live/rootfs.squashfs" \
     -e "$LIVE/tmp/*" -e "$LIVE/var/cache/apt/archives/*" >/dev/null
 
 log "复制内核与引导器"
-cp -f "$DIST/kernel/Image-properos-2.5" "$STAGE/boot/Image"
+cp -f "$DIST/kernel/Image-properos-25.0.0" "$STAGE/boot/Image"
 cp -f "$REPO/overlay/usr/lib/properos/boot/BOOTAA64.EFI" "$STAGE/efi/EFI/BOOT/BOOTAA64.EFI"
+# ISO9660 根下再放一份：部分固件直接按 \EFI\BOOT\BOOTAA64.EFI 找，
+# 少数写盘工具也只复制这一层。
+mkdir -p "$STAGE/EFI/BOOT"
+cp -f "$STAGE/efi/EFI/BOOT/BOOTAA64.EFI" "$STAGE/EFI/BOOT/BOOTAA64.EFI"
 
 cat > "$STAGE/boot/grub/grub.cfg" <<'EOF'
 set timeout=10
 set default=0
 set gfxpayload=keep
 
-menuentry "ProperOS 2.5 Mobile  ·  Installer" --class properos {
-    search --no-floppy --label --set=root PROPEROS250
+menuentry "ProperOS 25.0.0 Mobile  ·  Installer" --class properos {
+    search --no-floppy --label --set=root PROPEROS2500
     linux /boot/Image root=/dev/ram0 rw rootwait quiet loglevel=4 console=tty0 console=ttyAMA0,115200
     initrd /boot/initramfs-live.img
 }
 
-menuentry "ProperOS 2.5 Mobile  ·  Installer (verbose serial log)" {
-    search --no-floppy --label --set=root PROPEROS250
+menuentry "ProperOS 25.0.0 Mobile  ·  Installer (verbose serial log)" {
+    search --no-floppy --label --set=root PROPEROS2500
     linux /boot/Image root=/dev/ram0 rw rootwait loglevel=7 console=tty0 console=ttyAMA0,115200
     initrd /boot/initramfs-live.img
 }
 
 menuentry "Unattended install to /dev/vda (test)" {
-    search --no-floppy --label --set=root PROPEROS250
+    search --no-floppy --label --set=root PROPEROS2500
     linux /boot/Image root=/dev/ram0 rw rootwait quiet loglevel=4 console=tty0 console=ttyAMA0,115200 properos.autoinstall=/dev/vda properos.blankpass=1
     initrd /boot/initramfs-live.img
 }
@@ -86,10 +90,26 @@ mmd -i "$STAGE/boot/efi.img" ::/EFI ::/EFI/BOOT ::/boot ::/boot/grub
 mcopy -i "$STAGE/boot/efi.img" "$STAGE/efi/EFI/BOOT/BOOTAA64.EFI" ::/EFI/BOOT/BOOTAA64.EFI
 mcopy -i "$STAGE/boot/efi.img" "$STAGE/boot/grub/grub.cfg" ::/boot/grub/grub.cfg
 
-log "生成 ISO9660（El Torito EFI）"
+log "生成 ISO9660（El Torito EFI + GPT hybrid）"
 rm -f "$OUT"
-xorriso -as mkisofs -o "$OUT" -V PROPEROS250 -iso-level 3 -J -joliet-long \
-    -e boot/efi.img -no-emul-boot "$STAGE" >/dev/null
+# 两个要点，缺一个 ISO 就装不了：
+# 1) ARM64 固件只认「平台 = UEFI」的 El Torito 启动项。只写 -e 不会产生启动
+#    项，固件扫不到可启动设备就退化到 UEFI Shell（安装器界面根本不出现）。
+# 2) dd 到 U 盘后，固件更愿意从 GPT 里的 ESP 分区启动。-append_partition
+#    把同一个 16 MiB FAT 镜像同时暴露成 EFI system partition，配
+#    -isohybrid-gpt-basdat 写 GPT + protective MBR，U 盘和光盘都能用。
+xorriso -as mkisofs -o "$OUT" -V PROPEROS2500 -iso-level 3 -J -joliet-long \
+    -eltorito-platform efi -eltorito-boot boot/efi.img -no-emul-boot \
+    -append_partition 2 0xef "$STAGE/boot/efi.img" -isohybrid-gpt-basdat \
+    "$STAGE" >/dev/null
+
+# 自检：没有 UEFI 启动项的 ISO 绝对不能交付
+if ! xorriso -indev "$OUT" -report_el_torito 2>/dev/null | grep -q "UEFI"; then
+    die "ISO 缺少 UEFI El Torito 启动项，固件无法启动"
+fi
+if ! sgdisk -p "$OUT" 2>/dev/null | grep -q "EF00"; then
+    die "ISO 缺少 GPT EFI 分区，dd 到 U 盘后无法启动"
+fi
 
 rm -rf "$LIVE"
 sha256sum "$OUT" > "$OUT.sha256"

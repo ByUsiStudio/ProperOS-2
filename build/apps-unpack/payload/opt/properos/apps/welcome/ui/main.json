@@ -1,0 +1,39 @@
+{
+  "title": "欢迎使用",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "欢迎使用",
+      "widgets": [
+        {
+          "t": "image",
+          "icon": "chip",
+          "title": "ProperOS 25.0.0",
+          "sub": "{{model}}"
+        },
+        {
+          "t": "rows",
+          "src": "sys.info",
+          "rowh": 50
+        },
+        {
+          "t": "button",
+          "text": "打开终端",
+          "action": {
+            "type": "native",
+            "op": "pkg.launch",
+            "arg": "/usr/share/properos/apps/terminal.jspk"
+          }
+        },
+        {
+          "t": "button",
+          "text": "完成",
+          "kind": "secondary",
+          "action": {
+            "type": "close"
+          }
+        }
+      ]
+    }
+  }
+}

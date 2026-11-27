@@ -1,0 +1,172 @@
+{
+  "title": "电话",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "电话",
+      "widgets": [
+        {
+          "t": "rows",
+          "src": "modems",
+          "rowh": 56,
+          "empty": "未检测到调制解调器"
+        },
+        {
+          "t": "text",
+          "text": "{{number}}",
+          "align": "center",
+          "px": 32,
+          "color": "#16181D",
+          "empty": "输入号码"
+        },
+        {
+          "t": "tiles",
+          "cols": 3,
+          "cell": 70,
+          "items": [
+            {
+              "title": "1",
+              "tint": "#2A2F38",
+              "action": {
+                "type": "append",
+                "key": "number",
+                "text": "1"
+              }
+            },
+            {
+              "title": "2",
+              "tint": "#2A2F38",
+              "action": {
+                "type": "append",
+                "key": "number",
+                "text": "2"
+              }
+            },
+            {
+              "title": "3",
+              "tint": "#2A2F38",
+              "action": {
+                "type": "append",
+                "key": "number",
+                "text": "3"
+              }
+            },
+            {
+              "title": "4",
+              "tint": "#2A2F38",
+              "action": {
+                "type": "append",
+                "key": "number",
+                "text": "4"
+              }
+            },
+            {
+              "title": "5",
+              "tint": "#2A2F38",
+              "action": {
+                "type": "append",
+                "key": "number",
+                "text": "5"
+              }
+            },
+            {
+              "title": "6",
+              "tint": "#2A2F38",
+              "action": {
+                "type": "append",
+                "key": "number",
+                "text": "6"
+              }
+            },
+            {
+              "title": "7",
+              "tint": "#2A2F38",
+              "action": {
+                "type": "append",
+                "key": "number",
+                "text": "7"
+              }
+            },
+            {
+              "title": "8",
+              "tint": "#2A2F38",
+              "action": {
+                "type": "append",
+                "key": "number",
+                "text": "8"
+              }
+            },
+            {
+              "title": "9",
+              "tint": "#2A2F38",
+              "action": {
+                "type": "append",
+                "key": "number",
+                "text": "9"
+              }
+            },
+            {
+              "title": "*",
+              "tint": "#2A2F38",
+              "action": {
+                "type": "append",
+                "key": "number",
+                "text": "*"
+              }
+            },
+            {
+              "title": "0",
+              "tint": "#2A2F38",
+              "action": {
+                "type": "append",
+                "key": "number",
+                "text": "0"
+              }
+            },
+            {
+              "title": "#",
+              "tint": "#2A2F38",
+              "action": {
+                "type": "append",
+                "key": "number",
+                "text": "#"
+              }
+            }
+          ]
+        },
+        {
+          "t": "button",
+          "text": "呼叫",
+          "action": {
+            "type": "native",
+            "op": "phone.dial",
+            "arg": "{{number}}"
+          }
+        },
+        {
+          "t": "button",
+          "text": "删除一位",
+          "kind": "secondary",
+          "action": {
+            "type": "bs",
+            "key": "number"
+          }
+        },
+        {
+          "t": "group",
+          "title": "最近通话"
+        },
+        {
+          "t": "rows",
+          "src": "calls",
+          "rowh": 58,
+          "empty": "没有通话记录"
+        },
+        {
+          "t": "note",
+          "text": "拨号优先走 ModemManager（mmcli voice-create-call）；没有 modem 时只记录一条带原因的通话记录，不会假装接通。"
+        }
+      ]
+    }
+  }
+}

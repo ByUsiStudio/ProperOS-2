@@ -1,0 +1,64 @@
+#!/bin/bash
+# ProperOS 25.0.0 容器入口（rootful）
+# 默认以 root 运行；非 root 调用时自动 sudo 提权，保证与系统级容器运行时一致。
+set -euo pipefail
+
+if [ "$(id -u)" -ne 0 ]; then
+    exec sudo -- "$0" "$@"
+fi
+
+CMD="${1:-help}"
+[ $# -gt 0 ] && shift
+
+case "$CMD" in
+    run)
+        # 默认加固：不改内核参数、不加特权、根文件系统只读可显式覆盖
+        exec podman run --rm -it \
+            --security-opt no-new-privileges \
+            --pids-limit 512 \
+            "$@"
+        ;;
+    serve)
+        # 后台常驻服务：properos-container serve nginx:alpine -p 8080:80
+        IMG="$1"; shift
+        exec podman run -d --restart=unless-stopped \
+            --security-opt no-new-privileges \
+            "$IMG" "$@"
+        ;;
+    shell)
+        IMG="${1:-debian:bookworm-slim}"
+        exec podman run --rm -it --security-opt no-new-privileges "$IMG" /bin/bash
+        ;;
+    ps)      exec podman ps "$@" ;;
+    images)  exec podman images "$@" ;;
+    pull)    exec podman pull "$@" ;;
+    logs)    exec podman logs "$@" ;;
+    stop)    exec podman stop "$@" ;;
+    prune)   exec podman system prune -af --volumes ;;
+    info)    exec podman info ;;
+    selftest)
+        echo "== 内核 =="; uname -r
+        echo "== cgroup =="; stat -fc %T /sys/fs/cgroup 2>/dev/null || echo unknown
+        echo "== 运行时 =="; podman --version
+        echo "== 拉取并运行 alpine 自检 =="
+        podman run --rm alpine:3.20 sh -c 'echo container-ok; uname -a; id'
+        ;;
+    help|*)
+        cat <<'EOF'
+ProperOS 25.0.0 容器工具（rootful podman）
+
+  properos-container selftest            一键自检内核能力与运行时
+  properos-container shell [镜像]        进入容器 shell（默认 debian:bookworm-slim）
+  properos-container run [podman 参数]   前台运行容器（默认加固）
+  properos-container serve 镜像 [参数]   后台常驻容器
+  properos-container ps|images|pull|logs|stop|prune|info
+
+直接使用 podman：
+  sudo podman run -it --rm alpine sh
+  sudo podman run -d -p 8080:80 nginx:alpine
+
+注意：本工具要求 root，容器内 root 即宿主 root 的映射子集，
+      不要对不可信镜像使用 --privileged 或挂载 /。
+EOF
+        ;;
+esac

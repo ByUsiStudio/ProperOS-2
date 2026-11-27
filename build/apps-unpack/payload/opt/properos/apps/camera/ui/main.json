@@ -1,0 +1,35 @@
+{
+  "title": "相机",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "相机",
+      "widgets": [
+        {
+          "t": "rows",
+          "src": "camera.devices",
+          "rowh": 62,
+          "empty": "没有可用的 V4L2 采集设备"
+        },
+        {
+          "t": "button",
+          "text": "用 /dev/video0 拍照",
+          "action": {
+            "type": "native",
+            "op": "camera.snap",
+            "arg": "/dev/video0"
+          }
+        },
+        {
+          "t": "keyvalue",
+          "key": "照片目录",
+          "value": "/data/home/Pictures"
+        },
+        {
+          "t": "note",
+          "text": "拍照直接走 V4L2：S_FMT(YUYV) → mmap 缓冲 → 取一帧 → YUV 转 RGB 写 PPM。没有摄像头时如实报告，不生成占位画面。"
+        }
+      ]
+    }
+  }
+}

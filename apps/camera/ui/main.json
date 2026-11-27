@@ -6,48 +6,28 @@
       "title": "相机",
       "widgets": [
         {
-          "t": "image",
-          "icon": "camera",
-          "title": "取景器",
-          "sub": "后置 4800 万像素 · 需要 V4L2 摄像头节点"
+          "t": "rows",
+          "src": "camera.devices",
+          "rowh": 62,
+          "empty": "没有可用的 V4L2 采集设备"
         },
         {
-          "t": "tiles",
-          "cols": 3,
-          "cell": 72,
-          "items": [
-            {
-              "title": "拍照",
-              "icon": "camera",
-              "tint": "#3A3F49",
-              "action": {
-                "type": "toast",
-                "text": "已保存到 /data/home/Pictures"
-              }
-            },
-            {
-              "title": "录像",
-              "icon": "play",
-              "tint": "#C0392B",
-              "action": {
-                "type": "toast",
-                "text": "开始录像"
-              }
-            },
-            {
-              "title": "切换",
-              "icon": "refresh",
-              "tint": "#3A3F49",
-              "action": {
-                "type": "toast",
-                "text": "已切换到前置"
-              }
-            }
-          ]
+          "t": "button",
+          "text": "用 /dev/video0 拍照",
+          "action": {
+            "type": "native",
+            "op": "camera.snap",
+            "arg": "/dev/video0"
+          }
+        },
+        {
+          "t": "keyvalue",
+          "key": "照片目录",
+          "value": "/data/home/Pictures"
         },
         {
           "t": "note",
-          "text": "相机需要内核开启 V4L2 并在设备树中声明 sensor。QEMU 无摄像头时显示占位画面。"
+          "text": "拍照直接走 V4L2：S_FMT(YUYV) → mmap 缓冲 → 取一帧 → YUV 转 RGB 写 PPM。没有摄像头时如实报告，不生成占位画面。"
         }
       ]
     }

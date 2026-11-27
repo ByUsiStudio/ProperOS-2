@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ProperOS 25.0.0 — 面向 ARM64 移动设备的 Linux 发行版</title>
+<meta name="description" content="ProperOS 25.0.0 Mobile 是面向 ARM64 设备的完整 Linux 发行版：自研 ProLoader 引导链、四步图形安装器、KDE Plasma Mobile 桌面、11 个 ppkg 系统应用与真 PTY 终端。">
+<meta name="keywords" content="ProperOS,ARM64,Linux 发行版,Plasma Mobile,移动操作系统,ProLoader,ppkg 应用包,Two Dot Five">
+<meta name="theme-color" content="#f5f7f2">
+<meta property="og:title" content="ProperOS 25.0.0 — 把完整的 Linux 装进口袋">
+<meta property="og:description" content="ARM64 · Linux 7.3.6 · KDE Plasma Mobile · 自研引导链与图形安装器">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23547a46'/%3E%3Crect x='10' y='10' width='12' height='12' rx='3' fill='%23f5f7f2'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-header" id="top">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top" aria-label="ProperOS 首页">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+          <rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor" stroke="none"></rect>
+          <path d="M9 1.5v2.5M15 1.5v2.5M9 20v2.5M15 20v2.5M1.5 9H4M1.5 15H4M20 9h2.5M20 15h2.5"></path>
+        </svg>
+      </span>
+      <span class="brand-text">ProperOS</span>
+      <span class="brand-ver">25.0.0</span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="主导航">
+      <a href="#features">特性</a>
+      <a href="#stack">架构</a>
+      <a href="#installer">安装</a>
+      <a href="#apps">应用</a>
+      <a href="#download">下载</a>
+      <a href="#start">上手</a>
+    </nav>
+
+    <div class="header-cta">
+      <a class="btn btn-sm btn-primary" href="#download">获取系统</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-grid-bg" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">
+          <span class="dot"></span>ARM64 · Linux 7.3.6 · KDE Plasma Mobile
+        </p>
+        <h1>把完整的 Linux<br><em>装进口袋</em></h1>
+        <p class="lede">
+          ProperOS 25.0.0 Mobile 是面向 ARM64 移动设备的完整发行版。
+          不是模拟器，也不是启动器：自研引导链、图形安装向导、真实的 Plasma 桌面，
+          以及 11 个直接读取 <code>procfs</code>、<code>sysfs</code>、V4L2 的系统应用，
+          全部在你的设备上运行。
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#download">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 19h16"/></svg>
+            下载安装 ISO
+          </a>
+          <a class="btn btn-ghost" href="#start">查看上手步骤</a>
+        </div>
+        <ul class="hero-meta">
+          <li><strong>769 MB</strong><span>UEFI 安装镜像</span></li>
+          <li><strong>4 步</strong><span>图形安装向导</span></li>
+          <li><strong>11 个</strong><span>系统应用</span></li>
+          <li><strong>GPL-2.0</strong><span>源码开放</span></li>
+        </ul>
+      </div>
+
+      <div class="hero-visual">
+        <div class="phone">
+          <div class="phone-screen">
+            <img src="assets/img/desktop.webp" width="720" height="1280" alt="ProperOS 桌面：状态栏显示时间、信号、Wi-Fi 与电量，网格排列应用商店、文件、时钟、欢迎、消息、电话、相机、终端、计算器、设置、音乐，底部为 Dock" fetchpriority="high">
+          </div>
+        </div>
+        <div class="float-chip chip-a">
+          <span class="chip-k">SHELL</span>
+          <code>root@properos:~#</code>
+        </div>
+        <div class="float-chip chip-b">
+          <span class="chip-dot"></span>
+          <span>Plasma Mobile · KWin Wayland</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 关键数字条 -->
+  <div class="strip">
+    <div class="wrap strip-inner">
+      <div class="strip-item"><b>Linux 7.3.6</b><span>自编 LTS 内核，驱动全内建</span></div>
+      <div class="strip-item"><b>3 分区</b><span>ESP / 只读系统 / 独立数据</span></div>
+      <div class="strip-item"><b>A/B 双槽</b><span>校验失败自动回滚</span></div>
+      <div class="strip-item"><b>rootless 体验</b><span>默认 root，密码可留空</span></div>
+    </div>
+  </div>
+
+  <!-- 特性 -->
+  <section class="section" id="features">
+    <div class="wrap">
+      <header class="sec-head">
+        <p class="eyebrow">独特之处</p>
+        <h2 class="sec-title">不是一个壳，是一台完整的系统</h2>
+        <p class="sec-sub">
+          从引导到桌面、从包管理到终端，每一层都由仓库内的代码实现，可复现、可替换、可审计。
+        </p>
+      </header>
+
+      <div class="cards">
+        <article class="card reveal">
+          <div class="card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 5.5h3"/><circle cx="12" cy="18" r="1"/></svg>
+          </div>
+          <h3>真正的 Plasma Mobile 桌面</h3>
+          <p>桌面是 KDE Plasma Mobile 本体：KWin 合成、phoneshell、QuickSettings 与抽屉。无 GPU 时由 llvmpipe 软件渲染；没有 DRM 的环境自动落到自绘的 framebuffer 桌面。</p>
+          <ul class="ticks">
+            <li>会话由 systemd 拉起，<code>plasmashellrc</code> 锁定 phoneshell</li>
+            <li>触摸 / 鼠标 / 键盘走 Wayland seat</li>
+          </ul>
+        </article>
+
+        <article class="card reveal">
+          <div class="card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="16" rx="2.5"/><path d="M6.5 9l2.5 2.5L6.5 14M12 15h5"/></svg>
+          </div>
+          <h3>真终端，不是回显框</h3>
+          <p>终端应用用 <code>posix_openpt</code> 开伪终端，<code>setsid</code> + <code>TIOCSCTTY</code> 起登录 shell，自己解析 VT100/xterm 转义序列，支持 256 色、光标控制、滚动区与 1000 行回看。</p>
+          <ul class="ticks">
+            <li>UTF-8 增量解码，CJK 双宽对齐</li>
+            <li>内置六行触摸键盘，Ctrl 粘滞</li>
+          </ul>
+        </article>
+
+        <article class="card reveal">
+          <div class="card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5L12 3l8 4.5v9L12 21l-8-4.5z"/><path d="M4 7.5L12 12l8-4.5M12 12v9"/></svg>
+          </div>
+          <h3>应用就是 ppkg 包</h3>
+          <p>开发一个应用 = 写 <code>manifest.json</code> 与界面 JSON，<code>ppkg-app.py build</code> 出一个 <code>.ppkg</code>，<code>ppkg install</code> 装到 <code>/opt/properos/apps</code>，桌面自动出现入口。渲染由 C 写的运行时完成，不使用 WebView。</p>
+          <ul class="ticks">
+            <li>同一份包：会话里是 xdg-shell 窗口，裸机上是 framebuffer 全屏</li>
+            <li>数据与动作统一走 <code>nv_source</code> / <code>nv_action</code></li>
+            <li>应用不编译、不打包 WebView，包内只有描述与资源，渲染由系统运行时完成</li>
+          </ul>
+        </article>
+
+        <article class="card reveal">
+          <div class="card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l8.5-4 8.5 4-8.5 4z"/><path d="M3.5 12.5l8.5 4 8.5-4M3.5 16.5l8.5 4 8.5-4"/></svg>
+          </div>
+          <h3>ppkg 与 apt 双包管理</h3>
+          <p>应用与系统组件同一种格式：<code>.ppkg</code> 带 <code>PKGINFO</code>、逐文件 SHA-256 与可选签名，卸载走同一套数据库。同时接入 Debian bookworm 源，<code>.deb</code> 先转成 <code>.ppkg</code> 再安装。</p>
+          <ul class="ticks">
+            <li><code>ppkg build / install / verify / remove</code></li>
+            <li><code>apt install</code> 可直接用，内核包走三层拦截</li>
+          </ul>
+        </article>
+
+        <article class="card reveal">
+          <div class="card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.2-2.9 7.6-7 9-4.1-1.4-7-4.8-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <h3>ProLoader · A/B 引导</h3>
+          <p>initramfs 第一阶段即自研引导器：槽选择、SHA-256 校验、失败回滚、应急 shell。StBoot 负责挂载 <code>/data</code>、首启播种可写层，再 <code>switch_root</code>。</p>
+          <ul class="ticks">
+            <li><code>properos-bootctl status / rollback / sync</code></li>
+            <li>首启自动 <code>mark-good</code></li>
+          </ul>
+        </article>
+
+        <article class="card reveal">
+          <div class="card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/></svg>
+          </div>
+          <h3>容器与沙箱运行时</h3>
+          <p>系统内建 rootful podman（netavark 网络、overlay 存储、cgroup v2），可直接跑容器；<code>papp</code> 用 namespace 与降权（uid 10000、默认无网络）隔离普通应用。</p>
+          <ul class="ticks">
+            <li><code>podman run --rm -p 8080:80 nginx:alpine</code></li>
+            <li><code>papp install / run / pack</code></li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 架构 -->
+  <section class="section section-dark" id="stack">
+    <div class="wrap">
+      <header class="sec-head sec-head-light">
+        <p class="eyebrow">架构分层</p>
+        <h2 class="sec-title">五层，全部在仓库里</h2>
+        <p class="sec-sub">没有黑盒二进制。每一层都能从源码重建，构建脚本按顺序执行即可得到同样的镜像。</p>
+      </header>
+
+      <div class="stack">
+        <div class="stack-rows">
+          <div class="layer reveal">
+            <span class="layer-idx">01</span>
+            <div><h3>界面层</h3><p>Plasma Mobile（KWin + phoneshell）· properos-shell 兜底 · properos-setup 安装器 · properos-app 应用运行时</p></div>
+            <span class="layer-tag">Qt / Wayland / fbdev</span>
+          </div>
+          <div class="layer reveal">
+            <span class="layer-idx">02</span>
+            <div><h3>系统层</h3><p>properd 服务与应用管理（Unix socket，崩溃重启）· papp 沙箱 · ppkg 系统包 · apt 兼容层</p></div>
+            <span class="layer-tag">C · daemon</span>
+          </div>
+          <div class="layer reveal">
+            <span class="layer-idx">03</span>
+            <div><h3>运行层</h3><p>systemd 单元 · podman（rootful、netavark、overlay、cgroup v2）· 网络与时间同步</p></div>
+            <span class="layer-tag">systemd · OCI</span>
+          </div>
+          <div class="layer reveal">
+            <span class="layer-idx">04</span>
+            <div><h3>引导层</h3><p>ProLoader 槽选择与校验 · StBoot 数据分区与首启播种 · GRUB 2.06 arm64-efi</p></div>
+            <span class="layer-tag">initramfs</span>
+          </div>
+          <div class="layer reveal">
+            <span class="layer-idx">05</span>
+            <div><h3>内核层</h3><p>Linux 7.3.6 LTS，显示 / 触摸 / 存储 / 网络 / 容器驱动全部内建，无需 initrd 加载模块</p></div>
+            <span class="layer-tag">aarch64</span>
+          </div>
+        </div>
+
+        <aside class="stack-side reveal">
+          <h3>与 ProperOS 2 的关系</h3>
+          <p class="stack-note">ProperOS 2 是跑在 iApp 里的模拟环境；25.0.0 把同一套概念落到了裸机上。</p>
+          <table class="mini-table">
+            <thead><tr><th>ProperOS 2</th><th>25.0.0</th></tr></thead>
+            <tbody>
+              <tr><td>ProLoader Activity</td><td>initramfs 第一阶段</td></tr>
+              <tr><td>StBoot 初始化</td><td>数据分区 + 首启播种</td></tr>
+              <tr><td>system.myu</td><td>properd + systemd</td></tr>
+              <tr><td>.jupk 模块</td><td>ppkg 应用包</td></tr>
+              <tr><td>Termux 终端</td><td>内建 PTY 终端</td></tr>
+            </tbody>
+          </table>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- 安装器 -->
+  <section class="section" id="installer">
+    <div class="wrap">
+      <header class="sec-head">
+        <p class="eyebrow">安装器</p>
+        <h2 class="sec-title">四步装完，触摸也能操作</h2>
+        <p class="sec-sub">
+          从 ISO 启动直接进入图形向导，渲染到 framebuffer，不依赖 X11、Wayland 或 GPU 用户态；
+          没有 framebuffer 时自动回退文本向导。
+        </p>
+      </header>
+
+      <div class="installer">
+        <div class="inst-steps" role="tablist" aria-label="安装步骤">
+          <button class="inst-step is-active" role="tab" aria-selected="true" data-shot="1">
+            <span class="step-n">1</span>
+            <span class="step-body"><b>欢迎</b><small>版本、架构与特性摘要，约 3 分钟</small></span>
+          </button>
+          <button class="inst-step" role="tab" aria-selected="false" data-shot="2">
+            <span class="step-n">2</span>
+            <span class="step-body"><b>安装位置</b><small>整盘清除或手动分区，磁盘单选与预览条</small></span>
+          </button>
+          <button class="inst-step" role="tab" aria-selected="false" data-shot="3">
+            <span class="step-n">3</span>
+            <span class="step-body"><b>账户与设备</b><small>设备名称、root 密码（可留空，开机直进桌面）</small></span>
+          </button>
+          <button class="inst-step" role="tab" aria-selected="false" data-shot="4">
+            <span class="step-n">4</span>
+            <span class="step-body"><b>确认</b><small>核对版本、目标盘、容量与账户设置</small></span>
+          </button>
+          <button class="inst-step" role="tab" aria-selected="false" data-shot="5">
+            <span class="step-n">5</span>
+            <span class="step-body"><b>写入</b><small>分区 → 格式化 → 挂载 → 拷贝 → 配置 → 引导 → 同步</small></span>
+          </button>
+          <button class="inst-step" role="tab" aria-selected="false" data-shot="6">
+            <span class="step-n">6</span>
+            <span class="step-body"><b>完成</b><small>移除介质，重启即进桌面</small></span>
+          </button>
+        </div>
+
+        <figure class="inst-shot">
+          <div class="phone phone-sm">
+            <div class="phone-screen">
+              <img id="instImage" src="assets/img/welcome.webp" width="720" height="1280" alt="安装器欢迎页：ProperOS 25.0.0，ARM64 / Linux 7.3.6，三项特性说明与开始安装按钮">
+            </div>
+          </div>
+          <figcaption id="instCaption">步骤 1 / 4 · 欢迎</figcaption>
+        </figure>
+      </div>
+
+      <div class="note-row">
+        <div class="note">
+          <b>无人值守</b>
+          <code>properos-install --disk /dev/mmcblk0 --yes --blank-password</code>
+        </div>
+        <div class="note">
+          <b>内核参数</b>
+          <code>properos.autoinstall=/dev/mmcblk0 properos.blankpass=1</code>
+        </div>
+        <div class="note">
+          <b>默认账户</b>
+          <span>root，密码可留空；<code>tty1</code> 自动登录进桌面</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 应用 -->
+  <section class="section section-tint" id="apps">
+    <div class="wrap">
+      <header class="sec-head">
+        <p class="eyebrow">系统应用</p>
+        <h2 class="sec-title">11 个应用，没有一行假数据</h2>
+        <p class="sec-sub">
+          电量来自 <code>/sys/class/power_supply</code>，内存在 <code>/proc/meminfo</code>，可用空间走 <code>statvfs</code>，
+          Wi-Fi 由 <code>nmcli</code> 驱动，相机走 V4L2——截图里的每个数字都是当时读到的真实值。
+        </p>
+      </header>
+
+      <div class="app-grid">
+        <figure class="app-card reveal">
+          <img src="assets/img/app-files.webp" width="720" height="1280" alt="文件应用：主目录、文档、下载、图片、音乐与已安装应用，显示各目录占用的真实分区容量" loading="lazy">
+          <figcaption><b>文件</b><span>opendir / stat 实时结果</span></figcaption>
+        </figure>
+        <figure class="app-card reveal">
+          <img src="assets/img/app-settings.webp" width="720" height="1280" alt="设置应用：电池状态、内存占用、WLAN 状态，网络接口 eth0 与 docker0 的真实地址" loading="lazy">
+          <figcaption><b>设置</b><span>procfs / sysfs / nmcli</span></figcaption>
+        </figure>
+        <figure class="app-card reveal">
+          <img src="assets/img/app-clock.webp" width="720" height="1280" alt="时钟应用：本地时间、北京东京伦敦纽约世界时钟与秒表" loading="lazy">
+          <figcaption><b>时钟</b><span>真实时区换算</span></figcaption>
+        </figure>
+        <figure class="app-card reveal">
+          <img src="assets/img/app-terminal.webp" width="720" height="1280" alt="终端应用：黑色终端窗口显示 root@properos:~# 提示符" loading="lazy">
+          <figcaption><b>终端</b><span>PTY + 登录 shell</span></figcaption>
+        </figure>
+        <figure class="app-card reveal">
+          <img src="assets/img/app-music.webp" width="720" height="1280" alt="音乐应用：扫描到的音频文件与播放状态" loading="lazy">
+          <figcaption><b>音乐</b><span>WAV 解析 + pacat 送流</span></figcaption>
+        </figure>
+        <figure class="app-card reveal">
+          <img src="assets/img/app-store.webp" width="720" height="1280" alt="应用商店：已安装应用、可安装应用与本地包列表" loading="lazy">
+          <figcaption><b>应用商店</b><span>ppkg 真实索引</span></figcaption>
+        </figure>
+        <figure class="app-card reveal">
+          <img src="assets/img/app-phone.webp" width="720" height="1280" alt="电话应用：调制解调器列表与拨号界面" loading="lazy">
+          <figcaption><b>电话</b><span>ModemManager</span></figcaption>
+        </figure>
+        <figure class="app-card reveal">
+          <img src="assets/img/app-camera.webp" width="720" height="1280" alt="相机应用：V4L2 采集设备列表与拍照按钮" loading="lazy">
+          <figcaption><b>相机</b><span>V4L2 单帧抓拍</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 下载 -->
+  <section class="section" id="download">
+    <div class="wrap">
+      <header class="sec-head">
+        <p class="eyebrow">下载</p>
+        <h2 class="sec-title">25.0.0 · 2026-11 构建</h2>
+        <p class="sec-sub">安装镜像、预装磁盘镜像与全部源码。每个产物都附 SHA-256，下载后可立即校验。</p>
+      </header>
+
+      <div class="dl-grid">
+        <article class="dl-card dl-primary">
+          <div class="dl-top">
+            <span class="dl-kind">推荐</span>
+            <span class="dl-size"><%= size.iso %></span>
+          </div>
+          <h3>安装 ISO</h3>
+          <p>UEFI El Torito 引导，启动即进图形安装器。可刻盘、<code>dd</code> 到 U 盘，或挂到虚拟机光驱。</p>
+          <div class="dl-file">ProperOS-25.0.0-arm64.iso</div>
+          <div class="hash">
+            <code><%= sha.iso %></code>
+            <button class="copy" data-copy="<%= sha.iso %>" aria-label="复制 ISO 校验值">复制</button>
+          </div>
+          <a class="btn btn-primary btn-block" href="<%= dl.iso.href %>" download>下载 ISO</a>
+        </article>
+
+        <article class="dl-card">
+          <div class="dl-top">
+            <span class="dl-kind">预装</span>
+            <span class="dl-size"><%= size.img %></span>
+          </div>
+          <h3>磁盘镜像</h3>
+          <p>GPT 三分区，已装好系统与全部应用，UEFI 直接启动。可写入手机、eMMC、SD 卡或 U 盘。</p>
+          <div class="dl-file">ProperOS-25.0.0-arm64.img</div>
+          <div class="hash">
+            <code><%= sha.img %></code>
+            <button class="copy" data-copy="<%= sha.img %>" aria-label="复制镜像校验值">复制</button>
+          </div>
+          <a class="btn btn-ghost btn-block" href="<%= dl.img.href %>" download>下载镜像</a>
+        </article>
+
+        <article class="dl-card">
+          <div class="dl-top">
+            <span class="dl-kind">源码</span>
+            <span class="dl-size"><%= size.source %></span>
+          </div>
+          <h3>完整源代码</h3>
+          <p><code>src/</code>、<code>apps/</code>、<code>installer/</code>、<code>build/</code>、<code>overlay/</code>、<code>tools/</code>、<code>docs/</code> 与内核 defconfig，不含二进制产物。</p>
+          <div class="dl-file">ProperOS-25.0.0-source.zip</div>
+          <div class="hash">
+            <code><%= sha.source %></code>
+            <button class="copy" data-copy="<%= sha.source %>" aria-label="复制源码包校验值">复制</button>
+          </div>
+          <a class="btn btn-ghost btn-block" href="<%= dl.source.href %>" download>下载源码</a>
+        </article>
+      </div>
+
+      <p class="dl-foot">
+        内核单独提供：<code>dist/kernel/Image-properos-25.0.0</code>（50 MB）与
+        <code>config-25.0.0-properos-arm64</code>。全部产物由
+        <code>build/arch/arm64/*.sh</code> 可复现构建。
+      </p>
+    </div>
+  </section>
+
+  <!-- 上手 -->
+  <section class="section section-tint" id="start">
+    <div class="wrap">
+      <header class="sec-head">
+        <p class="eyebrow">快速上手</p>
+        <h2 class="sec-title">三条路，任选一条</h2>
+      </header>
+
+      <div class="tabs">
+        <div class="tab-bar" role="tablist" aria-label="上手方式">
+          <button class="tab is-active" role="tab" aria-selected="true" data-tab="flash">烧写到设备</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="qemu">在 QEMU 里试</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="build">从源码构建</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="app">开发应用</button>
+        </div>
+
+        <div class="tab-panel is-active" id="panel-flash" role="tabpanel">
+          <p class="panel-lead">写入后从 UEFI 启动即可；安装器会分区、格式化、拷贝、配置引导，最后重启进桌面。</p>
+          <div class="code">
+            <div class="code-head"><span>bash</span><button class="copy" data-copy-target="code-flash">复制</button></div>
+            <pre id="code-flash"><code># 安装 ISO（推荐：可选磁盘、可留空 root 密码）
+sudo dd if=ProperOS-25.0.0-arm64.iso of=/dev/sdX bs=4M status=progress oflag=sync
+
+# 或直接写预装镜像（省去安装步骤）
+sudo dd if=ProperOS-25.0.0-arm64.img of=/dev/sdX bs=4M status=progress oflag=sync</code></pre>
+          </div>
+          <p class="panel-hint">设备需有可用的 UEFI 固件。写入前确认 <code>/dev/sdX</code> 是目标盘，<code>dd</code> 会清空整盘。</p>
+        </div>
+
+        <div class="tab-panel" id="panel-qemu" role="tabpanel" hidden>
+          <p class="panel-lead">ARM64 虚拟机，无需真机。键盘设备必须显式挂载，否则 <code>virt</code> 机器上没有可用键盘。</p>
+          <div class="code">
+            <div class="code-head"><span>bash</span><button class="copy" data-copy-target="code-qemu">复制</button></div>
+            <pre id="code-qemu"><code>qemu-system-aarch64 -M virt -cpu cortex-a72 -m 2048 -smp 2 \
+  -drive if=pflash,format=raw,file=/usr/share/AAVMF/AAVMF_CODE.fd,readonly=on \
+  -drive if=none,file=ProperOS-25.0.0-arm64.img,format=raw,id=hd0 \
+  -device virtio-blk-device,drive=hd0 \
+  -device virtio-gpu-pci -device virtio-keyboard-pci -device virtio-tablet-pci \
+  -netdev user,id=n0 -device virtio-net-device,netdev=n0 \
+  -vnc 127.0.0.1:0</code></pre>
+          </div>
+          <p class="panel-hint">无 KVM 时性能约为真机的十分之一，界面仍可用；真机请启用 KVM。</p>
+        </div>
+
+        <div class="tab-panel" id="panel-build" role="tabpanel" hidden>
+          <p class="panel-lead">依赖交叉工具链与 debootstrap，五步产出内核、rootfs、initramfs、镜像与 ISO。</p>
+          <div class="code">
+            <div class="code-head"><span>bash</span><button class="copy" data-copy-target="code-build">复制</button></div>
+            <pre id="code-build"><code># 依赖：gcc-aarch64-linux-gnu qemu-user-static debootstrap grub-efi-arm64-bin
+sudo bash build/arch/arm64/10-kernel.sh    # Linux 7.3.6（约 20 分钟）
+sudo bash build/arch/arm64/20-rootfs.sh    # debootstrap + 组件 + 应用
+sudo bash build/arch/arm64/30-initramfs.sh
+sudo bash build/arch/arm64/40-image.sh     # GPT 镜像
+sudo bash build/arch/arm64/50-iso.sh       # 安装 ISO</code></pre>
+          </div>
+          <p class="panel-hint">构建脚本会自检 ISO 是否带 UEFI El Torito 启动项，缺失直接失败，避免交付不可引导的镜像。</p>
+        </div>
+
+        <div class="tab-panel" id="panel-app" role="tabpanel" hidden>
+          <p class="panel-lead">应用以 <code>.ppkg</code> 交付：一个目录 = 一个应用，打包脚本产出标准 ppkg，装机后落在 <code>/opt/properos/apps</code>。</p>
+          <div class="code">
+            <div class="code-head"><span>bash</span><button class="copy" data-copy-target="code-app">复制</button></div>
+            <pre id="code-app"><code>mkdir -p myapp/ui &amp;&amp; cd myapp
+cat &gt; manifest.json &lt;&lt;'EOF'
+{ "id": "miao.byusistudio.hello", "name": "示例", "version": "25.0.0",
+  "icon": "store", "color": "#3E7BFF", "entry": "ui/main.json",
+  "permissions": ["run"] }
+EOF
+echo '{ "title": "示例", "pages": [ { "id": "home",
+        "root": { "t": "label", "text": "你好，ProperOS" } } ] }' &gt; ui/main.json
+
+python3 tools/ppkg-app.py build . ../myapp.ppkg   # PKGINFO + FILES + payload/
+sudo ppkg install ../myapp.ppkg   # 装到 /opt/properos/apps，桌面出现入口
+properos-app /opt/properos/apps/myapp   # 不装也能直接跑目录</code></pre>
+          </div>
+          <p class="panel-hint">界面 JSON 只是描述，数据与动作仍由运行时的 <code>nv_source</code> / <code>nv_action</code> 提供；包内每个文件都进 <code>FILES</code> 清单，<code>ppkg verify</code> 逐条校验。</p>
+        </div>
+      </div>
+
+      <div class="cmd-grid">
+        <div class="cmd"><b>槽位与回滚</b><code>properos-bootctl status</code><code>properos-bootctl rollback</code></div>
+        <div class="cmd"><b>安装应用</b><code>ppkg install clock.ppkg</code><code>papp run miao.byusistudio.hello</code></div>
+        <div class="cmd"><b>包与服务</b><code>ppkg list</code><code>properd status properd</code></div>
+        <div class="cmd"><b>容器</b><code>podman run --rm -p 8080:80 nginx:alpine</code></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 限制 -->
+  <section class="section" id="limits">
+    <div class="wrap wrap-narrow">
+      <header class="sec-head">
+        <p class="eyebrow">边界</p>
+        <h2 class="sec-title">已知限制，写在明面上</h2>
+        <p class="sec-sub">下面这些是当前版本的真实状态，以及对应的处理方式。</p>
+      </header>
+
+      <div class="limits">
+        <div class="limit"><b>Secure Boot</b><p>引导器自签，未购买微软 UEFI CA。用 <code>properos-mok-enroll</code> 生成 MOK、签名并登记后可在开启 Secure Boot 的固件上启动；否则在固件里关掉。</p></div>
+        <div class="limit"><b>设备树</b><p>通用镜像面向 QEMU virt 与已提供 UEFI 的设备。真机可在构建时指定 <code>PROPEROS_DTB</code>，DTB 写入 <code>/dtb</code> 由 GRUB 加载。</p></div>
+        <div class="limit"><b>A/B 槽</b><p>安装器只填充 A 槽。执行 <code>properos-bootctl sync</code> 补齐 B 槽后即可切换与回滚。</p></div>
+        <div class="limit"><b>中文控制台</b><p>图形界面全中文；纯文本控制台仍为 ASCII——内核控制台字体上限 512 字形，放不下 CJK。</p></div>
+        <div class="limit limit-wide"><b>渲染性能</b><p>无 GPU 用户态，fbdev 路径整屏重绘 25–40 ms（720×1280）；TCG 虚拟机下动画会掉帧。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 收尾 CTA -->
+  <section class="cta-band">
+    <div class="wrap cta-inner">
+      <div>
+        <h2>把设备变成一台真正的 Linux 机器</h2>
+        <p>769 MB，四步安装，重启即进 Plasma Mobile。</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-light" href="<%= dl.iso.href %>" download>下载 ISO</a>
+        <a class="btn btn-outline-light" href="#download">全部产物</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+            <rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor" stroke="none"></rect>
+            <path d="M9 1.5v2.5M15 1.5v2.5M9 20v2.5M15 20v2.5M1.5 9H4M1.5 15H4M20 9h2.5M20 15h2.5"></path>
+          </svg>
+        </span>
+        <span class="brand-text">ProperOS</span>
+      </div>
+      <p>面向 ARM64 移动设备的 Linux 发行版。<br>ByUsi Studio · 北啊呢</p>
+    </div>
+
+    <div class="foot-col">
+      <h4>系统</h4>
+      <a href="#features">特性</a>
+      <a href="#stack">架构</a>
+      <a href="#installer">安装器</a>
+      <a href="#download">下载</a>
+    </div>
+    <div class="foot-col">
+      <h4>开发</h4>
+      <a href="#start">构建指南</a>
+      <a href="#apps">应用清单</a>
+      <a href="#limits">已知限制</a>
+      <a href="<%= dl.source.href %>" download>源码包</a>
+    </div>
+    <div class="foot-col">
+      <h4>链接</h4>
+      <a href="https://gitee.com/properos/properos2" target="_blank" rel="noopener">Gitee 仓库</a>
+      <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+      <a href="#top">回到顶部</a>
+    </div>
+  </div>
+
+  <div class="wrap footer-bottom">
+    <span>© <span id="year">2026</span> ByUsi Studio · ProperOS 25.0.0 · Two Dot Five</span>
+    <span>GPL-2.0 · 内核 Linux 7.3.6 · 应用包前缀 <code>miao.byusistudio</code></span>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

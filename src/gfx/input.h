@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · 输入抽象（evdev）
+/* ProperOS 25.0.0 Mobile · 输入抽象（evdev）
  *
  * 统一处理触摸屏、绝对坐标数位板、相对鼠标与键盘，输出语义化事件。
  * 上层无需关心设备类型：一个手指、一只鼠标、一块触摸板都以 TAP/SWIPE/LONG 表达。
@@ -82,5 +82,16 @@ int  input_open(input_t *in, int w, int h);
 void input_close(input_t *in);
 /* 等待并取事件；timeout_ms<0 表示阻塞。返回事件数量。 */
 int  input_poll(input_t *in, in_event_t *out, int max, int timeout_ms);
+
+/* ---- 手势状态机：供其它输入源（Wayland 客户端）复用 ----
+ * evdev 与 Wayland 只是「谁提供坐标」不同，长按/滑动/边缘判定必须一致，
+ * 所以把判定逻辑抽出来给两边共用。
+ */
+void in_press(input_t *in, idev_t *d, int x, int y, int64_t now);
+void in_move(input_t *in, idev_t *d, int x, int y,
+             in_event_t *out, int *n, int max, int64_t now);
+void in_release(input_t *in, idev_t *d, int x, int y,
+                in_event_t *out, int *n, int max, int64_t now);
+int64_t in_now_ms(void);
 
 #endif /* PROPEROS_INPUT_H */

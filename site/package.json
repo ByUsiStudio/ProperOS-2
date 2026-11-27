@@ -1,0 +1,20 @@
+{
+  "name": "properos-site",
+  "version": "25.0.0",
+  "private": true,
+  "description": "ProperOS 25.0.0 Mobile 官网（Express + EJS）",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "build": "node scripts/export-static.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2"
+  }
+}

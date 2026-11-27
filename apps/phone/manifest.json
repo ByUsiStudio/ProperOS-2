@@ -1,15 +1,13 @@
 {
   "id": "miao.byusistudio.phone",
   "name": "电话",
-  "version": "2.5",
+  "version": "25.0.0",
   "icon": "phone",
   "color": "#2FA84F",
   "developer": "ByUsi Studio · 北啊呢",
-  "summary": "拨号与通话记录",
+  "summary": "拨号与真实通话记录",
   "entry": "ui/main.json",
-  "permissions": [
-    "run"
-  ],
+  "permissions": [],
   "categories": [
     "application"
   ],

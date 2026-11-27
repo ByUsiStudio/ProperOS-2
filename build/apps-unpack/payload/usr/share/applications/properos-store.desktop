@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=应用商店
+Name[zh_CN]=应用商店
+Comment=已安装应用与本地安装包
+Comment[zh_CN]=已安装应用与本地安装包
+Icon=system-software-install
+Exec=/usr/bin/properos-app /opt/properos/apps/store
+TryExec=/usr/bin/properos-app
+Terminal=false
+Categories=Utility;
+StartupNotify=true
+StartupWMClass=properos-app
+X-ProperOS-App=miao.byusistudio.store
+X-ProperOS-Package=properos-app-store

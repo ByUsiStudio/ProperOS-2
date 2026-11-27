@@ -1,9 +1,10 @@
 [Unit]
-Description=ProperOS mobile launcher (framebuffer)
+Description=ProperOS mobile launcher (framebuffer fallback)
 After=properd.service systemd-udev-settle.service
 Wants=properd.service
+# 有 DRM 设备时默认跑 Plasma Mobile，这里只在没有 DRM（或会话起不来）时兜底
 ConditionPathExists=/dev/fb0
-Conflicts=getty@tty7.service
+Conflicts=getty@tty7.service properos-session.service
 
 [Service]
 Type=simple

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ProperOS 2.5 Mobile · Secure Boot（MOK）登记与自签
+# ProperOS 25.0.0 Mobile · Secure Boot（MOK）登记与自签
 #
 # 背景：BOOTAA64.EFI 是自研引导器，没有微软 UEFI CA 签名，因此在
 #       Secure Boot 开启的机器上必须把自己的密钥登记进固件（MOK），

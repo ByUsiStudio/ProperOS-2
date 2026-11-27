@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=相机
+Name[zh_CN]=相机
+Comment=V4L2 采集与拍照
+Comment[zh_CN]=V4L2 采集与拍照
+Icon=camera-photo
+Exec=/usr/bin/properos-app /opt/properos/apps/camera
+TryExec=/usr/bin/properos-app
+Terminal=false
+Categories=Utility;
+StartupNotify=true
+StartupWMClass=properos-app
+X-ProperOS-App=miao.byusistudio.camera
+X-ProperOS-Package=properos-app-camera

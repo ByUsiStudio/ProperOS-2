@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · properos-bootctl
+/* ProperOS 25.0.0 Mobile · properos-bootctl
  * A/B 槽管理：查看状态、切换活动槽、标记启动成功、回滚
  * 开发者：ByUsi Studio · 北啊呢
  */

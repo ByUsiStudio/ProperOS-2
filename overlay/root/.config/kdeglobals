@@ -1,0 +1,10 @@
+[KDE]
+LookAndFeelPackage=org.kde.plasma.phone
+AnimationDurationFactor=1
+
+[General]
+XftAntialias=true
+XftHintStyle=hintslight
+
+[Icons]
+Theme=breeze-dark

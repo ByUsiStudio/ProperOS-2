@@ -1,0 +1,13 @@
+// ProperOS 25.0.0 — 所有 Debian 包都先转成 .ppkg 再落地
+//
+// apt 调用 dpkg 时改走 dpkg-shim：
+//   .deb → deb2ppkg → /var/cache/properos/ppkg/*.ppkg → ppkg install → dpkg
+// 这样系统里有统一的包视图（ppkg list 能同时看到原生包与 Debian 包），
+// 也能在转换阶段拦掉会破坏引导的包。
+Dir::Bin::dpkg "/usr/lib/properos/dpkg-shim";
+
+// 配置冲突不弹交互，保留管理员已有配置
+Dpkg::Options {
+   "--force-confdef";
+   "--force-confold";
+};

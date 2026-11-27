@@ -6,65 +6,54 @@
       "title": "消息",
       "widgets": [
         {
-          "t": "row",
-          "icon": "message",
-          "title": "李明",
-          "sub": "明天上午的会改到 10 点",
-          "value": "09:24",
-          "to": "chat"
+          "t": "rows",
+          "src": "sms.threads",
+          "rowh": 64,
+          "empty": "本机还没有短信会话"
         },
         {
-          "t": "row",
-          "icon": "message",
-          "title": "10086",
-          "sub": "您本月流量已使用 8.2 GB",
-          "value": "昨天",
-          "to": "chat"
+          "t": "input",
+          "key": "newnum",
+          "hint": "新会话号码"
         },
         {
-          "t": "row",
-          "icon": "message",
-          "title": "王芳",
-          "sub": "文档已经发你邮箱了",
-          "value": "周一",
-          "to": "chat"
+          "t": "button",
+          "text": "打开会话",
+          "kind": "secondary",
+          "action": {
+            "type": "native",
+            "op": "sms.thread",
+            "arg": "{{newnum}}"
+          }
         },
         {
           "t": "note",
-          "text": "消息由 properd 的 sms 服务管理；当前版本在无 modem 的设备上以本地会话演示。"
+          "text": "会话保存在 /data/phone/sms/；没有 modem 时发送会存进本机并如实标注未发出。"
         }
       ]
     },
     "chat": {
-      "title": "李明",
+      "title": "{{thread}}",
       "widgets": [
         {
-          "t": "text",
-          "text": "明天上午的会改到 10 点，地点还是 3 楼会议室。",
-          "px": 16,
-          "color": "#16181D"
-        },
-        {
-          "t": "text",
-          "text": "收到，我提前十分钟到。",
-          "px": 16,
-          "color": "#6A7280"
-        },
-        {
-          "t": "spacer",
-          "h": 12
+          "t": "rows",
+          "src": "sms.messages",
+          "arg": "{{thread}}",
+          "rowh": 60,
+          "empty": "还没有消息"
         },
         {
           "t": "input",
           "key": "draft",
-          "hint": "输入消息…"
+          "hint": "输入短信内容"
         },
         {
           "t": "button",
           "text": "发送",
           "action": {
-            "type": "toast",
-            "text": "已发送"
+            "type": "native",
+            "op": "sms.send",
+            "arg": "{{draft}}"
           }
         }
       ]

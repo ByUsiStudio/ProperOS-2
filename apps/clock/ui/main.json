@@ -7,7 +7,7 @@
       "widgets": [
         {
           "t": "spacer",
-          "h": 28
+          "h": 24
         },
         {
           "t": "text",
@@ -24,32 +24,16 @@
         },
         {
           "t": "spacer",
-          "h": 30
+          "h": 24
         },
         {
-          "t": "card",
-          "title": "世界时钟",
-          "children": [
-            {
-              "t": "keyvalue",
-              "key": "北京",
-              "value": "+08:00"
-            },
-            {
-              "t": "keyvalue",
-              "key": "伦敦",
-              "value": "+00:00"
-            },
-            {
-              "t": "keyvalue",
-              "key": "纽约",
-              "value": "-05:00"
-            }
-          ]
+          "t": "group",
+          "title": "世界时钟"
         },
         {
-          "t": "spacer",
-          "h": 10
+          "t": "rows",
+          "src": "clock.world",
+          "rowh": 50
         },
         {
           "t": "tiles",
@@ -58,14 +42,14 @@
           "items": [
             {
               "title": "闹钟",
-              "sub": "2 个已启用",
+              "sub": "本地闹钟表",
               "icon": "clock",
               "tint": "#E8A33D",
               "to": "alarm"
             },
             {
               "title": "秒表",
-              "sub": "00:00.00",
+              "sub": "{{sw}}",
               "icon": "play",
               "tint": "#3E7BFF",
               "to": "stopwatch"
@@ -78,24 +62,28 @@
       "title": "闹钟",
       "widgets": [
         {
-          "t": "row",
-          "title": "07:00",
-          "sub": "工作日",
-          "value": "开"
+          "t": "rows",
+          "src": "clock.alarms",
+          "rowh": 62,
+          "empty": "还没有闹钟"
         },
         {
-          "t": "row",
-          "title": "09:30",
-          "sub": "周末",
-          "value": "关"
+          "t": "input",
+          "key": "newalarm",
+          "hint": "07:30 起床"
         },
         {
           "t": "button",
-          "text": "+ 新建闹钟",
+          "text": "添加闹钟",
           "action": {
-            "type": "toast",
-            "text": "闹钟编辑将在下一个版本开放"
+            "type": "native",
+            "op": "clock.add",
+            "arg": "{{newalarm}}"
           }
+        },
+        {
+          "t": "note",
+          "text": "点击已有闹钟可开关；闹钟表保存在 /data/home/.config/properos/alarms.conf。"
         }
       ]
     },
@@ -104,7 +92,7 @@
       "widgets": [
         {
           "t": "text",
-          "text": "00:00.00",
+          "text": "{{sw}}",
           "align": "center",
           "px": 64,
           "color": "#16181D"
@@ -113,8 +101,15 @@
           "t": "button",
           "text": "开始",
           "action": {
-            "type": "toast",
-            "text": "已开始计时"
+            "type": "sw.start"
+          }
+        },
+        {
+          "t": "button",
+          "text": "暂停",
+          "kind": "secondary",
+          "action": {
+            "type": "sw.stop"
           }
         },
         {
@@ -122,8 +117,7 @@
           "text": "复位",
           "kind": "secondary",
           "action": {
-            "type": "toast",
-            "text": "已复位"
+            "type": "sw.reset"
           }
         }
       ]

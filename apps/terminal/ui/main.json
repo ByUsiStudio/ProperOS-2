@@ -1,0 +1,15 @@
+{
+  "title": "终端",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "终端",
+      "bar": 56,
+      "widgets": [
+        {
+          "t": "term"
+        }
+      ]
+    }
+  }
+}

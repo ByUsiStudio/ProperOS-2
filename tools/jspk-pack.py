@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ProperOS 2.5 · .jspk 打包工具
+"""ProperOS 25.0.0 · .jspk 打包工具
 
 把一个应用目录打成 .jspk（ZIP + deflate）。包内结构：
   manifest.json   应用元信息

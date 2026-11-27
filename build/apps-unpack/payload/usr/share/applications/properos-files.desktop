@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=文件
+Name[zh_CN]=文件
+Comment=真实文件系统浏览
+Comment[zh_CN]=真实文件系统浏览
+Icon=system-file-manager
+Exec=/usr/bin/properos-app /opt/properos/apps/files
+TryExec=/usr/bin/properos-app
+Terminal=false
+Categories=Utility;
+StartupNotify=true
+StartupWMClass=properos-app
+X-ProperOS-App=miao.byusistudio.files
+X-ProperOS-Package=properos-app-files

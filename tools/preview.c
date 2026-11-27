@@ -30,7 +30,7 @@ static void demo_installer(int W, int H)
     gfx_round(&G, pad, 52, 64, 64, 20, C_PRIMARY);
     gfx_icon(&G, "chip", pad + 12, 64, 40, C_WHITE);
 
-    gfx_text(&G, pad + 84, 58, "ProperOS 2.5", C_WHITE, 2);
+    gfx_text(&G, pad + 84, 58, "ProperOS 25.0.0", C_WHITE, 2);
     gfx_text(&G, pad + 84, 58 + gfx_text_h(2) + 4, "Mobile · ARM64 安装器", 0xA8BCE0, 1);
 
     gfx_text(&G, pad, 168, "选择安装位置", C_WHITE, 2);

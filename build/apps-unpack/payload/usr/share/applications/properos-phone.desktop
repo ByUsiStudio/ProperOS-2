@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=电话
+Name[zh_CN]=电话
+Comment=拨号与真实通话记录
+Comment[zh_CN]=拨号与真实通话记录
+Icon=phone
+Exec=/usr/bin/properos-app /opt/properos/apps/phone
+TryExec=/usr/bin/properos-app
+Terminal=false
+Categories=Utility;
+StartupNotify=true
+StartupWMClass=properos-app
+X-ProperOS-App=miao.byusistudio.phone
+X-ProperOS-Package=properos-app-phone

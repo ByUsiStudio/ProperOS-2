@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# ProperOS 2.5 Mobile · ARM64 initramfs（ProLoader 作为 /init）
+# ProperOS 25.0.0 Mobile · ARM64 initramfs（ProLoader 作为 /init）
 set -euo pipefail
-source /workspace/properos-2.5/build/00-env.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/00-env.sh"
 
 ROOT="$ROOTFS_ARM64"
 IR="$WORK/initramfs-arm64"

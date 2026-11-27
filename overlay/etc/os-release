@@ -1,8 +1,8 @@
-PRETTY_NAME="ProperOS 2.5 Mobile"
+PRETTY_NAME="ProperOS 25.0.0 Mobile · Two Dot Five"
 NAME="ProperOS"
-VERSION_ID="2.5"
-VERSION="2.5 (Mobile)"
-VERSION_CODENAME=mobile
+VERSION_ID="25.0.0"
+VERSION="25.0.0 (Two Dot Five)"
+VERSION_CODENAME=two-dot-five
 ID=properos
 ID_LIKE=debian
 ANSI_COLOR="1;34"

@@ -6,7 +6,7 @@
 set -uo pipefail
 
 MODE="${1:-boot}"
-ISO="${2:-$(dirname "$0")/../dist/ProperOS-2.5-amd64.iso}"
+ISO="${2:-$(dirname "$0")/../dist/ProperOS-25.0.0-amd64.iso}"
 TIMEOUT="${3:-420}"
 WORK="${WORK:-/root/build}"
 LOG="${WORK}/test-${MODE}.log"
@@ -45,7 +45,7 @@ install)
         cp -a "$WORK/iso" "$WORK/iso-auto"
         sed -i 's|console=tty0 console=ttyS0,115200 quiet loglevel=4|console=tty0 console=ttyS0,115200 loglevel=7 properos.autoinstall=/dev/vda|' \
             "$WORK/iso-auto/boot/grub/grub.cfg"
-        grub-mkrescue -o "$AUTO_ISO" "$WORK/iso-auto" -- -volid PROPEROS250 >/dev/null 2>&1
+        grub-mkrescue -o "$AUTO_ISO" "$WORK/iso-auto" -- -volid PROPEROS2500 >/dev/null 2>&1
     fi
     [ -f "$AUTO_ISO" ] || { echo "缺少 $AUTO_ISO，请先运行 40-iso.sh"; exit 1; }
 

@@ -1,0 +1,115 @@
+{
+  "title": "文件",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "文件",
+      "widgets": [
+        {
+          "t": "rows",
+          "src": "fs.places",
+          "rowh": 66
+        },
+        {
+          "t": "group",
+          "title": "容量"
+        },
+        {
+          "t": "keyvalue",
+          "key": "系统分区",
+          "value": "{{rootdisk}}"
+        },
+        {
+          "t": "keyvalue",
+          "key": "数据分区",
+          "value": "{{disk}}"
+        },
+        {
+          "t": "keyvalue",
+          "key": "内存",
+          "value": "{{mem}}"
+        },
+        {
+          "t": "note",
+          "text": "每一项都是 opendir/stat 的实时结果：大小、类型、修改时间都来自磁盘，不是预置样例。"
+        }
+      ]
+    },
+    "browse": {
+      "title": "目录",
+      "widgets": [
+        {
+          "t": "text",
+          "text": "{{cwd}}",
+          "px": 13
+        },
+        {
+          "t": "rows",
+          "src": "fs.dir",
+          "arg": "{{cwd}}",
+          "rowh": 62,
+          "empty": "空目录"
+        }
+      ],
+      "footer": [
+        {
+          "text": "上一级",
+          "kind": "secondary",
+          "action": {
+            "type": "native",
+            "op": "fs.up"
+          }
+        },
+        {
+          "text": "新建文件夹",
+          "action": {
+            "type": "nav",
+            "to": "mkdir"
+          }
+        }
+      ]
+    },
+    "mkdir": {
+      "title": "新建文件夹",
+      "widgets": [
+        {
+          "t": "text",
+          "text": "{{cwd}}",
+          "px": 13
+        },
+        {
+          "t": "input",
+          "key": "newname",
+          "hint": "文件夹名称"
+        },
+        {
+          "t": "button",
+          "text": "创建",
+          "action": {
+            "type": "native",
+            "op": "fs.mkdir",
+            "arg": "{{newname}}"
+          }
+        }
+      ],
+      "footer": [
+        {
+          "text": "返回",
+          "kind": "secondary",
+          "action": {
+            "type": "back"
+          }
+        }
+      ]
+    },
+    "view": {
+      "title": "{{preview_name}}",
+      "widgets": [
+        {
+          "t": "filetext",
+          "text": "{{preview}}"
+        }
+      ]
+    }
+  }
+}

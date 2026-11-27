@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · 桌面外壳（properos-shell）
+/* ProperOS 25.0.0 Mobile · 桌面外壳（properos-shell）
  *
  * 设计参考 KDE Plasma Mobile，但保留普通 Linux 桌面的结构：
  *   顶部面板  —— 时钟、状态图标、快捷设置入口
@@ -7,8 +7,8 @@
  *   应用抽屉  —— 全屏网格 + 搜索
  *   快捷设置  —— 下拉面板：亮度/音量、磁贴、通知
  *
- * 应用全部来自 .jspk 包（/usr/share/properos/apps）或 .plink 快捷方式，
- * 由 properos-jspk 运行；桌面本身只负责壳层与窗口切换。
+ * 应用全部来自 /opt/properos/apps 下的 ppkg 安装目录，
+ * 由 properos-app 运行；桌面本身只负责壳层与窗口切换。
  *
  * 触摸：跟手翻页、边缘返回、下拉/上滑手势、长按菜单、按下反馈。
  *
@@ -45,7 +45,7 @@ typedef struct {
     char icon[32];
     char path[288];
     uint32_t color;
-    int kind;          /* 0 = jspk, 1 = papp, 2 = plink */
+    int kind;          /* 0 = ppkg 目录, 1 = papp */
 } app_t;
 
 typedef enum { SC_HOME = 0, SC_DRAWER, SC_QS, SC_MENU } screen_t;
@@ -268,24 +268,30 @@ static void scan_apps(void)
 {
     D.napps = 0;
 
-    /* 1) 系统 .jspk：随系统一起安装 */
+    /* 1) ppkg 安装的应用：/opt/properos/apps/<名字>/manifest.json
+     *    25.0.0 起应用以 .ppkg 交付，payload 展开后就是这种目录布局。 */
     const char *pv = getenv("PROPEROS_APPS");
-    const char *sysdirs[] = { pv ? pv : "/usr/share/properos/apps", "/data/apps" };
-    for (int d = 0; d < 2; d++) {
-        DIR *dp = opendir(sysdirs[d]);
+    const char *pkgdirs[] = { pv ? pv : "/opt/properos/apps" };
+    for (size_t d = 0; d < sizeof(pkgdirs) / sizeof(pkgdirs[0]); d++) {
+        DIR *dp = opendir(pkgdirs[d]);
         if (!dp) continue;
         struct dirent *de;
         while ((de = readdir(dp))) {
-            size_t l = strlen(de->d_name);
-            if (l < 6 || strcmp(de->d_name + l - 5, ".jspk")) continue;
-            char full[320];
-            snprintf(full, sizeof(full), "%s/%s", sysdirs[d], de->d_name);
+            if (de->d_name[0] == '.') continue;
+            char full[320], mf[360];
+            snprintf(full, sizeof(full), "%s/%s", pkgdirs[d], de->d_name);
+            snprintf(mf, sizeof(mf), "%s/manifest.json", full);
+            size_t len = 0;
+            char *txt = read_text(mf, &len);
+            if (!txt) continue;
             char id[96] = "", name[64] = "", icon[32] = "store", cs[16] = "";
-            if (read_jspk_manifest(full, id, sizeof(id), name, sizeof(name),
-                                   icon, sizeof(icon), cs, sizeof(cs)) != 0) {
-                snprintf(id, sizeof(id), "broken:%s", de->d_name);
-                snprintf(name, sizeof(name), "%s", de->d_name);
-            }
+            json_lite(txt, "id", id, sizeof(id));
+            json_lite(txt, "name", name, sizeof(name));
+            json_lite(txt, "icon", icon, sizeof(icon));
+            json_lite(txt, "color", cs, sizeof(cs));
+            free(txt);
+            if (!name[0]) continue;
+            if (!id[0]) snprintf(id, sizeof(id), "app:%s", de->d_name);
             uint32_t col = cs[0] == '#' ? (uint32_t)strtoul(cs + 1, NULL, 16) : hash_color(id);
             if (!col) col = hash_color(id);
             add_app(id, name, icon, col, full, 0);
@@ -293,35 +299,8 @@ static void scan_apps(void)
         closedir(dp);
     }
 
-    /* 2) 桌面 .plink 快捷方式（与原系统 $ProperOS/home/Desktop 一致） */
-    DIR *dp = opendir("/data/home/Desktop");
-    if (dp) {
-        struct dirent *de;
-        while ((de = readdir(dp))) {
-            size_t l = strlen(de->d_name);
-            if (l < 7 || strcmp(de->d_name + l - 6, ".plink")) continue;
-            char full[320];
-            snprintf(full, sizeof(full), "/data/home/Desktop/%s", de->d_name);
-            size_t len = 0;
-            char *txt = read_text(full, &len);
-            if (!txt) continue;
-            char id[96] = "", name[64] = "", icon[32] = "store", cs[16] = "";
-            json_lite(txt, "package", id, sizeof(id));
-            json_lite(txt, "name", name, sizeof(name));
-            json_lite(txt, "icon", icon, sizeof(icon));
-            json_lite(txt, "color", cs, sizeof(cs));
-            free(txt);
-            if (!name[0]) continue;
-            if (!id[0]) snprintf(id, sizeof(id), "plink:%s", de->d_name);
-            uint32_t col = cs[0] == '#' ? (uint32_t)strtoul(cs + 1, NULL, 16) : hash_color(id);
-            if (!col) col = hash_color(id);
-            add_app(id, name, icon, col, full, 2);
-        }
-        closedir(dp);
-    }
-
-    /* 3) papp 应用（旧的 /data/apps/<pkg>/manifest.conf 布局） */
-    dp = opendir("/data/apps");
+    /* 2) papp 应用（旧的 /data/apps/<pkg>/manifest.conf 布局） */
+    DIR *dp = opendir("/data/apps");
     if (dp) {
         struct dirent *de;
         while ((de = readdir(dp))) {
@@ -921,7 +900,7 @@ static void draw_qs(void)
 
     int x = D.cx_pad, y = ytop;
     gfx_text_px(&D.g, x, y, db, 0xE6EAF2, D.fs_body);
-    gfx_text_px(&D.g, x, y + D.fs_body + 2, "ProperOS 2.5", 0x7F8AA0, D.fs_tiny);
+    gfx_text_px(&D.g, x, y + D.fs_body + 2, "ProperOS 25.0.0", 0x7F8AA0, D.fs_tiny);
 
     /* 右上：设置 + 电源 */
     gfx_icon(&D.g, "settings", W - D.cx_pad - 62, y, 24, 0xC9D1E0);
@@ -1079,20 +1058,10 @@ static void load_settings(void)
 static void exec_app(const app_t *a)
 {
     if (a->kind == 0) {
-        execl("/usr/bin/properos-jspk", "properos-jspk", a->path, (char *)NULL);
-        execl("/usr/local/bin/properos-jspk", "properos-jspk", a->path, (char *)NULL);
-    } else if (a->kind == 1) {
-        execl("/usr/bin/papp", "papp", "run", a->id, (char *)NULL);
+        execl("/usr/bin/properos-app", "properos-app", a->path, (char *)NULL);
+        execl("/usr/local/bin/properos-app", "properos-app", a->path, (char *)NULL);
     } else {
-        /* .plink：取其 exec 字段 */
-        size_t len = 0;
-        char *txt = read_text(a->path, &len);
-        char cmd[512] = "";
-        if (txt) {
-            json_lite(txt, "exec", cmd, sizeof(cmd));
-            free(txt);
-        }
-        if (cmd[0]) execl("/bin/sh", "sh", "-c", cmd, (char *)NULL);
+        execl("/usr/bin/papp", "papp", "run", a->id, (char *)NULL);
     }
     _exit(127);
 }

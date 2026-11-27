@@ -1,10 +1,13 @@
-/* ProperOS 2.5 Mobile · gfx 图形基础库实现
+/* ProperOS 25.0.0 Mobile · gfx 图形基础库实现
  *
  * 开发者：ByUsi Studio · 北啊呢
  */
 #define _GNU_SOURCE
 #include "gfx.h"
 #include "font_atlas.h"
+#ifdef PROPEROS_WAYLAND
+#include "wl.h"
+#endif
 
 #include <errno.h>
 #include <fcntl.h>
@@ -47,6 +50,28 @@ int gfx_open(gfx_t *g, const char *dev)
 {
     memset(g, 0, sizeof(*g));
     g->fd = -1;
+
+#ifdef PROPEROS_WAYLAND
+    /* 在桌面会话里优先当 Wayland 客户端；失败再退回 framebuffer。
+     * 只看 WAYLAND_DISPLAY 不够：从服务/串口里启动时往往只继承了
+     * XDG_RUNTIME_DIR，socket 名要靠 wl 后端自己去目录里找。 */
+    const char *wdenv = getenv("WAYLAND_DISPLAY");
+    const char *xrenv = getenv("XDG_RUNTIME_DIR");
+    if (!dev && (wdenv || xrenv)) {
+        if (wl_open(g, getenv("PROPEROS_TITLE")) == 0) {
+            gfx_reset_clip(g);
+            return 0;
+        }
+        if (wdenv) {
+            /* 明确给了 socket 却连不上，说明会话在但连不过去；退回 fb0
+             * 会和合成器抢同一块显存，画面互相覆盖，必须报出来。 */
+            fprintf(stderr, "properos: Wayland 初始化失败，回落到 framebuffer\n");
+        }
+        memset(g, 0, sizeof(*g));
+        g->fd = -1;
+    }
+#endif
+
     const char *path = dev ? dev : (getenv("PROPEROS_FB") ? getenv("PROPEROS_FB") : "/dev/fb0");
     int fd = open(path, O_RDWR | O_CLOEXEC);
     if (fd < 0) return -1;
@@ -86,6 +111,16 @@ int gfx_offscreen(gfx_t *g, int w, int h)
 
 void gfx_close(gfx_t *g)
 {
+#ifdef PROPEROS_WAYLAND
+    if (g->wl) {
+        free(g->buf);
+        g->buf = NULL;
+        wl_close(g);          /* Wayland 后端自己回收 shm 与 surface */
+        memset(g, 0, sizeof(*g));
+        g->fd = -1;
+        return;
+    }
+#endif
     if (g->mem) {
         if (g->fd >= 0) munmap(g->mem, g->size);
         else free(g->mem);
@@ -141,6 +176,9 @@ void gfx_console_release(void)
 
 void gfx_flush(gfx_t *g)
 {
+#ifdef PROPEROS_WAYLAND
+    if (g->wl) { wl_flush(g); return; }
+#endif
     if (g->fd < 0) {   /* 离屏：同步到 mem 以便导出 */
         memcpy(g->mem, g->buf, g->size);
         return;

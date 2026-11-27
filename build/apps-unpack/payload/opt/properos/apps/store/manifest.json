@@ -1,0 +1,16 @@
+{
+  "id": "miao.byusistudio.store",
+  "name": "应用商店",
+  "version": "25.0.0",
+  "icon": "store",
+  "color": "#7C4DFF",
+  "developer": "ByUsi Studio · 北啊呢",
+  "summary": "已安装应用与本地安装包",
+  "entry": "ui/main.json",
+  "permissions": [
+    "run"
+  ],
+  "categories": [
+    "application"
+  ]
+}

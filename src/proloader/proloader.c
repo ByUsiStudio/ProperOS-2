@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · ProLoader
+/* ProperOS 25.0.0 Mobile · ProLoader
  *
  * 角色：initramfs 中的第一阶段引导器（PID 1）。
  *   1. 建立 /proc /sys /dev /run

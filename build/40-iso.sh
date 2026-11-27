@@ -16,12 +16,12 @@ mksquashfs "$ROOTFS" "$ISODIR/live/rootfs.squashfs" \
     $SQ_OPTS -b 1M -no-xattrs -no-progress \
     -e proc sys dev run tmp var/cache/apt/archives var/lib/apt/lists
 
-install -m 0644 "$DIST/kernel/vmlinuz-properos-2.5" "$ISODIR/boot/vmlinuz"
+install -m 0644 "$DIST/kernel/vmlinuz-properos-25.0.0" "$ISODIR/boot/vmlinuz"
 install -m 0644 "$DIST/initrd.img" "$ISODIR/boot/initrd.img"
 install -m 0644 "$PROJECT/installer/grub.cfg" "$ISODIR/boot/grub/grub.cfg"
 
 cat > "$ISODIR/README.txt" <<EOF
-ProperOS 2.5 安装介质
+ProperOS 25.0.0 安装介质
 内核: Linux $KVER
 构建时间: $(date -u +%Y-%m-%dT%H:%M:%SZ)
 

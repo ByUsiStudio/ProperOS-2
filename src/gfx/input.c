@@ -1,9 +1,12 @@
-/* ProperOS 2.5 Mobile · 输入抽象实现
+/* ProperOS 25.0.0 Mobile · 输入抽象实现
  *
  * 开发者：ByUsi Studio · 北啊呢
  */
 #define _GNU_SOURCE
 #include "input.h"
+#ifdef PROPEROS_WAYLAND
+#include "wl.h"
+#endif
 
 #include <fcntl.h>
 #include <linux/input.h>
@@ -181,6 +184,10 @@ static void on_move(input_t *in, idev_t *d, in_event_t *out, int *n, int max, in
 
 int input_poll(input_t *in, in_event_t *out, int max, int timeout_ms)
 {
+#ifdef PROPEROS_WAYLAND
+    /* 桌面会话里事件来自 compositor，evdev 已被 KWin 独占 */
+    if (wl_active()) return wl_poll_events(in, out, max, timeout_ms);
+#endif
     int n = 0;
     fd_set fds;
     FD_ZERO(&fds);
@@ -283,4 +290,44 @@ int input_poll(input_t *in, in_event_t *out, int max, int timeout_ms)
         }
     }
     return n;
+}
+
+/* ================= 供其它输入源复用的手势状态机 ================= */
+
+int64_t in_now_ms(void)
+{
+    return now_ms();
+}
+
+void in_press(input_t *in, idev_t *d, int x, int y, int64_t now)
+{
+    if (x < 0) x = 0;
+    if (x > in->w - 1) x = in->w - 1;
+    if (y < 0) y = 0;
+    if (y > in->h - 1) y = in->h - 1;
+    d->x = x; d->y = y;
+    d->nfingers = 1;
+    begin_press(in, d, now);
+}
+
+void in_move(input_t *in, idev_t *d, int x, int y,
+             in_event_t *out, int *n, int max, int64_t now)
+{
+    if (x < 0) x = 0;
+    if (x > in->w - 1) x = in->w - 1;
+    if (y < 0) y = 0;
+    if (y > in->h - 1) y = in->h - 1;
+    d->x = x; d->y = y;
+    if (!d->down) return;
+    on_move(in, d, out, n, max, now);
+}
+
+void in_release(input_t *in, idev_t *d, int x, int y,
+                in_event_t *out, int *n, int max, int64_t now)
+{
+    if (x >= 0 && x < in->w) d->x = x;
+    if (y >= 0 && y < in->h) d->y = y;
+    if (!d->down) return;
+    d->nfingers = 0;
+    end_press(in, d, out, n, max, now);
 }

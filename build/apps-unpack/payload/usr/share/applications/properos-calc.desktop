@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=计算器
+Name[zh_CN]=计算器
+Comment=四则运算
+Comment[zh_CN]=四则运算
+Icon=accessories-calculator
+Exec=/usr/bin/properos-app /opt/properos/apps/calc
+TryExec=/usr/bin/properos-app
+Terminal=false
+Categories=Utility;
+StartupNotify=true
+StartupWMClass=properos-app
+X-ProperOS-App=miao.byusistudio.calc
+X-ProperOS-Package=properos-app-calc

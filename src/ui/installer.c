@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · 图形安装器（properos-setup）
+/* ProperOS 25.0.0 Mobile · 图形安装器（properos-setup）
  *
  * 界面语言参考 Ubuntu 桌面安装程序（Subiquity / Flutter 版）：
  *   · 茄子紫（#2C001E）背景 + 居中白色窗口 + 左侧步骤栏
@@ -468,7 +468,7 @@ static void draw_rail(const frame_t *f, int step)
 
     gfx_round(&I.g, x, y, 34, 34, 9, C_ORANGE);
     gfx_icon(&I.g, "chip", x + 8, y + 8, 18, C_WHITE);
-    gfx_text_px(&I.g, x + 44, y - 3, "ProperOS 2.5", C_UB_TEXT, FS_BODY);
+    gfx_text_px(&I.g, x + 44, y - 3, "ProperOS 25.0.0", C_UB_TEXT, FS_BODY);
     gfx_text_px(&I.g, x + 44, y + FS_BODY - 5, "安装程序", C_UB_MUTE, FS_TINY);
 
     int iy = f->wy + 128;
@@ -520,7 +520,7 @@ static void draw_phone_head(const frame_t *f, const char *title, const char *sub
 
     gfx_round(&I.g, p, 32, 34, 34, 9, C_ORANGE);
     gfx_icon(&I.g, "chip", p + 8, 40, 18, C_WHITE);
-    gfx_text_px(&I.g, p + 44, 32, "ProperOS 2.5", C_WHITE, FS_BODY);
+    gfx_text_px(&I.g, p + 44, 32, "ProperOS 25.0.0", C_WHITE, FS_BODY);
     char sb[32];
     snprintf(sb, sizeof(sb), "步骤 %d / 4", step > 3 ? 4 : step + 1);
     gfx_text_right_px(&I.g, W - p, 34, sb, 0xD9B7CB, FS_TINY);
@@ -598,7 +598,7 @@ static int feature_rows(const frame_t *f, int y, int row, int tile, int fs_t, in
 static void page_welcome(inst_t *it)
 {
     frame_t f = frame_metrics();
-    int y = chrome(f.wide ? "安装 ProperOS 2.5" : "欢迎",
+    int y = chrome(f.wide ? "安装 ProperOS 25.0.0" : "欢迎",
                    f.wide ? "面向手机的 Linux 发行版 · ARM64 · ByUsi Studio"
                           : "四步完成，约 3 分钟", 0);
 
@@ -626,7 +626,7 @@ static void page_welcome(inst_t *it)
         gfx_round(&I.g, lx, y, logo, logo, 30, C_ORANGE);
         gfx_icon(&I.g, "chip", lx + 34, y + 34, 52, C_WHITE);
         y += logo + 20;
-        gfx_text_center_px(&I.g, f.wx + f.ww / 2, y, "ProperOS 2.5", C_UB_TEXT, 40);
+        gfx_text_center_px(&I.g, f.wx + f.ww / 2, y, "ProperOS 25.0.0", C_UB_TEXT, 40);
         y += 40 + 10;
         gfx_text_center_px(&I.g, f.wx + f.ww / 2, y, "ARM64 · Linux 7.3.6 · ByUsi Studio",
                            C_UB_SUB, FS_TINY);
@@ -823,7 +823,7 @@ static void page_confirm(inst_t *it)
 
     const char *keys[5] = { "系统版本", "目标磁盘", "磁盘容量", "设备名称", "root 密码" };
     char vals[5][160];
-    snprintf(vals[0], sizeof(vals[0]), "ProperOS 2.5 · ARM64");
+    snprintf(vals[0], sizeof(vals[0]), "ProperOS 25.0.0 · ARM64");
     snprintf(vals[1], sizeof(vals[1]), "%s", it->disks[it->sel].dev);
     snprintf(vals[2], sizeof(vals[2]), "%s · %s", hs, it->disks[it->sel].model);
     snprintf(vals[3], sizeof(vals[3]), "%s", it->hostname[0] ? it->hostname : "properos");
@@ -999,7 +999,7 @@ int main(int argc, char **argv)
 {
     for (int i = 1; i < argc; i++) {
         if (!strcmp(argv[i], "--version")) {
-            printf("properos-setup 1.1 (ProperOS 2.5)\n");
+            printf("properos-setup 1.1 (ProperOS 25.0.0)\n");
             return 0;
         }
     }

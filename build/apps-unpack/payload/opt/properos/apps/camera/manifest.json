@@ -1,0 +1,14 @@
+{
+  "id": "miao.byusistudio.camera",
+  "name": "相机",
+  "version": "25.0.0",
+  "icon": "camera",
+  "color": "#3A3F49",
+  "developer": "ByUsi Studio · 北啊呢",
+  "summary": "V4L2 采集与拍照",
+  "entry": "ui/main.json",
+  "permissions": [],
+  "categories": [
+    "application"
+  ]
+}

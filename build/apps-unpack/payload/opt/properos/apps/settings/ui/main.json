@@ -1,0 +1,245 @@
+{
+  "title": "设置",
+  "start": "root",
+  "pages": {
+    "root": {
+      "title": "设置",
+      "widgets": [
+        {
+          "t": "stats",
+          "items": [
+            {
+              "value": "{{battery}}",
+              "label": "电池"
+            },
+            {
+              "value": "{{mem}}",
+              "label": "内存"
+            },
+            {
+              "value": "{{wifi}}",
+              "label": "WLAN"
+            }
+          ]
+        },
+        {
+          "t": "group",
+          "title": "网络与互联网"
+        },
+        {
+          "t": "row",
+          "icon": "wifi",
+          "title": "打开 Wi-Fi",
+          "sub": "nmcli radio wifi on",
+          "action": {
+            "type": "native",
+            "op": "wifi",
+            "arg": "on"
+          }
+        },
+        {
+          "t": "row",
+          "icon": "wifi",
+          "title": "关闭 Wi-Fi",
+          "sub": "nmcli radio wifi off",
+          "action": {
+            "type": "native",
+            "op": "wifi",
+            "arg": "off"
+          }
+        },
+        {
+          "t": "rows",
+          "src": "net.ifaces",
+          "rowh": 58,
+          "empty": "没有已配置 IPv4 的网络接口"
+        },
+        {
+          "t": "rows",
+          "src": "modems",
+          "rowh": 56,
+          "empty": "未检测到调制解调器"
+        },
+        {
+          "t": "group",
+          "title": "设备"
+        },
+        {
+          "t": "row",
+          "icon": "brightness",
+          "title": "显示与亮度",
+          "value": "{{brightness}}",
+          "to": "display"
+        },
+        {
+          "t": "row",
+          "icon": "volume",
+          "title": "声音",
+          "value": "{{volume}}",
+          "to": "sound"
+        },
+        {
+          "t": "row",
+          "icon": "battery",
+          "title": "电池与温度",
+          "value": "{{battery}}",
+          "to": "battery"
+        },
+        {
+          "t": "group",
+          "title": "个性化"
+        },
+        {
+          "t": "switch",
+          "title": "深色模式",
+          "key": "dark"
+        },
+        {
+          "t": "group",
+          "title": "系统"
+        },
+        {
+          "t": "row",
+          "icon": "files",
+          "title": "存储",
+          "value": "{{disk}}",
+          "to": "storage"
+        },
+        {
+          "t": "row",
+          "icon": "chip",
+          "title": "关于本机",
+          "value": "{{model}}",
+          "to": "about"
+        }
+      ]
+    },
+    "display": {
+      "title": "显示与亮度",
+      "widgets": [
+        {
+          "t": "slider",
+          "title": "屏幕亮度",
+          "key": "brightness",
+          "value": 70,
+          "action": {
+            "type": "native",
+            "op": "sys.brightness",
+            "arg": "{{brightness}}"
+          }
+        },
+        {
+          "t": "text",
+          "text": "{{brightness}}%",
+          "px": 13
+        },
+        {
+          "t": "divider"
+        },
+        {
+          "t": "switch",
+          "title": "深色模式",
+          "key": "dark"
+        },
+        {
+          "t": "note",
+          "text": "亮度直接写 /sys/class/backlight/*/brightness；没有背光节点时会明确提示，而不是只改一个数字。"
+        }
+      ]
+    },
+    "sound": {
+      "title": "声音",
+      "widgets": [
+        {
+          "t": "slider",
+          "title": "媒体音量",
+          "key": "volume",
+          "value": 65,
+          "action": {
+            "type": "native",
+            "op": "sys.volume",
+            "arg": "{{volume}}"
+          }
+        },
+        {
+          "t": "note",
+          "text": "音量通过 wpctl（PipeWire）或 pactl（PulseAudio）设置默认输出；两者都不可用时会提示原因。"
+        }
+      ]
+    },
+    "battery": {
+      "title": "电池与温度",
+      "widgets": [
+        {
+          "t": "text",
+          "text": "{{battery}}",
+          "align": "center",
+          "px": 40,
+          "color": "#2FA84F"
+        },
+        {
+          "t": "rows",
+          "src": "sys.info",
+          "rowh": 50
+        },
+        {
+          "t": "note",
+          "text": "电量与充电状态来自 /sys/class/power_supply，温度来自 /sys/class/thermal。"
+        }
+      ]
+    },
+    "storage": {
+      "title": "存储",
+      "widgets": [
+        {
+          "t": "keyvalue",
+          "key": "系统分区",
+          "value": "{{rootdisk}}"
+        },
+        {
+          "t": "keyvalue",
+          "key": "数据分区",
+          "value": "{{disk}}"
+        },
+        {
+          "t": "rows",
+          "src": "fs.places",
+          "rowh": 60
+        },
+        {
+          "t": "note",
+          "text": "容量由 statvfs 实时计算。"
+        }
+      ]
+    },
+    "about": {
+      "title": "关于本机",
+      "widgets": [
+        {
+          "t": "image",
+          "icon": "chip",
+          "title": "ProperOS 25.0.0",
+          "sub": "{{model}}"
+        },
+        {
+          "t": "rows",
+          "src": "sys.info",
+          "rowh": 50
+        },
+        {
+          "t": "button",
+          "text": "打开终端",
+          "action": {
+            "type": "native",
+            "op": "pkg.launch",
+            "arg": "/usr/share/properos/apps/terminal.jspk"
+          }
+        },
+        {
+          "t": "note",
+          "text": "GPL-2.0 · ByUsi Studio · 北啊呢"
+        }
+      ]
+    }
+  }
+}

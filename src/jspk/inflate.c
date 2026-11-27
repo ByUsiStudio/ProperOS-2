@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · DEFLATE 解压实现
+/* ProperOS 25.0.0 Mobile · DEFLATE 解压实现
  *
  * 开发者：ByUsi Studio · 北啊呢
  */

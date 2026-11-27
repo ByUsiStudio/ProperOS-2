@@ -1,0 +1,32 @@
+[Unit]
+Description=ProperOS Plasma Mobile session (KWin Wayland)
+After=properd.service systemd-udev-settle.service systemd-logind.service dbus.service
+Wants=properd.service
+# 不再用 ConditionPathExists 判 DRM：那是启动瞬间求值，udev 还没建出
+# /dev/dri/card0 时单元会被直接跳过（journal 里连记录都没有）。
+# 改成 udev-settle 之后由 properos-session 自己判断，没有 DRM 就 exec
+# framebuffer 桌面，两条路径都由这个服务兜住。
+# 与 framebuffer 桌面互斥：两者只起来一个
+Conflicts=properos-shell.service getty@tty1.service
+Before=getty@tty1.service
+
+[Service]
+Type=simple
+User=root
+PAMName=login
+TTYPath=/dev/tty1
+StandardInput=tty
+StandardOutput=journal
+StandardError=journal
+Environment=XDG_RUNTIME_DIR=/run/user/0
+ExecStartPre=-/bin/mkdir -p /run/user/0
+ExecStartPre=-/bin/chmod 700 /run/user/0
+ExecStart=/bin/sh /usr/bin/properos-session
+# 会话崩溃时重试，连续失败交给 properos-shell（用户可 systemctl start properos-shell）
+Restart=on-failure
+RestartSec=6
+TTYReset=yes
+TTYVHangup=yes
+
+[Install]
+WantedBy=graphical.target

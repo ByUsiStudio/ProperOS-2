@@ -1,5 +1,5 @@
 [Unit]
-Description=ProperOS 2.5 Installer (live media)
+Description=ProperOS 25.0.0 Installer (live media)
 After=multi-user.target network-online.target
 Wants=network-online.target
 # 只在 live 介质上运行，装完的系统里不会触发

@@ -1,4 +1,4 @@
-/* ProperOS 2.5 Mobile · 即时模式控件层实现
+/* ProperOS 25.0.0 Mobile · 即时模式控件层实现
  *
  * 开发者：ByUsi Studio · 北啊呢
  */

@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=终端
+Name[zh_CN]=终端
+Comment=真实 PTY 终端
+Comment[zh_CN]=真实 PTY 终端
+Icon=utilities-terminal
+Exec=/usr/bin/properos-app /opt/properos/apps/terminal
+TryExec=/usr/bin/properos-app
+Terminal=false
+Categories=Utility;
+StartupNotify=true
+StartupWMClass=properos-app
+X-ProperOS-App=miao.byusistudio.terminal
+X-ProperOS-Package=properos-app-terminal

@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=设置
+Name[zh_CN]=设置
+Comment=真实硬件状态与控制
+Comment[zh_CN]=真实硬件状态与控制
+Icon=preferences-system
+Exec=/usr/bin/properos-app /opt/properos/apps/settings
+TryExec=/usr/bin/properos-app
+Terminal=false
+Categories=Utility;
+StartupNotify=true
+StartupWMClass=properos-app
+X-ProperOS-App=miao.byusistudio.settings
+X-ProperOS-Package=properos-app-settings

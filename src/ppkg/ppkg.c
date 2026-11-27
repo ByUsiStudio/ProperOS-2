@@ -1,7 +1,7 @@
-/* ProperOS 2.5 Mobile · ppkg
+/* ProperOS 25.0.0 Mobile · ppkg
  *
  * 角色：系统级包管理器（对标 dpkg）。包格式 .ppkg（ZIP + SHA-256 + 可选签名）。
- * 注意：.jspk 是应用包（properos-jspk 运行），两者不要混用。
+ * 注意：.jspk 是应用包（properos-app 运行），两者不要混用。
  *   PKGINFO      元数据（name/version/arch/description/depends）
  *   FILES        payload 内全部文件的 SHA-256 清单
  *   payload/     安装文件树
@@ -18,16 +18,43 @@
 
 #define DB_DIR "/var/lib/ppkg/db"
 
+/* -unpack-only：只解包不配置（apt 的 dpkg --unpack 阶段用） */
+static int g_unpack_only;
+
+/* 内核与引导链相关包：一律拦截，避免 apt 装出无法启动的系统。
+ * 内核镜像由 ProperOS 自己构建、自己管理（properos-bootctl / A/B 槽）。 */
+static const char *GUARDED_PREFIX[] = {
+    "linux-image", "linux-headers", "linux-modules", "linux-kbuild",
+    "linux-source", "linux-support", "linux-perf", "linux-config",
+    "grub-efi", "grub-common", "grub2-common", "grub-pc", "grub-coreboot",
+    "shim-signed", "systemd-boot", "systemd-boot-efi",
+    NULL
+};
+
+static int is_guarded(const char *name)
+{
+    if (!name) return 0;
+    for (int i = 0; GUARDED_PREFIX[i]; i++) {
+        size_t n = strlen(GUARDED_PREFIX[i]);
+        if (!strncmp(name, GUARDED_PREFIX[i], n)) return 1;
+    }
+    return 0;
+}
+
 static void usage(void)
 {
     printf("ProperOS ppkg %s — 系统包管理器\n\n", PROPEROS_VERSION);
     printf("用法:\n");
-    printf("  ppkg install <包.ppkg>    安装/升级\n");
+    printf("  ppkg install [--unpack-only] <包.ppkg>   安装/升级\n");
     printf("  ppkg remove <包名>        卸载\n");
     printf("  ppkg list                 已安装包\n");
     printf("  ppkg info <包名>          包信息\n");
     printf("  ppkg verify <包.ppkg>     校验（哈希 + 可选签名）\n");
     printf("  ppkg build <目录> <输出>  构建包\n");
+    printf("\n"
+           "包分两种格式：\n"
+           "  format=payload   原生 ppkg，文件树直接落地\n"
+           "  format=deb       由 deb2ppkg 从 Debian .deb 转换，落地走 dpkg\n");
 }
 
 static int pkg_extract(const char *pkg, char *outdir, size_t outlen)
@@ -129,6 +156,76 @@ static int db_write(const char *name, const char *dir)
     return 0;
 }
 
+/* deb 兼容包：db 里记录 PKGINFO + dpkg 的文件清单 + 来源 */
+static int db_write_deb(const char *name, const kvlist_t *info)
+{
+    char dst[PATH_MAX_LEN], src[PATH_MAX_LEN], out[PATH_MAX_LEN];
+    snprintf(dst, sizeof(dst), DB_DIR "/%s", name);
+    mkdir_p(dst, 0755);
+
+    snprintf(out, sizeof(out), "%s/PKGINFO", dst);
+    kv_save(info, out);
+
+    /* 文件清单直接复用 dpkg 的 .list，保证两边一致 */
+    snprintf(src, sizeof(src), "/var/lib/dpkg/info/%s.list", name);
+    snprintf(out, sizeof(out), "%s/FILES", dst);
+    size_t n = 0;
+    char *data = read_file(src, &n);
+    if (data) { write_file(out, data, n); free(data); }
+
+    char buf[PATH_MAX_LEN + 64];
+    const char *origin = kv_get(info, "origin", "debian");
+    int len = snprintf(buf, sizeof(buf), "%s\n", origin);
+    snprintf(out, sizeof(out), "%s/ORIGIN", dst);
+    write_file(out, buf, (size_t)len);
+
+    char ts[32];
+    len = snprintf(ts, sizeof(ts), "%ld\n", (long)time(NULL));
+    snprintf(out, sizeof(out), "%s/INSTALL_DATE", dst);
+    write_file(out, ts, (size_t)len);
+    return 0;
+}
+
+/* 安装由 deb 转换来的包：拦内核、校验 deb、交给 dpkg 落地 */
+static int install_deb(const kvlist_t *info, const char *dir)
+{
+    const char *name = kv_get(info, "name", NULL);
+    const char *ver  = kv_get(info, "version", "0");
+    if (!name) { err("PKGINFO 缺少 name"); return 1; }
+
+    if (is_guarded(name)) {
+        err("拒绝安装 %s：内核与引导链由 ProperOS 管理", name);
+        err("内核升级请用 properos-bootctl（A/B 槽），不要经 apt/dpkg");
+        return 2;
+    }
+
+    char deb[PATH_MAX_LEN];
+    snprintf(deb, sizeof(deb), "%s/payload.deb", dir);
+    if (!file_exists(deb)) { err("deb 兼容包缺少 payload.deb"); return 1; }
+
+    const char *want = kv_get(info, "deb-sha256", "");
+    if (*want) {
+        char hex[65];
+        if (sha256_file(deb, hex) < 0 || strcasecmp(hex, want)) {
+            err("payload.deb 哈希不匹配，包已损坏");
+            return 1;
+        }
+    }
+
+    info("%s %s %s", g_unpack_only ? "解包" : "安装", name, ver);
+    if (g_unpack_only) {
+        char *argv[] = { "/usr/bin/dpkg", "--unpack", deb, NULL };
+        if (run_cmd(argv) != 0) { err("dpkg --unpack 失败"); return 1; }
+    } else {
+        char *argv[] = { "/usr/bin/dpkg", "-i", deb, NULL };
+        int rc = run_cmd(argv);
+        if (rc != 0) { err("dpkg 返回 %d（依赖不满足时请先 apt-get -f install）", rc); return 1; }
+    }
+
+    db_write_deb(name, info);
+    return 0;
+}
+
 static int do_install(const char *pkg)
 {
     if (geteuid() != 0) { err("安装系统包需要 root"); return 1; }
@@ -145,6 +242,14 @@ static int do_install(const char *pkg)
     const char *name = kv_get(&info, "name", NULL);
     const char *ver = kv_get(&info, "version", "0");
     if (!name) { err("PKGINFO 缺少 name"); return 1; }
+
+    /* Debian 转换包：走 dpkg 落地，语义（conffiles/triggers/脚本）完全保留 */
+    if (!strcmp(kv_get(&info, "format", "payload"), "deb")) {
+        int rc = install_deb(&info, dir);
+        kv_free(&info);
+        run_shell(xasprintf("rm -rf %s", dir));
+        return rc;
+    }
 
     /* 依赖检查（浅层） */
     const char *deps = kv_get(&info, "depends", "");
@@ -207,6 +312,22 @@ static int do_remove(const char *name)
     snprintf(db, sizeof(db), DB_DIR "/%s", name);
     if (!dir_exists(db)) { err("未安装: %s", name); return 1; }
 
+    /* Debian 转换包：卸载同样交回 dpkg，保证依赖与 conffiles 处理正确 */
+    char pi[PATH_MAX_LEN];
+    snprintf(pi, sizeof(pi), "%s/PKGINFO", db);
+    kvlist_t info;
+    if (kv_load(&info, pi) == 0) {
+        int isdeb = !strcmp(kv_get(&info, "format", "payload"), "deb");
+        kv_free(&info);
+        if (isdeb) {
+            char *argv[] = { "/usr/bin/dpkg", "--purge", (char *)name, NULL };
+            if (run_cmd(argv) != 0) { err("dpkg --purge 失败"); return 1; }
+            run_shell(xasprintf("rm -rf '%s'", db));
+            printf("已卸载 %s（经 dpkg purge）\n", name);
+            return 0;
+        }
+    }
+
     char fl[PATH_MAX_LEN];
     snprintf(fl, sizeof(fl), "%s/FILES", db);
     size_t n = 0;
@@ -232,7 +353,7 @@ static int do_list(void)
 {
     DIR *d = opendir(DB_DIR);
     if (!d) { printf("尚未安装任何软件包\n"); return 0; }
-    printf("%-24s %-12s %-10s %s\n", "包名", "版本", "架构", "描述");
+    printf("%-24s %-12s %-10s %-8s %s\n", "包名", "版本", "架构", "来源", "描述");
     struct dirent *de;
     int n = 0;
     while ((de = readdir(d))) {
@@ -241,8 +362,9 @@ static int do_list(void)
         snprintf(p, sizeof(p), "%s/%s/PKGINFO", DB_DIR, de->d_name);
         kvlist_t kv;
         if (kv_load(&kv, p) < 0) continue;
-        printf("%-24s %-12s %-10s %s\n", de->d_name,
+        printf("%-24s %-12s %-10s %-8s %s\n", de->d_name,
                kv_get(&kv, "version", "?"), kv_get(&kv, "arch", "?"),
+               kv_get(&kv, "format", "payload")[0] == 'd' ? "debian" : "ppkg",
                kv_get(&kv, "description", ""));
         kv_free(&kv);
         n++;
@@ -277,7 +399,25 @@ static int do_verify(const char *pkg)
 {
     char dir[PATH_MAX_LEN];
     if (pkg_extract(pkg, dir, sizeof(dir)) < 0) { err("解包失败"); return 1; }
-    int rc = verify_payload(dir, 1);
+
+    int rc = 0, isdeb = 0;
+    char pi[PATH_MAX_LEN];
+    snprintf(pi, sizeof(pi), "%s/PKGINFO", dir);
+    kvlist_t info;
+    if (kv_load(&info, pi) == 0) {
+        isdeb = !strcmp(kv_get(&info, "format", "payload"), "deb");
+        if (isdeb) {
+            char deb[PATH_MAX_LEN], hex[65];
+            snprintf(deb, sizeof(deb), "%s/payload.deb", dir);
+            const char *want = kv_get(&info, "deb-sha256", "");
+            rc = -1;
+            if (sha256_file(deb, hex) < 0) err("缺少 payload.deb");
+            else if (*want && strcasecmp(hex, want)) err("payload.deb 哈希不匹配");
+            else { info("deb 内容校验通过（%s）", hex); rc = 0; }
+        }
+        kv_free(&info);
+    }
+    if (!isdeb) rc = verify_payload(dir, 1);
     if (rc == 0) rc = verify_signature(dir);
     run_shell(xasprintf("rm -rf %s", dir));
     printf("结果: %s\n", rc == 0 ? "通过" : "失败");
@@ -312,19 +452,22 @@ static int do_build(const char *srcdir, const char *out)
 int main(int argc, char **argv)
 {
     plog_open("ppkg");
-    if (argc < 2) { usage(); return 1; }
-    const char *cmd = argv[1];
+    int ai = 1;
+    if (ai < argc && !strcmp(argv[ai], "--unpack-only")) { g_unpack_only = 1; ai++; }
+    if (ai >= argc) { usage(); return 1; }
+    const char *cmd = argv[ai];
+    int nargs = argc - ai - 1;
 
     if (!strcmp(cmd, "--version")) {
         printf("ppkg %s (%s · %s)\n", PROPEROS_VERSION, PROPEROS_VENDOR, PROPEROS_AUTHOR);
         return 0;
     }
-    if (!strcmp(cmd, "install") && argc >= 3) return do_install(argv[2]);
-    if (!strcmp(cmd, "remove") && argc >= 3) return do_remove(argv[2]);
+    if (!strcmp(cmd, "install") && nargs >= 1) return do_install(argv[ai + 1]);
+    if (!strcmp(cmd, "remove") && nargs >= 1) return do_remove(argv[ai + 1]);
     if (!strcmp(cmd, "list")) return do_list();
-    if (!strcmp(cmd, "info") && argc >= 3) return do_info(argv[2]);
-    if (!strcmp(cmd, "verify") && argc >= 3) return do_verify(argv[2]);
-    if (!strcmp(cmd, "build") && argc >= 4) return do_build(argv[2], argv[3]);
+    if (!strcmp(cmd, "info") && nargs >= 1) return do_info(argv[ai + 1]);
+    if (!strcmp(cmd, "verify") && nargs >= 1) return do_verify(argv[ai + 1]);
+    if (!strcmp(cmd, "build") && nargs >= 2) return do_build(argv[ai + 1], argv[ai + 2]);
 
     usage();
     return 1;
